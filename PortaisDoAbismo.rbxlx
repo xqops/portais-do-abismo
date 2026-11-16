@@ -1,0 +1,5578 @@
+<roblox version="4">
+  <Item class="ReplicatedStorage" referent="0">
+    <Properties>
+      <string name="Name">ReplicatedStorage</string>
+    </Properties>
+    <Item class="Folder" referent="1">
+      <Properties>
+        <string name="Name">Assets</string>
+      </Properties>
+      <Item class="Folder" referent="2">
+        <Properties>
+          <string name="Name">Monsters</string>
+        </Properties>
+      </Item>
+      <Item class="Folder" referent="3">
+        <Properties>
+          <string name="Name">VFX</string>
+        </Properties>
+      </Item>
+      <Item class="Folder" referent="4">
+        <Properties>
+          <string name="Name">Weapons</string>
+        </Properties>
+      </Item>
+    </Item>
+    <Item class="Folder" referent="5">
+      <Properties>
+        <string name="Name">Shared</string>
+      </Properties>
+      <Item class="Folder" referent="6">
+        <Properties>
+          <string name="Name">Config</string>
+        </Properties>
+        <Item class="ModuleScript" referent="7">
+          <Properties>
+            <string name="Name">Dungeons</string>
+            <string name="Source"><![CDATA[--[[
+	Masmorras (mundos). A ordem da lista é a ordem de desbloqueio:
+	para entrar na masmorra N é preciso ter vencido o chefe da N-1.
+
+	Habilidades de chefe disponíveis (EnemyService): "slam", "volley", "ring", "summon", "charge"
+
+	`model` (opcional) = nome do modelo 3D em ReplicatedStorage.Assets.Monsters.
+	Sem ele, o jogo procura pelo `name`; se não achar nenhum, usa o boneco de blocos.
+]]
+return {
+	{
+		id = "floresta",
+		name = "Floresta Assombrada",
+		waves = 5,
+		hpMult = 1,
+		dmgMult = 1,
+		theme = {
+			floor = Color3.fromRGB(76, 140, 60),
+			floorMaterial = Enum.Material.Grass,
+			wall = Color3.fromRGB(95, 70, 45),
+			wallMaterial = Enum.Material.Wood,
+			accent = Color3.fromRGB(120, 255, 140),
+		},
+		mobs = {
+			chaser = { name = "Esqueleto", model = "Skeleton_Minion", color = Color3.fromRGB(200, 200, 180) },
+			runner = { name = "Esqueleto Ladino", model = "Skeleton_Rogue", color = Color3.fromRGB(150, 140, 120) },
+			archer = { name = "Esqueleto Mago", model = "Skeleton_Mage", color = Color3.fromRGB(120, 140, 200) },
+			brute = { name = "Esqueleto Guerreiro", model = "Skeleton_Warrior", color = Color3.fromRGB(170, 160, 140) },
+		},
+		boss = {
+			name = "Rei Esqueleto",
+			model = "Skeleton_Warrior",
+			hp = 4000,
+			color = Color3.fromRGB(160, 200, 60),
+			size = Vector3.new(7, 10, 6),
+			skills = { "slam", "volley", "summon" },
+		},
+		reward = { gold = 100, xp = 120 },
+	},
+	{
+		id = "deserto",
+		name = "Deserto de Cinzas",
+		waves = 6,
+		hpMult = 1.8,
+		dmgMult = 1.4,
+		theme = {
+			floor = Color3.fromRGB(205, 175, 115),
+			floorMaterial = Enum.Material.Sand,
+			wall = Color3.fromRGB(170, 130, 80),
+			wallMaterial = Enum.Material.Sandstone,
+			accent = Color3.fromRGB(255, 190, 70),
+		},
+		mobs = {
+			chaser = { name = "Escaravelho", color = Color3.fromRGB(60, 80, 90) },
+			runner = { name = "Chacal", color = Color3.fromRGB(180, 140, 90) },
+			archer = { name = "Múmia Arqueira", color = Color3.fromRGB(220, 210, 180) },
+			brute = { name = "Golem de Areia", color = Color3.fromRGB(190, 160, 100) },
+		},
+		boss = {
+			name = "Faraó Esquecido",
+			hp = 8000,
+			color = Color3.fromRGB(230, 190, 60),
+			size = Vector3.new(7, 11, 6),
+			skills = { "slam", "ring", "summon" },
+		},
+		reward = { gold = 200, xp = 250 },
+	},
+	{
+		id = "tundra",
+		name = "Tundra Congelada",
+		waves = 7,
+		hpMult = 3,
+		dmgMult = 2,
+		theme = {
+			floor = Color3.fromRGB(225, 238, 248),
+			floorMaterial = Enum.Material.Snow,
+			wall = Color3.fromRGB(150, 190, 220),
+			wallMaterial = Enum.Material.Glacier,
+			accent = Color3.fromRGB(120, 220, 255),
+		},
+		mobs = {
+			chaser = { name = "Diabrete de Gelo", color = Color3.fromRGB(150, 200, 240) },
+			runner = { name = "Lobo Polar", color = Color3.fromRGB(235, 240, 245) },
+			archer = { name = "Mago do Gelo", color = Color3.fromRGB(80, 120, 200) },
+			brute = { name = "Yeti", color = Color3.fromRGB(240, 245, 250) },
+		},
+		boss = {
+			name = "Wyrm Glacial",
+			hp = 15000,
+			color = Color3.fromRGB(110, 190, 255),
+			size = Vector3.new(9, 9, 12),
+			skills = { "ring", "volley", "slam", "charge" },
+		},
+		reward = { gold = 350, xp = 450 },
+	},
+	{
+		id = "cidadela",
+		name = "Cidadela Carmesim",
+		waves = 8,
+		hpMult = 5,
+		dmgMult = 3,
+		theme = {
+			floor = Color3.fromRGB(60, 25, 30),
+			floorMaterial = Enum.Material.Basalt,
+			wall = Color3.fromRGB(90, 30, 35),
+			wallMaterial = Enum.Material.Slate,
+			accent = Color3.fromRGB(255, 50, 60),
+		},
+		mobs = {
+			chaser = { name = "Diabrete", color = Color3.fromRGB(170, 40, 40) },
+			runner = { name = "Cão Infernal", color = Color3.fromRGB(60, 20, 20) },
+			archer = { name = "Bruxo Sombrio", color = Color3.fromRGB(80, 30, 110) },
+			brute = { name = "Cavaleiro Demônio", color = Color3.fromRGB(40, 35, 40) },
+		},
+		boss = {
+			name = "Senhor do Abismo",
+			hp = 28000,
+			color = Color3.fromRGB(150, 20, 30),
+			size = Vector3.new(8, 13, 7),
+			skills = { "slam", "volley", "ring", "summon", "charge" },
+		},
+		reward = { gold = 600, xp = 800 },
+	},
+}
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="8">
+          <Properties>
+            <string name="Name">Enemies</string>
+            <string name="Source"><![CDATA[-- Arquétipos de inimigos. Cada masmorra dá nome/cor própria a eles (ver Dungeons.luau)
+-- e multiplica vida/dano.
+return {
+	chaser = { hp = 50, speed = 13, damage = 8, reach = 2, attackCd = 1, size = Vector3.new(2.5, 3.5, 2), xp = 2, gold = 1 },
+	runner = { hp = 28, speed = 18, damage = 5, reach = 2, attackCd = 0.8, size = Vector3.new(2, 2.4, 3), xp = 1, gold = 1 },
+	archer = {
+		hp = 40,
+		speed = 11,
+		damage = 9,
+		attackCd = 2.4,
+		size = Vector3.new(2, 3.6, 1.6),
+		ranged = true,
+		range = 38,
+		projectileSpeed = 45,
+		xp = 3,
+		gold = 2,
+	},
+	brute = { hp = 220, speed = 9, damage = 18, reach = 3, attackCd = 1.6, size = Vector3.new(4, 6, 3), xp = 8, gold = 4 },
+	-- base de todos os chefes; vida, tamanho e habilidades vêm da masmorra
+	boss = { hp = 4000, speed = 12, damage = 22, reach = 4, attackCd = 1.4, skillCd = 5, size = Vector3.new(7, 10, 6), xp = 0, gold = 50 },
+}
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="9">
+          <Properties>
+            <string name="Name">Game</string>
+            <string name="Source"><![CDATA[-- Configurações gerais do jogo
+return {
+	GameName = "Portais do Abismo", -- nome provisório, troque à vontade
+	MaxPartySize = 4,
+	QueueCountdown = 10, -- segundos no portal antes de entrar
+	MaxPowerSlots = 4, -- quantos poderes diferentes cabem numa run
+	MaxAliveEnemies = 60,
+	SpawnGroupSize = 6, -- inimigos por leva dentro de uma onda
+	SpawnGroupInterval = 1, -- segundos entre levas
+	ArenaSpacing = 1000, -- distância entre arenas de runs simultâneas
+	ReturnToLobbyDelay = 8,
+
+	BasicAttack = {
+		damage = 20,
+		range = 11,
+		cooldown = 0.3, -- intervalo mínimo entre golpes
+		comboReset = 0.9, -- sem atacar por esse tempo, o combo volta ao 1º golpe
+		color = Color3.fromRGB(255, 235, 190),
+		-- cada golpe do combo: multiplicador de dano/alcance, abertura do cone (dot), empurrão, atraso do acerto
+		combo = {
+			{ damage = 1, range = 1, arc = 0.35, knockback = 15, hitDelay = 0.08 },
+			{ damage = 1.1, range = 1, arc = 0.35, knockback = 15, hitDelay = 0.08 },
+			{ damage = 1.9, range = 1.25, arc = -0.2, knockback = 45, hitDelay = 0.14, slam = true },
+		},
+	},
+
+	-- Arma do jogador. Se existir ReplicatedStorage.Assets.Weapons[Model], ela é usada;
+	-- senão o jogo monta uma espada com Parts.
+	-- GripOffset ajusta a posição/rotação do modelo importado na mão (mexa aqui se ficar torta).
+	Weapon = {
+		Model = "Sword",
+		Length = 4.5, -- o modelo importado é escalado para ter esse comprimento
+		GripOffset = CFrame.Angles(0, 0, 0),
+	},
+}
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="10">
+          <Properties>
+            <string name="Name">Powers</string>
+            <string name="Source"><![CDATA[--[[
+	Poderes. Cada poder tem 4 níveis (tiers):
+	  1, 2, 3  -> habilidades que disparam SOZINHAS quando a recarga acaba (estilo 20 Minutes Till Dawn)
+	  4        -> ULTIMATE, ativada pelo jogador com a tecla do slot (1-4)
+
+	Cada pegar do mesmo poder no level up libera o próximo tier. Os tiers anteriores continuam ativos.
+
+	`kind` define o comportamento (implementado em PowerService):
+	  projectile  damage, count, spread, speed, range, size, pierce, homing, burst, burstGap, jitter, explode, slow, slowTime
+	  nova        damage, radius, knockback, pull, slow, slowTime, freeze, lifesteal, atTarget
+	  strike      damage, radius, count, delay, interval, area   (cai do céu com aviso no chão)
+	  zone        dps, radius, duration, follow, pull, slow
+	  orbit       damage, count, radius, duration, spin
+	  line        damage, length, width
+	  beam        dps, length, width, duration
+	  chain       damage, jumps, range
+	  summon      damage, count, duration, speed, explode, explodeRadius
+	  shield      absorb, duration, reflect, knockback, radius
+	  heal        amount, regen, duration, invuln
+	  buff        damageMult, duration, auraDps, radius
+	`cd` = recarga em segundos.
+]]
+
+local Powers = {}
+
+Powers.List = {
+	{
+		id = "soul_swords",
+		name = "Espadas Almas",
+		color = Color3.fromRGB(80, 160, 255),
+		tiers = {
+			{ name = "Corte Fantasma", desc = "3 cortes espectrais em sequência.", kind = "projectile", visual = "blade", cd = 4, damage = 22, burst = 3, burstGap = 0.12, speed = 110, range = 60, size = 1.4, pierce = 1 },
+			{ name = "Dança das Lâminas", desc = "7 espadas orbitam ao seu redor.", kind = "orbit", cd = 15, damage = 15, count = 7, radius = 9, duration = 8 },
+			{ name = "Execução Celestial", desc = "Uma lâmina gigante cai sobre o alvo.", kind = "strike", visual = "sword", cd = 18, damage = 95, radius = 10, delay = 0.6 },
+			{ name = "Trono das Mil Espadas", desc = "Chuva de espadas por toda a área.", kind = "strike", visual = "sword", cd = 50, damage = 60, radius = 9, count = 24, interval = 0.08, delay = 0.5, area = 60 },
+		},
+	},
+	{
+		id = "void",
+		name = "Teleporte",
+		color = Color3.fromRGB(170, 90, 255),
+		tiers = {
+			{ name = "Passo do Vazio", desc = "Abre uma fenda do vazio sob o inimigo.", kind = "strike", visual = "void", cd = 5, damage = 30, radius = 6, delay = 0.25 },
+			{ name = "Troca Dimensional", desc = "Corte dimensional em linha reta.", kind = "line", cd = 10, damage = 45, length = 40, width = 3 },
+			{ name = "Ruptura Espacial", desc = "Portal que suga e fere inimigos.", kind = "zone", cd = 17, dps = 40, radius = 10, duration = 4, pull = 18 },
+			{ name = "Colapso das Dimensões", desc = "Rasga a realidade e engole tudo por perto.", kind = "zone", cd = 55, dps = 120, radius = 22, duration = 8, pull = 30 },
+		},
+	},
+	{
+		id = "demon_blast",
+		name = "Explosão Demoníaca",
+		color = Color3.fromRGB(255, 60, 50),
+		tiers = {
+			{ name = "Bastião Infernal", desc = "Explosão ao seu redor que empurra inimigos.", kind = "nova", cd = 6, damage = 40, radius = 12, knockback = 40 },
+			{ name = "Onda de Choque", desc = "Onda em linha que atravessa tudo.", kind = "projectile", visual = "wind", cd = 14, damage = 70, size = 4, speed = 70, pierce = 99, range = 70 },
+			{ name = "Detonação Total", desc = "Múltiplas explosões em sequência.", kind = "strike", visual = "meteor", cd = 18, damage = 120, radius = 8, count = 5, interval = 0.15, delay = 0.5, area = 40 },
+			{ name = "Apocalipse", desc = "Um meteoro gigantesco devasta a arena.", kind = "strike", visual = "meteor", cd = 60, damage = 600, radius = 35, delay = 1.2 },
+		},
+	},
+	{
+		id = "demon_summon",
+		name = "Invocação de Demônios",
+		color = Color3.fromRGB(200, 20, 60),
+		tiers = {
+			{ name = "Laços do Inferno", desc = "3 projéteis de sangue teleguiados.", kind = "projectile", cd = 5, damage = 35, count = 3, spread = 40, speed = 60, homing = true },
+			{ name = "Demônio Guardião", desc = "Invoca um demônio que luta por você.", kind = "summon", cd = 14, damage = 30, count = 1, duration = 14 },
+			{ name = "Círculo Demoníaco", desc = "Círculo de sangue que fere quem pisar.", kind = "zone", cd = 18, dps = 80, radius = 12, duration = 4 },
+			{ name = "Portal Abissal", desc = "Abre um portal e invoca 6 demônios.", kind = "summon", cd = 55, damage = 40, count = 6, duration = 15 },
+		},
+	},
+	{
+		id = "energy_shield",
+		name = "Escudo de Energia",
+		color = Color3.fromRGB(90, 200, 255),
+		tiers = {
+			{ name = "Barreira Energética", desc = "Escudo que absorve 40 de dano.", kind = "shield", cd = 6, absorb = 40, duration = 3 },
+			{ name = "Reflexo", desc = "Escudo que devolve o dano recebido.", kind = "shield", cd = 12, absorb = 60, duration = 4, reflect = 1 },
+			{ name = "Campo Protetor", desc = "Escudo forte que repele inimigos.", kind = "shield", cd = 18, absorb = 150, duration = 6, knockback = 50, radius = 12 },
+			{ name = "Fortaleza Absoluta", desc = "Domo quase impenetrável por 10s.", kind = "shield", cd = 60, absorb = 1000, duration = 10, reflect = 2, knockback = 80, radius = 20 },
+		},
+	},
+	{
+		id = "meteor",
+		name = "Meteoro",
+		color = Color3.fromRGB(255, 130, 40),
+		tiers = {
+			{ name = "Chuva de Meteoros", desc = "3 pequenos meteoros caem perto.", kind = "strike", visual = "meteor", cd = 6, damage = 40, radius = 6, count = 3, interval = 0.25, area = 40 },
+			{ name = "Meteoro Guiado", desc = "Meteoro teleguiado que explode.", kind = "projectile", visual = "fireball", cd = 14, damage = 70, size = 2.5, speed = 55, homing = true, explode = 8 },
+			{ name = "Impacto Celeste", desc = "Um grande meteoro com área enorme.", kind = "strike", visual = "meteor", cd = 20, damage = 150, radius = 14, delay = 0.9 },
+			{ name = "Tempestade Astral", desc = "Dezenas de meteoros caem na arena.", kind = "strike", visual = "meteor", cd = 60, damage = 90, radius = 9, count = 30, interval = 0.12, area = 60 },
+		},
+	},
+	{
+		id = "fire_body",
+		name = "Corpo de Fogo",
+		color = Color3.fromRGB(255, 90, 20),
+		tiers = {
+			{ name = "Aura Flamejante", desc = "Queima inimigos perto de você.", kind = "zone", cd = 6, dps = 20, radius = 9, duration = 6, follow = true },
+			{ name = "Impulso Ígneo", desc = "Rajada de fogo em linha.", kind = "line", cd = 14, damage = 60, length = 35, width = 4 },
+			{ name = "Explosão Corporal", desc = "Seu corpo explode em chamas.", kind = "nova", cd = 18, damage = 120, radius = 16, knockback = 60 },
+			{ name = "Fênix Viva", desc = "Vira fogo puro: +50% dano e aura gigante.", kind = "buff", cd = 60, damageMult = 1.5, duration = 12, auraDps = 120, radius = 16 },
+		},
+	},
+	{
+		id = "plasma",
+		name = "Raio de Plasma",
+		color = Color3.fromRGB(190, 80, 255),
+		tiers = {
+			{ name = "Disparo de Plasma", desc = "Tiros rápidos de plasma.", kind = "projectile", visual = "bullet", cd = 5, damage = 30, speed = 140, burst = 2 },
+			{ name = "Corrente Elétrica", desc = "Salta entre 5 inimigos.", kind = "chain", cd = 14, damage = 45, jumps = 5, range = 22 },
+			{ name = "Feixe Contínuo", desc = "Feixe de plasma por 3 segundos.", kind = "beam", cd = 20, dps = 100, length = 50, width = 2.5, duration = 3 },
+			{ name = "Aniquilação", desc = "Canhão orbital no alvo.", kind = "strike", visual = "orbital", cd = 55, damage = 800, radius = 18, delay = 1.5 },
+		},
+	},
+	{
+		id = "ice",
+		name = "Congelamento",
+		color = Color3.fromRGB(140, 220, 255),
+		tiers = {
+			{ name = "Estaca de Gelo", desc = "Projétil que atravessa e deixa lento.", kind = "projectile", visual = "lance", cd = 6, damage = 35, pierce = 2, slow = 0.5, slowTime = 2 },
+			{ name = "Onda Fria", desc = "Onda de frio que deixa lento.", kind = "nova", cd = 16, damage = 60, radius = 15, slow = 0.4, slowTime = 3 },
+			{ name = "Prisão Glacial", desc = "Congela inimigos por 3s.", kind = "nova", cd = 20, damage = 40, radius = 14, freeze = 3 },
+			{ name = "Era do Gelo", desc = "Congela a arena inteira.", kind = "nova", cd = 60, damage = 250, radius = 45, freeze = 5 },
+		},
+	},
+	{
+		id = "gravity",
+		name = "Gravidade",
+		color = Color3.fromRGB(120, 60, 220),
+		tiers = {
+			{ name = "Puxão", desc = "Puxa inimigos para um ponto.", kind = "nova", cd = 6, damage = 10, radius = 20, pull = 50, atTarget = true },
+			{ name = "Campo Gravitacional", desc = "Área de gravidade alta: inimigos lentos.", kind = "zone", cd = 15, dps = 15, radius = 14, duration = 6, slow = 0.4 },
+			{ name = "Esmagamento", desc = "Esmaga o alvo contra o chão.", kind = "strike", visual = "void", cd = 18, damage = 100, radius = 10, delay = 0.4 },
+			{ name = "Colapso Gravitacional", desc = "Cria um buraco negro.", kind = "zone", cd = 60, dps = 160, radius = 25, duration = 8, pull = 35 },
+		},
+	},
+	{
+		id = "bullets",
+		name = "Rajada de Balas",
+		color = Color3.fromRGB(255, 70, 70),
+		tiers = {
+			{ name = "Disparo Rápido", desc = "Rajada de 5 tiros.", kind = "projectile", visual = "bullet", cd = 6, damage = 12, burst = 5, burstGap = 0.08, speed = 150, size = 0.6 },
+			{ name = "Balas Buscadoras", desc = "4 balas teleguiadas.", kind = "projectile", visual = "bullet", cd = 14, damage = 30, count = 4, spread = 60, speed = 80, homing = true },
+			{ name = "Metralhadora", desc = "20 tiros seguidos.", kind = "projectile", visual = "bullet", cd = 18, damage = 10, burst = 20, burstGap = 0.08, speed = 160, size = 0.6, jitter = 12 },
+			{ name = "Chuva de Projéteis", desc = "Projéteis em todas as direções.", kind = "projectile", visual = "bullet", cd = 50, damage = 40, count = 36, spread = 360, burst = 5, burstGap = 0.25, pierce = 3 },
+		},
+	},
+	{
+		id = "energy_lance",
+		name = "Lança de Energia",
+		color = Color3.fromRGB(60, 220, 255),
+		tiers = {
+			{ name = "Arremesso", desc = "Lança que atravessa 5 inimigos.", kind = "projectile", visual = "lance", cd = 6, damage = 50, pierce = 5, speed = 120, size = 1, range = 80 },
+			{ name = "Investida", desc = "Golpe perfurante em linha.", kind = "line", cd = 14, damage = 80, length = 40, width = 3 },
+			{ name = "Multiplicação", desc = "5 lanças em leque.", kind = "projectile", visual = "lance", cd = 20, damage = 60, count = 5, spread = 50, pierce = 3 },
+			{ name = "Lança Dimensional", desc = "Uma lança colossal atravessa a arena.", kind = "line", cd = 50, damage = 500, length = 120, width = 8 },
+		},
+	},
+	{
+		id = "shadow_clones",
+		name = "Clones Sombrios",
+		color = Color3.fromRGB(110, 60, 170),
+		tiers = {
+			{ name = "Clone de Ataque", desc = "Um clone aliado ataca inimigos.", kind = "summon", cd = 8, damage = 25, count = 1, duration = 8 },
+			{ name = "Clones Múltiplos", desc = "3 clones aliados.", kind = "summon", cd = 15, damage = 20, count = 3, duration = 8 },
+			{ name = "Explosão Sombria", desc = "Clones que explodem ao sumir.", kind = "summon", cd = 18, damage = 20, count = 3, duration = 5, explode = 100, explodeRadius = 10 },
+			{ name = "Exército de Sombras", desc = "Invoca 10 clones.", kind = "summon", cd = 55, damage = 30, count = 10, duration = 12 },
+		},
+	},
+	{
+		id = "wind",
+		name = "Vento Cortante",
+		color = Color3.fromRGB(220, 235, 255),
+		tiers = {
+			{ name = "Corte de Vento", desc = "Lâmina de vento que atravessa tudo.", kind = "projectile", visual = "wind", cd = 6, damage = 35, pierce = 99, size = 2, speed = 100 },
+			{ name = "Redemoinho", desc = "Redemoinho que puxa inimigos.", kind = "zone", cd = 14, dps = 30, radius = 10, duration = 3, pull = 15 },
+			{ name = "Lâminas Aéreas", desc = "8 lâminas em todas as direções.", kind = "projectile", visual = "wind", cd = 18, damage = 50, count = 8, spread = 360, pierce = 3 },
+			{ name = "Fúria dos Ventos", desc = "Tempestade enorme ao seu redor.", kind = "zone", cd = 55, dps = 150, radius = 25, duration = 10, follow = true },
+		},
+	},
+	{
+		id = "regen",
+		name = "Regeneração",
+		color = Color3.fromRGB(80, 255, 120),
+		tiers = {
+			{ name = "Cura Rápida", desc = "Cura 30 de vida.", kind = "heal", cd = 6, amount = 30 },
+			{ name = "Transferência", desc = "Rouba vida dos inimigos próximos.", kind = "nova", cd = 14, damage = 40, radius = 12, lifesteal = 0.5 },
+			{ name = "Renovação", desc = "Regenera 5 de vida por segundo por 10s.", kind = "heal", cd = 18, regen = 5, duration = 10 },
+			{ name = "Imortalidade", desc = "Cura total e invencível por 8s.", kind = "heal", cd = 70, amount = 9999, invuln = true, duration = 8 },
+		},
+	},
+	{
+		id = "thunder",
+		name = "Trovão",
+		color = Color3.fromRGB(255, 220, 60),
+		tiers = {
+			{ name = "Raios em Cadeia", desc = "Raio que pula entre 4 inimigos.", kind = "chain", cd = 6, damage = 40, jumps = 4, range = 20 },
+			{ name = "Salto Elétrico", desc = "Raio que pula entre 8 inimigos.", kind = "chain", cd = 15, damage = 60, jumps = 8, range = 30 },
+			{ name = "Pilar de Raios", desc = "Pilar de raios no alvo.", kind = "strike", visual = "lightning", cd = 20, damage = 150, radius = 8, delay = 0.3 },
+			{ name = "Tempestade Divina", desc = "Raios caem por toda a arena.", kind = "strike", visual = "lightning", cd = 55, damage = 80, radius = 7, count = 40, interval = 0.1, delay = 0.3, area = 70 },
+		},
+	},
+	{
+		id = "darkness",
+		name = "Escuridão",
+		color = Color3.fromRGB(90, 40, 140),
+		tiers = {
+			{ name = "Nuvem Sombria", desc = "Nuvem de escuridão que fere.", kind = "zone", cd = 6, dps = 30, radius = 9, duration = 4 },
+			{ name = "Cegueira", desc = "Inimigos ficam muito lentos.", kind = "nova", cd = 14, damage = 15, radius = 14, slow = 0.3, slowTime = 5, atTarget = true },
+			{ name = "Devorar Almas", desc = "Dano em área que rouba vida.", kind = "nova", cd = 18, damage = 80, radius = 14, lifesteal = 0.3 },
+			{ name = "Noite Eterna", desc = "Escuridão total ao seu redor.", kind = "zone", cd = 60, dps = 150, radius = 35, duration = 10, follow = true, slow = 0.5 },
+		},
+	},
+	{
+		id = "chaos_blades",
+		name = "Lâminas do Caos",
+		color = Color3.fromRGB(255, 60, 200),
+		tiers = {
+			{ name = "Órbita Caótica", desc = "3 lâminas orbitam você.", kind = "orbit", cd = 6, damage = 30, count = 3, radius = 7, duration = 6 },
+			{ name = "Corte Telecinético", desc = "2 lâminas teleguiadas.", kind = "projectile", visual = "blade", cd = 15, damage = 70, count = 2, spread = 30, homing = true },
+			{ name = "Espiral de Lâminas", desc = "12 lâminas em espiral.", kind = "projectile", visual = "blade", cd = 20, damage = 60, count = 12, spread = 360, pierce = 2 },
+			{ name = "Dança do Caos", desc = "Centenas de lâminas giram ao seu redor.", kind = "orbit", cd = 55, damage = 80, count = 12, radius = 14, duration = 10, spin = 5 },
+		},
+	},
+	{
+		id = "elemental",
+		name = "Domínio Elemental",
+		color = Color3.fromRGB(255, 200, 80),
+		colors = {
+			Color3.fromRGB(255, 90, 40),
+			Color3.fromRGB(90, 200, 255),
+			Color3.fromRGB(90, 255, 120),
+			Color3.fromRGB(255, 230, 80),
+		},
+		tiers = {
+			{ name = "Fusão Elemental", desc = "3 projéteis elementais.", kind = "projectile", cd = 6, damage = 40, count = 3, spread = 30 },
+			{ name = "Orbes Elementais", desc = "4 orbes orbitam você.", kind = "orbit", cd = 15, damage = 35, count = 4, radius = 10, duration = 8 },
+			{ name = "Combo Elemental", desc = "3 explosões elementais.", kind = "strike", visual = "pillar", cd = 20, damage = 120, radius = 9, count = 3, interval = 0.3, area = 40 },
+			{ name = "Cataclismo Elemental", desc = "Todos os elementos de uma vez.", kind = "strike", visual = "meteor", cd = 60, damage = 100, radius = 10, count = 25, interval = 0.1, area = 70 },
+		},
+	},
+}
+
+Powers.ById = {}
+for _, power in Powers.List do
+	Powers.ById[power.id] = power
+end
+
+return Powers
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="11">
+          <Properties>
+            <string name="Name">Progression</string>
+            <string name="Source"><![CDATA[-- Curvas de XP e cartas de atributo
+local Progression = {}
+
+-- XP para ir do nível `level` ao próximo DENTRO de uma run (reseta a cada masmorra)
+function Progression.RunXpToNext(level)
+	return math.floor(5 + level * 5 + level ^ 1.5)
+end
+
+-- XP de conta (persistente) para o próximo nível
+function Progression.AccountXpToNext(level)
+	return math.floor(100 * level ^ 1.35)
+end
+
+-- Cartas que aparecem misturadas com os poderes no level up
+Progression.StatCards = {
+	{ id = "vitality", name = "Vitalidade", desc = "+25 de vida máxima.", color = Color3.fromRGB(90, 220, 110) },
+	{ id = "power", name = "Fúria", desc = "+12% de dano em tudo.", color = Color3.fromRGB(255, 110, 80) },
+	{ id = "haste", name = "Foco", desc = "-10% de recarga das habilidades.", color = Color3.fromRGB(120, 170, 255) },
+	{ id = "swift", name = "Agilidade", desc = "+2 de velocidade de movimento.", color = Color3.fromRGB(240, 240, 140) },
+	{ id = "magnet", name = "Ímã", desc = "Coleta orbes de XP de mais longe.", color = Color3.fromRGB(90, 230, 255) },
+}
+
+Progression.StatCardsById = {}
+for _, card in Progression.StatCards do
+	Progression.StatCardsById[card.id] = card
+end
+
+return Progression
+]]></string>
+          </Properties>
+        </Item>
+      </Item>
+      <Item class="ModuleScript" referent="12">
+        <Properties>
+          <string name="Name">Net</string>
+          <string name="Source"><![CDATA[-- Remotes compartilhados entre servidor e cliente.
+-- O servidor cria; o cliente espera eles aparecerem.
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+
+local REMOTES = {
+	"RunState", -- servidor -> cliente: estado da run para o HUD
+	"LevelUpOffer", -- servidor -> cliente: cartas para escolher (nil fecha o painel)
+	"ChooseCard", -- cliente -> servidor: índice da carta escolhida
+	"CastUltimate", -- cliente -> servidor: slot da ultimate (1-4)
+	"BasicAttack", -- cliente -> servidor: direção do ataque básico
+	"DamageNumber", -- servidor -> cliente: número de dano flutuante
+	"Notify", -- servidor -> cliente: aviso grande na tela
+	"Profile", -- servidor <-> cliente: dados da conta (cliente pede ao iniciar)
+	"Fx", -- servidor -> clientes: efeito visual para desenhar (tipo, dados)
+}
+
+local Net = {}
+
+local folder
+if RunService:IsServer() then
+	folder = ReplicatedStorage:FindFirstChild("Remotes")
+	if not folder then
+		folder = Instance.new("Folder")
+		folder.Name = "Remotes"
+		folder.Parent = ReplicatedStorage
+	end
+	for _, name in REMOTES do
+		if not folder:FindFirstChild(name) then
+			local remote = Instance.new("RemoteEvent")
+			remote.Name = name
+			remote.Parent = folder
+		end
+	end
+else
+	folder = ReplicatedStorage:WaitForChild("Remotes")
+end
+
+for _, name in REMOTES do
+	Net[name] = folder:WaitForChild(name)
+end
+
+return Net
+]]></string>
+        </Properties>
+      </Item>
+    </Item>
+  </Item>
+  <Item class="ServerScriptService" referent="13">
+    <Properties>
+      <string name="Name">ServerScriptService</string>
+    </Properties>
+    <Item class="Script" referent="14">
+      <Properties>
+        <string name="Name">Server</string>
+        <token name="RunContext">0</token>
+        <string name="Source"><![CDATA[-- Ponto de entrada do servidor
+local Services = script:WaitForChild("Services")
+
+local WorldBuilder = require(Services.WorldBuilder)
+local DataService = require(Services.DataService)
+local DungeonService = require(Services.DungeonService)
+local LobbyService = require(Services.LobbyService)
+local WeaponService = require(Services.WeaponService)
+
+WorldBuilder.SetupLighting()
+WorldBuilder.BuildLobby()
+DataService.Init()
+WeaponService.Init()
+DungeonService.Init()
+LobbyService.Init()
+
+print("[Portais do Abismo] servidor pronto")
+]]></string>
+      </Properties>
+      <Item class="Folder" referent="15">
+        <Properties>
+          <string name="Name">Services</string>
+        </Properties>
+        <Item class="ModuleScript" referent="16">
+          <Properties>
+            <string name="Name">DataService</string>
+            <string name="Source"><![CDATA[-- Dados persistentes da conta (DataStore).
+-- No Studio: Game Settings > Security > "Enable Studio Access to API Services" para salvar de verdade.
+local Players = game:GetService("Players")
+local DataStoreService = game:GetService("DataStoreService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Progression = require(ReplicatedStorage.Shared.Config.Progression)
+local Dungeons = require(ReplicatedStorage.Shared.Config.Dungeons)
+local Net = require(ReplicatedStorage.Shared.Net)
+
+local DataService = {}
+
+local STORE_NAME = "PortaisDoAbismo_v1"
+local AUTOSAVE_INTERVAL = 120
+local DEFAULT = {
+	level = 1,
+	xp = 0,
+	gold = 0,
+	cleared = 0, -- maior índice de masmorra concluída
+}
+
+local profiles = {}
+
+local store
+do
+	local ok, result = pcall(function()
+		return DataStoreService:GetDataStore(STORE_NAME)
+	end)
+	if ok then
+		store = result
+	else
+		warn("[DataService] DataStore indisponível, progresso não será salvo: " .. tostring(result))
+	end
+end
+
+local function storeKey(player)
+	return "player_" .. player.UserId
+end
+
+local function sync(player)
+	local data = profiles[player]
+	if not data then
+		return
+	end
+	local stats = player:FindFirstChild("leaderstats")
+	if stats then
+		stats["Nível"].Value = data.level
+		stats.Ouro.Value = data.gold
+	end
+	Net.Profile:FireClient(player, {
+		level = data.level,
+		xp = data.xp,
+		xpNeed = Progression.AccountXpToNext(data.level),
+		gold = data.gold,
+		cleared = data.cleared,
+		totalDungeons = #Dungeons,
+	})
+end
+
+local function load(player)
+	local data = table.clone(DEFAULT)
+	if store then
+		local ok, saved = pcall(function()
+			return store:GetAsync(storeKey(player))
+		end)
+		if ok and type(saved) == "table" then
+			for key, value in saved do
+				data[key] = value
+			end
+		elseif not ok then
+			warn("[DataService] falha ao carregar " .. player.Name .. ": " .. tostring(saved))
+		end
+	end
+	if not player.Parent then
+		return -- saiu durante o carregamento
+	end
+	profiles[player] = data
+
+	local stats = Instance.new("Folder")
+	stats.Name = "leaderstats"
+	local level = Instance.new("IntValue")
+	level.Name = "Nível"
+	level.Parent = stats
+	local gold = Instance.new("IntValue")
+	gold.Name = "Ouro"
+	gold.Parent = stats
+	stats.Parent = player
+
+	sync(player)
+end
+
+local function save(player)
+	local data = profiles[player]
+	if not data or not store then
+		return
+	end
+	local ok, err = pcall(function()
+		store:SetAsync(storeKey(player), data)
+	end)
+	if not ok then
+		warn("[DataService] falha ao salvar " .. player.Name .. ": " .. tostring(err))
+	end
+end
+
+function DataService.Init()
+	Players.PlayerAdded:Connect(load)
+	for _, player in Players:GetPlayers() do
+		task.spawn(load, player)
+	end
+
+	Players.PlayerRemoving:Connect(function(player)
+		-- deferido para outras partes (ex.: recompensas da run) rodarem antes de salvar
+		task.defer(function()
+			save(player)
+			profiles[player] = nil
+		end)
+	end)
+
+	game:BindToClose(function()
+		for player in profiles do
+			save(player)
+		end
+	end)
+
+	task.spawn(function()
+		while true do
+			task.wait(AUTOSAVE_INTERVAL)
+			for player in profiles do
+				task.spawn(save, player)
+			end
+		end
+	end)
+
+	-- o cliente pede o perfil quando o HUD fica pronto
+	Net.Profile.OnServerEvent:Connect(sync)
+end
+
+function DataService.Get(player)
+	return profiles[player]
+end
+
+function DataService.GetCleared(player)
+	local data = profiles[player]
+	return data and data.cleared or 0
+end
+
+function DataService.AddGold(player, amount)
+	local data = profiles[player]
+	if not data then
+		return
+	end
+	data.gold += amount
+	sync(player)
+end
+
+function DataService.AddXp(player, amount)
+	local data = profiles[player]
+	if not data then
+		return
+	end
+	data.xp += amount
+	local need = Progression.AccountXpToNext(data.level)
+	while data.xp >= need do
+		data.xp -= need
+		data.level += 1
+		need = Progression.AccountXpToNext(data.level)
+	end
+	sync(player)
+end
+
+function DataService.MarkCleared(player, dungeonIndex)
+	local data = profiles[player]
+	if not data then
+		return
+	end
+	data.cleared = math.max(data.cleared, dungeonIndex)
+	sync(player)
+end
+
+return DataService
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="17">
+          <Properties>
+            <string name="Name">DungeonService</string>
+            <string name="Source"><![CDATA[-- Runs de masmorra: arena, ondas, chefe, XP da run, level up com cartas e recompensas.
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Shared = ReplicatedStorage.Shared
+local GameConfig = require(Shared.Config.Game)
+local Dungeons = require(Shared.Config.Dungeons)
+local Archetypes = require(Shared.Config.Enemies)
+local Powers = require(Shared.Config.Powers)
+local Progression = require(Shared.Config.Progression)
+local Net = require(Shared.Net)
+
+local Registry = require(script.Parent.Registry)
+local Effects = require(script.Parent.Effects)
+local EnemyService = require(script.Parent.EnemyService)
+local PowerService = require(script.Parent.PowerService)
+local WorldBuilder = require(script.Parent.WorldBuilder)
+local DataService = require(script.Parent.DataService)
+
+local DungeonService = {}
+
+local Run = {}
+Run.__index = Run
+
+local usedSlots = {}
+local nextRunId = 0
+
+local XP_SMALL = Color3.fromRGB(90, 230, 255)
+local XP_BIG = Color3.fromRGB(255, 200, 60)
+
+-- utilidades -------------------------------------------------------------------
+
+local function weightedPick(pool)
+	local total = 0
+	for _, option in pool do
+		total += option.weight
+	end
+	local roll = math.random() * total
+	for i, option in pool do
+		roll -= option.weight
+		if roll <= 0 then
+			return table.remove(pool, i)
+		end
+	end
+	return table.remove(pool)
+end
+
+local function waveWeights(wave)
+	return {
+		{ id = "chaser", weight = 5 },
+		{ id = "runner", weight = wave >= 2 and 3 or 0 },
+		{ id = "archer", weight = wave >= 3 and 2 or 0 },
+		{ id = "brute", weight = wave >= 6 and 2 or (wave >= 4 and 1 or 0) },
+	}
+end
+
+local function pickArchetype(wave)
+	local pool = {}
+	for _, option in waveWeights(wave) do
+		if option.weight > 0 then
+			table.insert(pool, option)
+		end
+	end
+	return weightedPick(pool).id
+end
+
+-- descrição de uma carta para o cliente
+local function describe(option)
+	if option.type == "stat" then
+		local card = Progression.StatCardsById[option.id]
+		return { kind = "stat", title = card.name, ability = "Atributo", desc = card.desc, color = card.color, tier = 0 }
+	end
+	local power = Powers.ById[option.id]
+	local t = power.tiers[option.tier]
+	return {
+		kind = option.tier == 4 and "ultimate" or option.type,
+		title = power.name,
+		ability = t.name,
+		desc = t.desc,
+		color = power.color,
+		tier = option.tier,
+		cd = t.cd,
+	}
+end
+
+-- ciclo de vida da run -------------------------------------------------------------
+
+function DungeonService.StartRun(dungeonIndex, players)
+	local def = Dungeons[dungeonIndex]
+	local slot = 1
+	while usedSlots[slot] do
+		slot += 1
+	end
+	usedSlots[slot] = true
+	nextRunId += 1
+
+	local arena = WorldBuilder.BuildArena(def, Vector3.new(GameConfig.ArenaSpacing * slot, 0, 0))
+	local self = setmetatable({
+		id = nextRunId,
+		slot = slot,
+		index = dungeonIndex,
+		def = def,
+		arena = arena,
+		floorY = arena.floorY,
+		players = {}, -- [Player] = estado
+		enemies = {}, -- [enemy] = true
+		orbs = {},
+		wave = 0,
+		bossEnemy = nil,
+		kills = 0,
+		gold = 0,
+		startTime = os.clock(),
+		lastState = 0,
+		ended = false,
+		connections = {},
+	}, Run)
+
+	self.enemyFolder = Instance.new("Folder")
+	self.enemyFolder.Name = "Enemies"
+	self.enemyFolder.Parent = arena.model
+
+	for i, player in players do
+		self:AddPlayer(player, i)
+	end
+	if not next(self.players) then
+		self:End(false)
+		return nil
+	end
+
+	table.insert(
+		self.connections,
+		RunService.Heartbeat:Connect(function(dt)
+			self:Update(dt)
+		end)
+	)
+	task.spawn(function()
+		self:Loop()
+	end)
+	return self
+end
+
+function Run:AddPlayer(player, index)
+	local root, humanoid = Registry.GetRoot(player)
+	if not root or not humanoid or humanoid.Health <= 0 then
+		return
+	end
+	local state = {
+		player = player,
+		run = self,
+		active = true,
+		level = 1,
+		xp = 0,
+		pending = 0,
+		offer = nil,
+		powers = {}, -- { {id, tier} } na ordem dos slots
+		cooldowns = {},
+		stats = { damageMult = 1, cooldownMult = 1, magnet = 14 },
+		shield = 0,
+		shieldUntil = 0,
+		reflect = 0,
+		reflectUntil = 0,
+		invulnUntil = 0,
+		buffMult = 1,
+		buffUntil = 0,
+		regen = 0,
+		regenUntil = 0,
+		lastBasic = 0,
+		combo = 0,
+		kills = 0,
+	}
+	self.players[player] = state
+	Registry.ByPlayer[player] = state
+
+	humanoid.MaxHealth = 100
+	humanoid.Health = 100
+	player.Character:PivotTo(CFrame.new(self.arena.playerSpawn + Vector3.new((index - 1) * 4 - 6, 3, 0)))
+	state.diedConnection = humanoid.Died:Connect(function()
+		self:PlayerDied(player)
+	end)
+
+	-- todo mundo começa escolhendo o primeiro poder
+	state.pending = 1
+	self:SendOffer(state)
+end
+
+function Run:Loop()
+	self:NotifyAll(self.def.name, "Escolha seu primeiro poder e prepare-se!")
+	task.wait(5)
+	for wave = 1, self.def.waves do
+		if self.ended then
+			return
+		end
+		self.wave = wave
+		self:NotifyAll("Onda " .. wave .. "/" .. self.def.waves, nil)
+		self:SpawnWave(wave)
+		while not self.ended and next(self.enemies) do
+			task.wait(0.5)
+		end
+		if self.ended then
+			return
+		end
+		task.wait(2)
+	end
+	self.wave = self.def.waves + 1
+	self:NotifyAll(self.def.boss.name .. " apareceu!", "Derrote o chefe para concluir a masmorra")
+	task.wait(1.5)
+	if not self.ended then
+		self:SpawnBoss()
+	end
+end
+
+function Run:PlayerCount()
+	local count = 0
+	for _, state in self.players do
+		if state.active then
+			count += 1
+		end
+	end
+	return count
+end
+
+function Run:EnemyCount()
+	local count = 0
+	for _ in self.enemies do
+		count += 1
+	end
+	return count
+end
+
+-- inimigos ---------------------------------------------------------------------------
+
+function Run:SpawnWave(wave)
+	local players = math.max(1, self:PlayerCount())
+	local total = math.floor((12 + wave * 7) * (1 + 0.5 * (players - 1)))
+	local spawned = 0
+	while spawned < total and not self.ended do
+		while self:EnemyCount() >= GameConfig.MaxAliveEnemies and not self.ended do
+			task.wait(0.5)
+		end
+		for _ = 1, math.min(GameConfig.SpawnGroupSize, total - spawned) do
+			self:SpawnMob(pickArchetype(wave), wave)
+			spawned += 1
+		end
+		task.wait(GameConfig.SpawnGroupInterval)
+	end
+end
+
+function Run:MakeDef(archetypeId, wave)
+	local base = Archetypes[archetypeId]
+	local look = self.def.mobs[archetypeId]
+	local players = math.max(1, self:PlayerCount())
+	local scale = self.def.hpMult * (1 + 0.1 * (wave - 1)) * (1 + 0.35 * (players - 1))
+	local def = table.clone(base)
+	def.name = look.name
+	def.model = look.model
+	def.color = look.color
+	def.eyeColor = self.def.theme.accent
+	def.hp = math.floor(base.hp * scale)
+	def.damage = base.damage * self.def.dmgMult
+	return def
+end
+
+function Run:RandomSpawnPoint()
+	local points = self.arena.spawnPoints
+	for _ = 1, 8 do
+		local point = points[math.random(#points)] + Vector3.new(math.random(-6, 6), 0, math.random(-6, 6))
+		local clear = true
+		for player in self.players do
+			local root = Registry.GetRoot(player)
+			if root and (root.Position - point).Magnitude < 25 then
+				clear = false
+				break
+			end
+		end
+		if clear then
+			return point
+		end
+	end
+	return points[math.random(#points)]
+end
+
+function Run:SpawnMob(archetypeId, wave, position)
+	if self.ended then
+		return nil
+	end
+	return EnemyService.Spawn(self, self:MakeDef(archetypeId, wave), position or self:RandomSpawnPoint())
+end
+
+function Run:SpawnBoss()
+	local boss = self.def.boss
+	local players = math.max(1, self:PlayerCount())
+	local def = table.clone(Archetypes.boss)
+	def.name = boss.name
+	def.model = boss.model
+	def.color = boss.color
+	def.size = boss.size
+	def.skills = boss.skills
+	def.eyeColor = self.def.theme.accent
+	def.hp = math.floor(boss.hp * (1 + 0.6 * (players - 1)))
+	def.damage = Archetypes.boss.damage * self.def.dmgMult
+	def.boss = true
+	self.bossEnemy = EnemyService.Spawn(self, def, self.arena.center + Vector3.new(0, 0, -50))
+end
+
+function Run:OnEnemyKilled(enemy)
+	if self.ended then
+		return
+	end
+	self.kills += 1
+	self.gold += enemy.def.gold or 0
+	local killer = enemy.lastHitBy
+	if killer and self.players[killer] then
+		self.players[killer].kills += 1
+	end
+	if enemy.def.boss then
+		self:End(true)
+		return
+	end
+	self:DropOrb(enemy.root.Position, enemy.def.xp or 1)
+end
+
+-- XP e level up ----------------------------------------------------------------------
+
+function Run:DropOrb(pos, value)
+	local big = value >= 5
+	local orb = Effects.Part(Enum.PartType.Ball, Vector3.one * (big and 1.4 or 0.9), CFrame.new(pos.X, self.floorY + 1.2, pos.Z), big and XP_BIG or XP_SMALL, 0, "xp")
+	orb.Parent = self.arena.model
+	table.insert(self.orbs, { part = orb, value = value, target = nil })
+end
+
+-- XP é compartilhado: qualquer um que pegar um orbe dá XP para a party toda
+function Run:GiveXp(amount)
+	for player, state in self.players do
+		if state.active then
+			state.xp += amount
+			local need = Progression.RunXpToNext(state.level)
+			while state.xp >= need do
+				state.xp -= need
+				state.level += 1
+				state.pending += 1
+				need = Progression.RunXpToNext(state.level)
+				state.invulnUntil = math.max(state.invulnUntil, os.clock() + 1)
+				local _, humanoid = Registry.GetRoot(player)
+				Effects.LevelUp(player)
+				if humanoid then
+					Registry.HealPlayer(player, humanoid.MaxHealth * 0.15)
+				end
+			end
+			if state.pending > 0 and not state.offer then
+				self:SendOffer(state)
+			end
+		end
+	end
+end
+
+function Run:BuildOffer(state)
+	local pool = {}
+	local owned = {}
+	for slot, power in state.powers do
+		owned[power.id] = true
+		if power.tier < 4 then
+			table.insert(pool, { type = "upgrade", id = power.id, slot = slot, tier = power.tier + 1, weight = 3 })
+		end
+	end
+	if #state.powers < GameConfig.MaxPowerSlots then
+		local fresh = {}
+		for _, power in Powers.List do
+			if not owned[power.id] then
+				table.insert(fresh, power.id)
+			end
+		end
+		-- poderes novos dividem um peso total fixo, para upgrades não sumirem
+		local weight = #state.powers == 0 and 1 or 4 / math.max(1, #fresh)
+		for _, id in fresh do
+			table.insert(pool, { type = "new", id = id, tier = 1, weight = weight })
+		end
+	end
+
+	local options = {}
+	while #options < 3 and #pool > 0 do
+		table.insert(options, weightedPick(pool))
+	end
+
+	-- às vezes uma carta de atributo; sempre que faltar opção
+	local stats = table.clone(Progression.StatCards)
+	if #state.powers > 0 and #options == 3 and math.random() < 0.25 then
+		table.remove(options)
+	end
+	while #options < 3 and #stats > 0 do
+		local card = table.remove(stats, math.random(#stats))
+		table.insert(options, { type = "stat", id = card.id })
+	end
+	return options
+end
+
+function Run:SendOffer(state)
+	state.offer = self:BuildOffer(state)
+	local cards = {}
+	for i, option in state.offer do
+		cards[i] = describe(option)
+	end
+	Net.LevelUpOffer:FireClient(state.player, cards, state.level)
+end
+
+function Run:ChooseCard(state, index)
+	local offer = state.offer
+	if not offer or type(index) ~= "number" then
+		return
+	end
+	local option = offer[index]
+	if not option then
+		return
+	end
+	state.offer = nil
+	state.pending -= 1
+	local now = os.clock()
+
+	if option.type == "new" then
+		table.insert(state.powers, { id = option.id, tier = 1 })
+		state.cooldowns[option.id .. 1] = now + 0.5
+	elseif option.type == "upgrade" then
+		local power = state.powers[option.slot]
+		if power and power.id == option.id then
+			power.tier = option.tier
+			if power.tier <= 3 then
+				state.cooldowns[power.id .. power.tier] = now + 0.5
+			else
+				local ultimate = Powers.ById[power.id].tiers[4]
+				self:Notify(state.player, "ULTIMATE DESBLOQUEADA!", ultimate.name .. " — aperte " .. option.slot)
+			end
+		end
+	else
+		self:ApplyStat(state, option.id)
+	end
+
+	if state.pending > 0 then
+		self:SendOffer(state)
+	end
+end
+
+function Run:ApplyStat(state, id)
+	local _, humanoid = Registry.GetRoot(state.player)
+	if id == "vitality" then
+		if humanoid then
+			humanoid.MaxHealth += 25
+			humanoid.Health += 25
+		end
+	elseif id == "power" then
+		state.stats.damageMult += 0.12
+	elseif id == "haste" then
+		state.stats.cooldownMult *= 0.9
+	elseif id == "swift" then
+		if humanoid then
+			humanoid.WalkSpeed += 2
+		end
+	elseif id == "magnet" then
+		state.stats.magnet += 6
+	end
+end
+
+-- loop por frame ------------------------------------------------------------------------
+
+function Run:Update(dt)
+	if self.ended then
+		return
+	end
+	local now = os.clock()
+
+	for player, state in self.players do
+		if state.active then
+			PowerService.Tick(state, now)
+			if state.regen > 0 and now < state.regenUntil then
+				Registry.HealPlayer(player, state.regen * dt)
+			end
+		end
+	end
+	if self.ended then
+		return -- um poder pode ter matado o chefe
+	end
+
+	-- orbes de XP voam até quem chegar perto
+	for i = #self.orbs, 1, -1 do
+		local orb = self.orbs[i]
+		local pos = orb.part.Position
+		if not orb.target or not orb.target.Parent then
+			orb.target = nil
+			for player, state in self.players do
+				local root = state.active and Registry.GetRoot(player)
+				if root and (root.Position - pos).Magnitude <= state.stats.magnet then
+					orb.target = root
+					break
+				end
+			end
+		end
+		if orb.target then
+			local toTarget = orb.target.Position - pos
+			if toTarget.Magnitude < 2.5 then
+				orb.part:Destroy()
+				table.remove(self.orbs, i)
+				self:GiveXp(orb.value)
+			else
+				orb.part.CFrame = CFrame.new(pos + toTarget.Unit * math.min(toTarget.Magnitude, 60 * dt))
+			end
+		end
+	end
+
+	if now - self.lastState >= 0.2 then
+		self.lastState = now
+		self:SendState()
+	end
+end
+
+function Run:SendState()
+	local now = os.clock()
+	local boss = self.bossEnemy
+	local bossInfo = nil
+	if boss and not boss.dead then
+		bossInfo = { name = boss.def.name, hp = boss.humanoid.Health, max = boss.humanoid.MaxHealth }
+	end
+	local enemyCount = self:EnemyCount()
+	for player, state in self.players do
+		local slots = {}
+		for i, owned in state.powers do
+			local power = Powers.ById[owned.id]
+			slots[i] = {
+				name = power.name,
+				color = power.color,
+				tier = owned.tier,
+				ult = owned.tier >= 4 and power.tiers[4].name or nil,
+				ultCd = math.max(0, (state.cooldowns[owned.id .. "ult"] or 0) - now),
+				ultMax = power.tiers[4].cd,
+			}
+		end
+		Net.RunState:FireClient(player, {
+			inRun = true,
+			dungeon = self.def.name,
+			wave = self.wave,
+			waves = self.def.waves,
+			boss = bossInfo,
+			level = state.level,
+			xp = state.xp,
+			xpNeed = Progression.RunXpToNext(state.level),
+			shield = now < state.shieldUntil and state.shield or 0,
+			kills = self.kills,
+			gold = self.gold,
+			time = now - self.startTime,
+			enemies = enemyCount,
+			slots = slots,
+		})
+	end
+end
+
+-- comunicação --------------------------------------------------------------------------
+
+function Run:DamageNumber(pos, amount, color)
+	for player in self.players do
+		Net.DamageNumber:FireClient(player, pos, amount, color)
+	end
+end
+
+function Run:Notify(player, title, subtitle)
+	Net.Notify:FireClient(player, title, subtitle)
+end
+
+function Run:NotifyAll(title, subtitle)
+	for player in self.players do
+		self:Notify(player, title, subtitle)
+	end
+end
+
+-- saída e fim ----------------------------------------------------------------------------
+
+-- tira o jogador da run e entrega recompensas
+function Run:Release(player, victory, leaving)
+	local state = self.players[player]
+	if not state then
+		return
+	end
+	state.active = false
+	if state.diedConnection then
+		state.diedConnection:Disconnect()
+	end
+	self.players[player] = nil
+	if Registry.ByPlayer[player] == state then
+		Registry.ByPlayer[player] = nil
+	end
+
+	local gold = self.gold + (victory and self.def.reward.gold or 0)
+	if not victory then
+		gold = math.floor(gold * 0.5)
+	end
+	local xp = math.floor(self.kills * 1.5 + state.level * 5) + (victory and self.def.reward.xp or 0)
+	DataService.AddGold(player, gold)
+	DataService.AddXp(player, xp)
+	if victory then
+		DataService.MarkCleared(player, self.index)
+	end
+
+	if not leaving then
+		Net.RunState:FireClient(player, { inRun = false })
+		Net.LevelUpOffer:FireClient(player, nil)
+		self:Notify(player, victory and "VITÓRIA!" or "Derrota...", string.format("+%d ouro  ·  +%d XP de conta", gold, xp))
+	end
+end
+
+function Run:PlayerDied(player)
+	local state = self.players[player]
+	if not state or not state.active then
+		return
+	end
+	self:Release(player, false)
+	self:NotifyAll(player.DisplayName .. " caiu!", nil)
+	if self:PlayerCount() == 0 then
+		self:End(false)
+	end
+end
+
+function Run:PlayerLeft(player)
+	self:Release(player, false, true)
+	if self:PlayerCount() == 0 then
+		self:End(false)
+	end
+end
+
+function Run:End(victory)
+	if self.ended then
+		return
+	end
+	self.ended = true
+	for _, connection in self.connections do
+		connection:Disconnect()
+	end
+	for enemy in self.enemies do
+		EnemyService.Kill(enemy, true)
+	end
+	for _, orb in self.orbs do
+		orb.part:Destroy()
+	end
+	self.orbs = {}
+
+	local survivors = {}
+	for player in self.players do
+		table.insert(survivors, player)
+	end
+	for _, player in survivors do
+		self:Release(player, victory)
+	end
+
+	if victory then
+		for i = 1, 12 do
+			task.delay(i * 0.25, function()
+				local offset = Vector3.new(math.random(-40, 40), math.random(15, 35), math.random(-40, 40))
+				Effects.Burst(self.arena.center + offset, math.random(5, 10), Color3.fromHSV(math.random(), 0.7, 1), 0.6)
+			end)
+		end
+	end
+
+	task.delay(victory and GameConfig.ReturnToLobbyDelay or 2, function()
+		for _, player in survivors do
+			if player.Parent then
+				player:LoadCharacter() -- volta para o spawn do lobby
+			end
+		end
+		self.arena.model:Destroy()
+		usedSlots[self.slot] = nil
+	end)
+end
+
+-- entrada ------------------------------------------------------------------------------------
+
+function DungeonService.IsInRun(player)
+	return Registry.ByPlayer[player] ~= nil
+end
+
+function DungeonService.Init()
+	Net.ChooseCard.OnServerEvent:Connect(function(player, index)
+		local state = Registry.ByPlayer[player]
+		if state and state.active then
+			state.run:ChooseCard(state, index)
+		end
+	end)
+
+	Net.CastUltimate.OnServerEvent:Connect(function(player, slot)
+		local state = Registry.ByPlayer[player]
+		if not state or not state.active or type(slot) ~= "number" then
+			return
+		end
+		local ok, name = PowerService.CastUltimate(state, slot)
+		if ok then
+			state.run:NotifyAll(player.DisplayName .. " usou " .. name .. "!", nil)
+		end
+	end)
+
+	Net.BasicAttack.OnServerEvent:Connect(function(player, direction)
+		local state = Registry.ByPlayer[player]
+		if not state or not state.active or typeof(direction) ~= "Vector3" then
+			return
+		end
+		if direction.X ~= direction.X or direction.Z ~= direction.Z then
+			return -- NaN
+		end
+		PowerService.BasicAttack(state, direction)
+	end)
+
+	Players.PlayerRemoving:Connect(function(player)
+		local state = Registry.ByPlayer[player]
+		if state then
+			state.run:PlayerLeft(player)
+		end
+	end)
+end
+
+return DungeonService
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="18">
+          <Properties>
+            <string name="Name">Effects</string>
+            <string name="Source"><![CDATA[-- Efeitos visuais.
+-- Efeitos instantâneos (explosões, raios, golpes...) são só um aviso para os clientes:
+-- quem desenha de verdade é o client/Controllers/VFX.luau (partículas, luz, tremor de câmera).
+-- Objetos que duram (projéteis, lâminas orbitando, zonas, orbes) são Parts criadas aqui
+-- com o atributo "Fx"; o cliente as "decora" com rastro, brilho e partículas.
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Net = require(ReplicatedStorage.Shared.Net)
+
+local Effects = {}
+
+local fxFolder = Instance.new("Folder")
+fxFolder.Name = "FX"
+fxFolder.Parent = workspace
+
+-- deita o cilindro (o eixo do cilindro é X; isso o coloca em Y, como um disco no chão)
+Effects.VERTICAL = CFrame.Angles(0, 0, math.rad(90))
+
+local function send(kind, data)
+	Net.Fx:FireAllClients(kind, data)
+end
+Effects.Send = send
+
+-- Part persistente. `fx` diz ao cliente como decorá-la (ver VFX.luau).
+function Effects.Part(shape, size, cframe, color, transparency, fx)
+	local part = Instance.new("Part")
+	part.Shape = shape
+	part.Size = size
+	part.CFrame = cframe
+	part.Color = color
+	part.Material = Enum.Material.Neon
+	part.Transparency = transparency or 0
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = false
+	if fx then
+		part:SetAttribute("Fx", fx)
+	end
+	part.Parent = fxFolder
+	return part
+end
+
+function Effects.Tween(instance, time, props, style)
+	local tween = TweenService:Create(instance, TweenInfo.new(time, style or Enum.EasingStyle.Quad, Enum.EasingDirection.Out), props)
+	tween:Play()
+	return tween
+end
+
+-- explosão
+function Effects.Burst(pos, radius, color, time)
+	send("burst", { pos = pos, radius = radius, color = color, time = time or 0.35 })
+end
+
+-- onda de choque no chão
+function Effects.Ring(groundPos, radius, color, time)
+	send("ring", { pos = groundPos, radius = radius, color = color, time = time or 0.45 })
+end
+
+-- aviso no chão: o círculo enche até o golpe cair
+function Effects.Telegraph(groundPos, radius, delay, color)
+	send("telegraph", { pos = groundPos, radius = radius, delay = delay, color = color })
+end
+
+-- golpe que cai do céu (aviso + objeto caindo + explosão), tudo sincronizado com `delay`
+-- visual: "pillar" (padrão), "sword", "meteor", "lightning", "orbital"
+function Effects.Strike(groundPos, radius, delay, color, visual)
+	send("strike", { pos = groundPos, radius = radius, delay = delay, color = color, visual = visual or "pillar" })
+end
+
+function Effects.Beam(from, to, width, color, time)
+	if (to - from).Magnitude < 0.1 then
+		return
+	end
+	send("beam", { from = from, to = to, width = width, color = color, time = time or 0.25 })
+end
+
+function Effects.Bolt(from, to, color)
+	send("bolt", { from = from, to = to, color = color })
+end
+
+-- golpe de arma do jogador (o cliente anima o braço e desenha o rastro)
+function Effects.Swing(player, combo, origin, direction, range, color)
+	send("swing", { player = player, combo = combo, pos = origin, dir = direction, range = range, color = color })
+end
+
+function Effects.Kill(pos, size, color, killer, isBoss)
+	send("kill", { pos = pos, size = size, color = color, killer = killer, boss = isBoss })
+end
+
+function Effects.LevelUp(player)
+	send("levelup", { player = player })
+end
+
+-- tremor de câmera para quem estiver perto de `pos`
+function Effects.Shake(pos, intensity, radius)
+	send("shake", { pos = pos, intensity = intensity, radius = radius or 60 })
+end
+
+-- prende uma part de efeito no personagem (ela acompanha o movimento)
+function Effects.Attach(part, root, offset)
+	part.CFrame = root.CFrame * (offset or CFrame.identity)
+	part.Anchored = false
+	part.Massless = true
+	local weld = Instance.new("WeldConstraint")
+	weld.Part0 = root
+	weld.Part1 = part
+	weld.Parent = part
+	return part
+end
+
+function Effects.Glow(model, color, duration)
+	local highlight = Instance.new("Highlight")
+	highlight.FillColor = color
+	highlight.OutlineColor = color
+	highlight.FillTransparency = 0.6
+	highlight.Parent = model
+	Debris:AddItem(highlight, duration)
+end
+
+return Effects
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="19">
+          <Properties>
+            <string name="Name">EnemyService</string>
+            <string name="Source"><![CDATA[-- Inimigos: criação do modelo, IA, dano, status (lento/congelado/empurrão) e habilidades de chefe.
+local RunService = game:GetService("RunService")
+local Debris = game:GetService("Debris")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CollectionService = game:GetService("CollectionService")
+
+local Effects = require(script.Parent.Effects)
+local Projectiles = require(script.Parent.Projectiles)
+local Registry = require(script.Parent.Registry)
+
+local EnemyService = {}
+
+local AI_STEP = 0.1
+local DANGER = Color3.fromRGB(255, 50, 40)
+local ENEMY_SHOT = Color3.fromRGB(255, 80, 60)
+local ICE = Color3.fromRGB(170, 230, 255)
+local REFLECT = Color3.fromRGB(90, 200, 255)
+
+local active = {} -- [enemy] = true (todas as runs)
+
+local function makePart(name, size, cframe, color, material, parent)
+	local part = Instance.new("Part")
+	part.Name = name
+	part.Size = size
+	part.CFrame = cframe
+	part.Color = color
+	part.Material = material or Enum.Material.SmoothPlastic
+	part.TopSurface = Enum.SurfaceType.Smooth
+	part.BottomSurface = Enum.SurfaceType.Smooth
+	part.Parent = parent
+	return part
+end
+
+local function weld(a, b)
+	local constraint = Instance.new("WeldConstraint")
+	constraint.Part0 = a
+	constraint.Part1 = b
+	constraint.Parent = a
+end
+
+local function visualPart(part)
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.Massless = true
+	part.Anchored = false
+end
+
+-- procura um modelo importado em ReplicatedStorage.Assets.Monsters
+local function findMonsterAsset(name)
+	local assets = ReplicatedStorage:FindFirstChild("Assets")
+	local folder = assets and assets:FindFirstChild("Monsters")
+	return folder and name and folder:FindFirstChild(name)
+end
+
+-- Visual a partir de um modelo importado (Toolbox, Blender, 3D Importer...).
+-- Ele é escalado para a altura do inimigo, posto no chão e preso ao root.
+-- Se o monstro andar de costas, coloque no modelo o atributo Yaw = 180.
+local function assetVisual(asset, root, def, model)
+	local visual = asset:Clone()
+	visual.Name = "Visual"
+	for _, descendant in visual:GetDescendants() do
+		if descendant:IsA("BasePart") then
+			visualPart(descendant)
+		elseif descendant:IsA("Humanoid") or descendant:IsA("BaseScript") or descendant:IsA("AnimationController") then
+			descendant:Destroy()
+		end
+	end
+	local primary = visual.PrimaryPart or visual:FindFirstChildWhichIsA("BasePart", true)
+	if not primary then
+		visual:Destroy()
+		return nil
+	end
+
+	local yaw = math.rad(asset:GetAttribute("Yaw") or 0)
+	visual:PivotTo(CFrame.new(visual:GetPivot().Position) * root.CFrame.Rotation * CFrame.Angles(0, yaw, 0))
+	local _, extents = visual:GetBoundingBox()
+	local targetHeight = def.size.Y * (asset:GetAttribute("HeightScale") or 1.35)
+	if extents.Y > 0.01 then
+		visual:ScaleTo(visual:GetScale() * targetHeight / extents.Y)
+	end
+	local box, size = visual:GetBoundingBox()
+	local floorY = root.Position.Y - def.size.Y / 2 - 0.3
+	visual:PivotTo(visual:GetPivot() + (Vector3.new(root.Position.X, floorY + size.Y / 2, root.Position.Z) - box.Position))
+
+	for _, descendant in visual:GetDescendants() do
+		if descendant:IsA("BasePart") and descendant ~= primary then
+			weld(primary, descendant)
+		end
+	end
+	visual.Parent = model
+	return primary
+end
+
+-- Visual padrão feito de blocos (corpo, cabeça, braços, olhos brilhando)
+local function blockVisual(root, def, model)
+	local size = def.size
+	local rootCf = root.CFrame
+	local body = makePart("Body", size, rootCf, def.color, nil, model)
+	visualPart(body)
+
+	local headSize = Vector3.new(size.X * 0.8, size.X * 0.7, size.Z * 0.9)
+	local headCf = rootCf * CFrame.new(0, size.Y / 2 + headSize.Y / 2, 0)
+	local head = makePart("Head", headSize, headCf, def.color:Lerp(Color3.new(1, 1, 1), 0.15), nil, model)
+	visualPart(head)
+	weld(body, head)
+
+	for _, side in { -1, 1 } do
+		local eyeCf = headCf * CFrame.new(side * headSize.X * 0.22, headSize.Y * 0.1, -headSize.Z / 2 - 0.05)
+		local eye = makePart("Eye", Vector3.new(headSize.X * 0.18, headSize.Y * 0.18, 0.1), eyeCf, def.eyeColor or DANGER, Enum.Material.Neon, model)
+		visualPart(eye)
+		weld(head, eye)
+		local armSize = Vector3.new(size.X * 0.28, size.Y * 0.7, size.Z * 0.5)
+		local armCf = rootCf * CFrame.new(side * (size.X / 2 + armSize.X / 2), size.Y * 0.1, 0)
+		local arm = makePart("Arm", armSize, armCf, def.color:Lerp(Color3.new(0, 0, 0), 0.15), nil, model)
+		visualPart(arm)
+		weld(body, arm)
+	end
+	return body
+end
+
+local function buildModel(def, position)
+	local model = Instance.new("Model")
+	model.Name = def.name
+
+	-- o root é a "caixa de colisão" invisível; o visual fica preso a ele por um Motor6D
+	-- chamado "Visual", que o cliente anima (balanço ao andar, investida, recuo ao levar dano)
+	local size = def.size
+	local rootCf = CFrame.new(position + Vector3.new(0, size.Y / 2 + 0.3, 0))
+	local root = makePart("HumanoidRootPart", size, rootCf, def.color, nil, model)
+	root.Transparency = 1
+
+	local asset = findMonsterAsset(def.model) or findMonsterAsset(def.name)
+	local visualRoot = asset and assetVisual(asset, root, def, model)
+	if not visualRoot then
+		visualRoot = blockVisual(root, def, model)
+	end
+	local joint = Instance.new("Motor6D")
+	joint.Name = "Visual"
+	joint.Part0 = root
+	joint.Part1 = visualRoot
+	joint.C0 = root.CFrame:ToObjectSpace(visualRoot.CFrame)
+	joint.Parent = root
+
+	-- cabeça invisível para o nome e a barra de vida aparecerem
+	if not model:FindFirstChild("Head") then
+		local anchorHead = makePart("Head", Vector3.one, rootCf * CFrame.new(0, size.Y / 2 + 1.5, 0), def.color, nil, model)
+		anchorHead.Transparency = 1
+		visualPart(anchorHead)
+		weld(root, anchorHead)
+	end
+
+	local humanoid = Instance.new("Humanoid")
+	humanoid.RigType = Enum.HumanoidRigType.R15
+	humanoid.HipHeight = 0.3
+	humanoid.MaxHealth = def.hp
+	humanoid.Health = def.hp
+	humanoid.WalkSpeed = def.speed
+	humanoid.BreakJointsOnDeath = false
+	humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.Viewer
+	humanoid.NameDisplayDistance = def.boss and 200 or 40
+	humanoid.HealthDisplayDistance = def.boss and 200 or 60
+	humanoid.HealthDisplayType = def.boss and Enum.HumanoidHealthDisplayType.AlwaysOn or Enum.HumanoidHealthDisplayType.DisplayWhenDamaged
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+	humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing, false)
+	humanoid.Parent = model
+
+	model.PrimaryPart = root
+	return model, root, humanoid
+end
+
+local function flatDistance(a, b)
+	local dx, dz = a.X - b.X, a.Z - b.Z
+	return math.sqrt(dx * dx + dz * dz)
+end
+
+local function playersNear(run, pos, radius)
+	local list = {}
+	for player, state in run.players do
+		if state.active then
+			local root = Registry.GetRoot(player)
+			if root and flatDistance(root.Position, pos) <= radius + 1.5 and math.abs(root.Position.Y - pos.Y) < 10 then
+				table.insert(list, player)
+			end
+		end
+	end
+	return list
+end
+
+local function nearestPlayer(enemy)
+	local best, bestRoot, bestDist = nil, nil, math.huge
+	local pos = enemy.root.Position
+	for player, state in enemy.run.players do
+		if state.active then
+			local root, humanoid = Registry.GetRoot(player)
+			if root and humanoid and humanoid.Health > 0 then
+				local dist = (root.Position - pos).Magnitude
+				if dist < bestDist then
+					best, bestRoot, bestDist = player, root, dist
+				end
+			end
+		end
+	end
+	return best, bestRoot, bestDist
+end
+
+local function ground(enemy, pos)
+	return Vector3.new(pos.X, enemy.run.floorY, pos.Z)
+end
+
+-- contador lido pelo cliente para disparar animações (investida, recuo...)
+local function bump(enemy, attribute)
+	enemy.model:SetAttribute(attribute, (enemy.model:GetAttribute(attribute) or 0) + 1)
+end
+
+local function hitPlayer(enemy, player, amount)
+	bump(enemy, "Attack")
+	local dealt = Registry.DamagePlayer(player, amount)
+	local state = Registry.ByPlayer[player]
+	if state and state.reflect > 0 and os.clock() < state.reflectUntil and not enemy.dead then
+		EnemyService.Damage(enemy, amount * state.reflect, player, REFLECT)
+	end
+	return dealt
+end
+
+local function shoot(enemy, targetRoot)
+	local run = enemy.run
+	local origin = enemy.root.Position + Vector3.new(0, enemy.def.size.Y * 0.3, 0)
+	local dir = targetRoot.Position - origin
+	bump(enemy, "Attack")
+	Projectiles.Fire({
+		origin = origin,
+		direction = Vector3.new(dir.X, 0, dir.Z),
+		speed = enemy.def.projectileSpeed or 45,
+		range = (enemy.def.range or 40) + 15,
+		size = 1,
+		color = ENEMY_SHOT,
+		visual = "enemy",
+		hitTest = function(pos, radius)
+			return playersNear(run, pos, radius)
+		end,
+		onHit = function(player)
+			hitPlayer(enemy, player, enemy.def.damage)
+		end,
+	})
+end
+
+-- Habilidades de chefe ------------------------------------------------------
+
+local BossSkills = {}
+
+function BossSkills.slam(enemy)
+	local radius = enemy.radius * 2 + 10
+	local center = ground(enemy, enemy.root.Position)
+	enemy.castingUntil = os.clock() + 1.3
+	Effects.Telegraph(center, radius, 1.2, DANGER)
+	task.delay(1.2, function()
+		if enemy.dead then
+			return
+		end
+		bump(enemy, "Attack")
+		Effects.Burst(center, radius, enemy.def.color, 0.4)
+		Effects.Ring(center, radius * 1.2, DANGER, 0.5)
+		Effects.Shake(center, 0.7, 70)
+		for _, player in playersNear(enemy.run, center, radius) do
+			hitPlayer(enemy, player, enemy.def.damage * 1.6)
+		end
+	end)
+end
+
+function BossSkills.volley(enemy)
+	for player, state in enemy.run.players do
+		local root = state.active and Registry.GetRoot(player)
+		if root then
+			local center = ground(enemy, root.Position)
+			Effects.Strike(center, 7, 1.3, DANGER, "meteor")
+			task.delay(1.3, function()
+				if enemy.dead then
+					return
+				end
+				for _, hit in playersNear(enemy.run, center, 7) do
+					hitPlayer(enemy, hit, enemy.def.damage)
+				end
+			end)
+		end
+	end
+end
+
+function BossSkills.ring(enemy)
+	enemy.castingUntil = os.clock() + 1.6
+	for wave = 0, 2 do
+		if enemy.dead then
+			return
+		end
+		local origin = enemy.root.Position
+		for i = 0, 15 do
+			local angle = (i / 16) * math.pi * 2 + wave * math.rad(11.25)
+			local run = enemy.run
+			Projectiles.Fire({
+				origin = origin,
+				direction = Vector3.new(math.cos(angle), 0, math.sin(angle)),
+				speed = 35,
+				range = 90,
+				size = 1.6,
+				color = ENEMY_SHOT,
+				visual = "enemy",
+				hitTest = function(pos, radius)
+					return playersNear(run, pos, radius)
+				end,
+				onHit = function(player)
+					hitPlayer(enemy, player, enemy.def.damage * 0.7)
+				end,
+			})
+		end
+		task.wait(0.5)
+	end
+end
+
+function BossSkills.summon(enemy)
+	local run = enemy.run
+	enemy.castingUntil = os.clock() + 1
+	Effects.Burst(enemy.root.Position, 14, enemy.def.color, 0.6)
+	local count = 3 + run:PlayerCount()
+	for _ = 1, count do
+		local offset = Vector3.new(math.random(-12, 12), 0, math.random(-12, 12))
+		run:SpawnMob("chaser", run.def.waves, ground(enemy, enemy.root.Position + offset))
+	end
+end
+
+function BossSkills.charge(enemy, _, targetRoot)
+	local from = ground(enemy, enemy.root.Position)
+	local to = ground(enemy, targetRoot.Position)
+	local dir = to - from
+	if dir.Magnitude < 1 then
+		return
+	end
+	local finish = from + dir.Unit * math.min(dir.Magnitude + 15, 80)
+	enemy.castingUntil = os.clock() + 0.8
+	Effects.Beam(from + Vector3.new(0, 0.2, 0), finish + Vector3.new(0, 0.2, 0), enemy.radius * 2, DANGER, 0.8)
+	task.delay(0.8, function()
+		if enemy.dead then
+			return
+		end
+		enemy.chargeUntil = os.clock() + 1
+		enemy.humanoid:MoveTo(finish)
+	end)
+end
+
+-- IA -------------------------------------------------------------------------
+
+local function stepEnemy(enemy, now)
+	local root, humanoid, def = enemy.root, enemy.humanoid, enemy.def
+	if not root.Parent or root.Position.Y < enemy.run.floorY - 30 then
+		EnemyService.Kill(enemy, true)
+		return
+	end
+
+	if now < enemy.frozenUntil or now < enemy.castingUntil then
+		humanoid.WalkSpeed = 0
+		return
+	end
+
+	local player, targetRoot, dist = nearestPlayer(enemy)
+
+	if now < enemy.chargeUntil then
+		humanoid.WalkSpeed = def.speed * 5
+		if player and dist <= enemy.radius + 4 and now - enemy.lastAttack >= def.attackCd then
+			enemy.lastAttack = now
+			hitPlayer(enemy, player, def.damage * 1.5)
+		end
+		return
+	end
+
+	local speedMult = now < enemy.slowUntil and enemy.slowMult or 1
+	humanoid.WalkSpeed = def.speed * speedMult
+
+	if not player then
+		humanoid:MoveTo(root.Position)
+		return
+	end
+
+	if def.boss and now - enemy.lastSkill >= def.skillCd then
+		enemy.lastSkill = now
+		local skill = BossSkills[def.skills[math.random(#def.skills)]]
+		if skill then
+			task.defer(skill, enemy, player, targetRoot)
+		end
+	end
+
+	if def.ranged then
+		if dist > def.range * 0.8 then
+			humanoid:MoveTo(targetRoot.Position)
+		else
+			humanoid:MoveTo(root.Position)
+			root.CFrame = CFrame.lookAt(root.Position, Vector3.new(targetRoot.Position.X, root.Position.Y, targetRoot.Position.Z))
+		end
+		if dist <= def.range and now - enemy.lastAttack >= def.attackCd then
+			enemy.lastAttack = now
+			shoot(enemy, targetRoot)
+		end
+	else
+		humanoid:MoveTo(targetRoot.Position)
+		local reach = (def.reach or 2) + enemy.radius + 1.5
+		if dist <= reach and now - enemy.lastAttack >= def.attackCd then
+			enemy.lastAttack = now
+			hitPlayer(enemy, player, def.damage)
+		end
+	end
+end
+
+local accumulator = 0
+RunService.Heartbeat:Connect(function(dt)
+	accumulator += dt
+	if accumulator < AI_STEP then
+		return
+	end
+	accumulator = 0
+	local now = os.clock()
+	-- cópia, porque inimigos podem morrer/nascer durante o passo
+	local list = {}
+	for enemy in active do
+		table.insert(list, enemy)
+	end
+	for _, enemy in list do
+		if not enemy.dead then
+			local ok, err = pcall(stepEnemy, enemy, now)
+			if not ok then
+				warn("[EnemyService] " .. tostring(err))
+			end
+		end
+	end
+end)
+
+-- API --------------------------------------------------------------------------
+
+function EnemyService.Spawn(run, def, position)
+	local model, root, humanoid = buildModel(def, position)
+	local enemy = {
+		def = def,
+		run = run,
+		model = model,
+		root = root,
+		humanoid = humanoid,
+		radius = math.max(def.size.X, def.size.Z) / 2,
+		dead = false,
+		lastAttack = 0,
+		lastSkill = os.clock(),
+		slowUntil = 0,
+		slowMult = 1,
+		frozenUntil = 0,
+		castingUntil = 0,
+		chargeUntil = 0,
+		lastHitBy = nil,
+	}
+	model:SetAttribute("Boss", def.boss == true)
+	model.Parent = run.enemyFolder
+	pcall(function()
+		root:SetNetworkOwner(nil)
+	end)
+	CollectionService:AddTag(model, "Enemy")
+	run.enemies[enemy] = true
+	active[enemy] = true
+	Effects.Send("spawn", { pos = position, size = def.size.X, color = run.def.theme.accent, boss = def.boss == true })
+	return enemy
+end
+
+function EnemyService.Damage(enemy, amount, player, color)
+	if enemy.dead then
+		return 0
+	end
+	amount = math.max(1, math.floor(amount + 0.5))
+	local humanoid = enemy.humanoid
+	humanoid.Health = math.max(0, humanoid.Health - amount)
+	if player then
+		enemy.lastHitBy = player
+	end
+	bump(enemy, "Hit")
+	enemy.run:DamageNumber(enemy.root.Position + Vector3.new(0, enemy.def.size.Y / 2, 0), amount, color)
+	if humanoid.Health <= 0 then
+		EnemyService.Kill(enemy)
+	end
+	return amount
+end
+
+-- silent = true: remove sem dar XP/recompensa (fim da run, caiu do mapa...)
+function EnemyService.Kill(enemy, silent)
+	if enemy.dead then
+		return
+	end
+	enemy.dead = true
+	active[enemy] = nil
+	enemy.run.enemies[enemy] = nil
+	if not silent then
+		enemy.run:OnEnemyKilled(enemy)
+	end
+	local model = enemy.model
+	if model.Parent then
+		if not silent then
+			Effects.Kill(enemy.root.Position, enemy.radius, enemy.def.color, enemy.lastHitBy, enemy.def.boss == true)
+		end
+		-- o cliente faz a animação de queda; aqui só desliga a colisão e some depois
+		model:SetAttribute("Dead", true)
+		enemy.root.Anchored = true
+		for _, descendant in model:GetDescendants() do
+			if descendant:IsA("BasePart") then
+				descendant.CanCollide = false
+				descendant.CanQuery = false
+			end
+		end
+		Debris:AddItem(model, 0.7)
+	end
+end
+
+function EnemyService.Slow(enemy, mult, duration)
+	if enemy.dead then
+		return
+	end
+	local now = os.clock()
+	local current = now < enemy.slowUntil and enemy.slowMult or 1
+	enemy.slowMult = math.min(current, mult)
+	enemy.slowUntil = math.max(enemy.slowUntil, now + duration)
+end
+
+function EnemyService.Freeze(enemy, duration)
+	if enemy.dead then
+		return
+	end
+	if enemy.def.boss then
+		duration *= 0.3
+	end
+	enemy.frozenUntil = math.max(enemy.frozenUntil, os.clock() + duration)
+	local ice = Effects.Part(Enum.PartType.Block, enemy.def.size + Vector3.one * 0.8, enemy.root.CFrame, ICE, 0.5, "ice")
+	ice.Material = Enum.Material.Ice
+	Debris:AddItem(ice, duration)
+end
+
+-- força positiva empurra para longe de `fromPos`, negativa puxa para ele
+function EnemyService.Push(enemy, fromPos, force)
+	if enemy.dead then
+		return
+	end
+	if enemy.def.boss then
+		force *= 0.15
+	end
+	local delta = Vector3.new(enemy.root.Position.X - fromPos.X, 0, enemy.root.Position.Z - fromPos.Z)
+	if delta.Magnitude < 1 then
+		return
+	end
+	enemy.root.AssemblyLinearVelocity = delta.Unit * force + Vector3.new(0, math.abs(force) * 0.15, 0)
+end
+
+function EnemyService.GetInRadius(run, pos, radius)
+	local list = {}
+	if not run then
+		return list
+	end
+	for enemy in run.enemies do
+		if not enemy.dead then
+			local p = enemy.root.Position
+			if flatDistance(p, pos) <= radius + enemy.radius and math.abs(p.Y - pos.Y) <= 15 then
+				table.insert(list, enemy)
+			end
+		end
+	end
+	return list
+end
+
+function EnemyService.Nearest(run, pos, maxDist)
+	local best, bestDist = nil, maxDist
+	if not run then
+		return nil
+	end
+	for enemy in run.enemies do
+		if not enemy.dead then
+			local dist = flatDistance(enemy.root.Position, pos)
+			if dist <= bestDist then
+				best, bestDist = enemy, dist
+			end
+		end
+	end
+	return best
+end
+
+return EnemyService
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="20">
+          <Properties>
+            <string name="Name">LobbyService</string>
+            <string name="Source"><![CDATA[-- Fila dos portais: quem fica em cima da plataforma entra junto na masmorra (party de até 4).
+local Players = game:GetService("Players")
+local CollectionService = game:GetService("CollectionService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local GameConfig = require(ReplicatedStorage.Shared.Config.Game)
+local Dungeons = require(ReplicatedStorage.Shared.Config.Dungeons)
+local Net = require(ReplicatedStorage.Shared.Net)
+
+local Registry = require(script.Parent.Registry)
+local DataService = require(script.Parent.DataService)
+local DungeonService = require(script.Parent.DungeonService)
+
+local LobbyService = {}
+
+local TICK = 0.25
+
+local queues = {} -- [pad] = { countdownEnd, label }
+local lastLockedWarning = {}
+
+local function makeLabel(pad)
+	local gui = Instance.new("BillboardGui")
+	gui.Name = "QueueInfo"
+	gui.Size = UDim2.fromOffset(300, 50)
+	gui.StudsOffsetWorldSpace = Vector3.new(0, 5, 0)
+	gui.MaxDistance = 120
+	gui.Parent = pad
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.Size = UDim2.fromScale(1, 1)
+	label.Font = Enum.Font.GothamBold
+	label.TextSize = 18
+	label.TextColor3 = Color3.new(1, 1, 1)
+	label.TextStrokeTransparency = 0.3
+	label.Parent = gui
+	return label
+end
+
+local function register(pad)
+	if queues[pad] then
+		return
+	end
+	queues[pad] = { countdownEnd = nil, label = makeLabel(pad) }
+end
+
+local function warnLocked(player, index)
+	local now = os.clock()
+	if lastLockedWarning[player] and now - lastLockedWarning[player] < 3 then
+		return
+	end
+	lastLockedWarning[player] = now
+	Net.Notify:FireClient(player, "Portal bloqueado", "Derrote o chefe de " .. Dungeons[index - 1].name .. " primeiro")
+end
+
+local function playersOnPad(pad, index)
+	local radius = pad:GetAttribute("Radius") or 8
+	local inside = {}
+	for _, player in Players:GetPlayers() do
+		if not Registry.ByPlayer[player] then
+			local root, humanoid = Registry.GetRoot(player)
+			if root and humanoid and humanoid.Health > 0 then
+				local offset = root.Position - pad.Position
+				if Vector3.new(offset.X, 0, offset.Z).Magnitude <= radius and math.abs(offset.Y) < 8 then
+					if DataService.GetCleared(player) >= index - 1 then
+						if #inside < GameConfig.MaxPartySize then
+							table.insert(inside, player)
+						end
+					else
+						warnLocked(player, index)
+					end
+				end
+			end
+		end
+	end
+	return inside
+end
+
+local function step()
+	local now = os.clock()
+	for pad, queue in queues do
+		if not pad.Parent then
+			queues[pad] = nil
+			continue
+		end
+		local index = pad:GetAttribute("DungeonIndex")
+		local def = Dungeons[index]
+		if not def then
+			continue
+		end
+		local inside = playersOnPad(pad, index)
+		local requirement = index > 1 and ("Requer: vencer " .. Dungeons[index - 1].name) or "Aberto para todos"
+
+		if #inside == 0 then
+			queue.countdownEnd = nil
+			queue.label.Text = def.name .. "\n" .. requirement
+		else
+			queue.countdownEnd = queue.countdownEnd or (now + GameConfig.QueueCountdown)
+			local left = math.max(0, math.ceil(queue.countdownEnd - now))
+			queue.label.Text = string.format("%s\n%d/%d jogadores · começa em %ds", def.name, #inside, GameConfig.MaxPartySize, left)
+			if now >= queue.countdownEnd then
+				queue.countdownEnd = nil
+				task.spawn(DungeonService.StartRun, index, inside)
+			end
+		end
+	end
+end
+
+function LobbyService.Init()
+	for _, pad in CollectionService:GetTagged("DungeonPad") do
+		register(pad)
+	end
+	CollectionService:GetInstanceAddedSignal("DungeonPad"):Connect(register)
+	Players.PlayerRemoving:Connect(function(player)
+		lastLockedWarning[player] = nil
+	end)
+
+	task.spawn(function()
+		while true do
+			local ok, err = pcall(step)
+			if not ok then
+				warn("[LobbyService] " .. tostring(err))
+			end
+			task.wait(TICK)
+		end
+	end)
+end
+
+return LobbyService
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="21">
+          <Properties>
+            <string name="Name">PowerService</string>
+            <string name="Source"><![CDATA[-- Executa os poderes (tiers 1-3 automáticos, tier 4 = ultimate manual) e o ataque básico.
+local RunService = game:GetService("RunService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Debris = game:GetService("Debris")
+
+local Powers = require(ReplicatedStorage.Shared.Config.Powers)
+local GameConfig = require(ReplicatedStorage.Shared.Config.Game)
+local Effects = require(script.Parent.Effects)
+local Projectiles = require(script.Parent.Projectiles)
+local EnemyService = require(script.Parent.EnemyService)
+local Registry = require(script.Parent.Registry)
+
+local PowerService = {}
+
+local COMBAT_RANGE = 60 -- só dispara habilidades se houver inimigo até essa distância
+local VERTICAL = Effects.VERTICAL
+local FEET_OFFSET = CFrame.new(0, -2.9, 0) -- do HumanoidRootPart até o chão (R15 padrão)
+
+-- utilidades -----------------------------------------------------------------
+
+local function flat(v)
+	local f = Vector3.new(v.X, 0, v.Z)
+	if f.Magnitude < 0.01 then
+		return Vector3.new(0, 0, -1)
+	end
+	return f.Unit
+end
+
+local function ground(state, pos)
+	return Vector3.new(pos.X, state.run.floorY, pos.Z)
+end
+
+local function aimPoint(root, target)
+	if target and not target.dead then
+		return target.root.Position
+	end
+	return root.Position + root.CFrame.LookVector * 25
+end
+
+local function damageMult(state)
+	local mult = state.stats.damageMult
+	if os.clock() < state.buffUntil then
+		mult *= state.buffMult
+	end
+	return mult
+end
+
+local function hitEnemy(state, enemy, amount, color, t)
+	if enemy.dead or not amount then
+		return
+	end
+	local dealt = EnemyService.Damage(enemy, amount * damageMult(state), state.player, color)
+	if t.lifesteal and dealt > 0 then
+		Registry.HealPlayer(state.player, dealt * t.lifesteal)
+	end
+	if t.slow then
+		EnemyService.Slow(enemy, t.slow, t.slowTime or 2)
+	end
+	if t.freeze then
+		EnemyService.Freeze(enemy, t.freeze)
+	end
+end
+
+local function aoe(state, center, radius, damage, color, t)
+	for _, enemy in EnemyService.GetInRadius(state.run, center, radius) do
+		hitEnemy(state, enemy, damage, color, t)
+	end
+end
+
+-- direções em leque (spread em graus; 360 = círculo completo)
+local function fan(baseDir, count, spreadDeg)
+	if count <= 1 then
+		return { baseDir }
+	end
+	local full = spreadDeg >= 360
+	local spread = math.rad(math.min(spreadDeg, 360))
+	local step = full and spread / count or spread / (count - 1)
+	local start = full and 0 or -spread / 2
+	local dirs = {}
+	for i = 0, count - 1 do
+		table.insert(dirs, CFrame.fromAxisAngle(Vector3.yAxis, start + step * i) * baseDir)
+	end
+	return dirs
+end
+
+local function lineHit(state, t, color, origin, dir, length, width, damage)
+	Effects.Beam(origin, origin + dir * length, width, color, 0.3)
+	for _, enemy in EnemyService.GetInRadius(state.run, origin + dir * (length / 2), length / 2 + width) do
+		local rel = enemy.root.Position - origin
+		local along = rel:Dot(dir)
+		if along >= -enemy.radius and along <= length + enemy.radius then
+			local perp = rel - dir * along
+			if Vector3.new(perp.X, 0, perp.Z).Magnitude <= width + enemy.radius then
+				hitEnemy(state, enemy, damage, color, t)
+			end
+		end
+	end
+end
+
+-- tipos de habilidade ----------------------------------------------------------
+
+local Kinds = {}
+
+function Kinds.projectile(state, t, color, root, target)
+	local run = state.run
+	local function fireOne(origin, dir)
+		Projectiles.Fire({
+			origin = origin,
+			direction = dir,
+			speed = t.speed or 90,
+			range = t.range or 70,
+			size = t.size or 1.2,
+			color = color,
+			visual = t.visual,
+			pierce = t.explode and 0 or (t.pierce or 0),
+			homing = t.homing and function(pos)
+				local enemy = EnemyService.Nearest(run, pos, 40)
+				return enemy and enemy.root.Position
+			end or nil,
+			hitTest = function(pos, radius)
+				return EnemyService.GetInRadius(run, pos, radius)
+			end,
+			onHit = function(enemy, pos)
+				if t.explode then
+					Effects.Burst(pos, t.explode, color)
+					aoe(state, pos, t.explode, t.damage, color, t)
+				else
+					hitEnemy(state, enemy, t.damage, color, t)
+				end
+			end,
+		})
+	end
+
+	task.spawn(function()
+		for shot = 1, t.burst or 1 do
+			if not state.active or not root.Parent then
+				return
+			end
+			if shot > 1 then
+				target = EnemyService.Nearest(run, root.Position, COMBAT_RANGE) or target
+			end
+			local origin = root.Position + Vector3.new(0, 0.5, 0)
+			local baseDir = flat(aimPoint(root, target) - origin)
+			if t.jitter then
+				baseDir = CFrame.fromAxisAngle(Vector3.yAxis, math.rad((math.random() - 0.5) * t.jitter)) * baseDir
+			end
+			for _, dir in fan(baseDir, t.count or 1, t.spread or 25) do
+				fireOne(origin, dir)
+			end
+			task.wait(t.burstGap or 0.1)
+		end
+	end)
+end
+
+function Kinds.nova(state, t, color, root, target)
+	local center = (t.atTarget and target and not target.dead) and target.root.Position or root.Position
+	Effects.Burst(center, t.radius, color)
+	Effects.Ring(ground(state, center), t.radius, color)
+	if t.radius >= 14 then
+		Effects.Shake(center, math.min(0.8, t.radius / 40), t.radius * 3)
+	end
+	for _, enemy in EnemyService.GetInRadius(state.run, center, t.radius) do
+		hitEnemy(state, enemy, t.damage, color, t)
+		if t.knockback then
+			EnemyService.Push(enemy, center, t.knockback)
+		end
+		if t.pull then
+			EnemyService.Push(enemy, center, -t.pull)
+		end
+	end
+end
+
+local function strikeAt(state, t, color, center)
+	local delay = t.delay or 0.5
+	Effects.Strike(center, t.radius, delay, color, t.visual)
+	task.delay(delay, function()
+		if not state.active then
+			return
+		end
+		if t.radius >= 12 then
+			Effects.Shake(center, math.min(1, t.radius / 30), t.radius * 4)
+		end
+		aoe(state, center, t.radius, t.damage, color, t)
+	end)
+end
+
+function Kinds.strike(state, t, color, root, target)
+	local count = t.count or 1
+	local area = t.area or 45
+	task.spawn(function()
+		for _ = 1, count do
+			if not state.active or not root.Parent then
+				return
+			end
+			local pos
+			if count == 1 and target and not target.dead then
+				pos = target.root.Position
+			else
+				local nearby = EnemyService.GetInRadius(state.run, root.Position, area)
+				if #nearby > 0 and math.random() < 0.75 then
+					pos = nearby[math.random(#nearby)].root.Position
+				else
+					local angle, dist = math.random() * math.pi * 2, math.random() * area
+					pos = root.Position + Vector3.new(math.cos(angle) * dist, 0, math.sin(angle) * dist)
+				end
+			end
+			strikeAt(state, t, color, ground(state, pos))
+			if t.interval then
+				task.wait(t.interval)
+			end
+		end
+	end)
+end
+
+function Kinds.zone(state, t, color, root, target)
+	local center = ground(state, aimPoint(root, target))
+	local size = Vector3.new(0.3, t.radius * 2, t.radius * 2)
+	local disc = Effects.Part(Enum.PartType.Cylinder, size, CFrame.new(center) * VERTICAL, color, 0.65, t.pull and "vortex" or "zone")
+	if t.follow then
+		Effects.Attach(disc, root, FEET_OFFSET * VERTICAL)
+	end
+	Debris:AddItem(disc, t.duration + 1)
+	task.spawn(function()
+		local tick, elapsed = 0.5, 0
+		while elapsed < t.duration and state.active and root.Parent do
+			local c = t.follow and ground(state, root.Position) or center
+			for _, enemy in EnemyService.GetInRadius(state.run, c, t.radius) do
+				hitEnemy(state, enemy, t.dps * tick, color, t)
+				if t.pull then
+					EnemyService.Push(enemy, c, -t.pull)
+				end
+			end
+			task.wait(tick)
+			elapsed += tick
+		end
+		disc:Destroy()
+	end)
+end
+
+function Kinds.orbit(state, t, color, root)
+	local blades = {}
+	for i = 1, t.count do
+		blades[i] = Effects.Part(Enum.PartType.Block, Vector3.new(0.6, 0.6, 3), root.CFrame, color, 0, "blade")
+	end
+	local start = os.clock()
+	local lastHit = {}
+	local connection
+	connection = RunService.Heartbeat:Connect(function()
+		local now = os.clock()
+		if now - start > t.duration or not state.active or not root.Parent then
+			connection:Disconnect()
+			for _, blade in blades do
+				blade:Destroy()
+			end
+			return
+		end
+		local center = root.Position
+		for i, blade in blades do
+			local angle = now * (t.spin or 3) + (i / t.count) * math.pi * 2
+			local p = center + Vector3.new(math.cos(angle) * t.radius, 0, math.sin(angle) * t.radius)
+			blade.CFrame = CFrame.lookAt(p, p + Vector3.new(-math.sin(angle), 0, math.cos(angle)))
+			for _, enemy in EnemyService.GetInRadius(state.run, p, 2.5) do
+				if not lastHit[enemy] or now - lastHit[enemy] >= 0.5 then
+					lastHit[enemy] = now
+					hitEnemy(state, enemy, t.damage, color, t)
+				end
+			end
+		end
+	end)
+end
+
+function Kinds.line(state, t, color, root, target)
+	local origin = root.Position
+	lineHit(state, t, color, origin, flat(aimPoint(root, target) - origin), t.length, t.width, t.damage)
+end
+
+function Kinds.beam(state, t, color, root, target)
+	task.spawn(function()
+		local tick, elapsed = 0.2, 0
+		while elapsed < t.duration and state.active and root.Parent do
+			local current = EnemyService.Nearest(state.run, root.Position, t.length) or target
+			local origin = root.Position
+			lineHit(state, t, color, origin, flat(aimPoint(root, current) - origin), t.length, t.width, t.dps * tick)
+			task.wait(tick)
+			elapsed += tick
+		end
+	end)
+end
+
+function Kinds.chain(state, t, color, root, target)
+	local from = root.Position
+	local current = target
+	local hit = {}
+	for _ = 1, t.jumps do
+		if not current then
+			break
+		end
+		hit[current] = true
+		local pos = current.root.Position
+		Effects.Bolt(from, pos, color)
+		hitEnemy(state, current, t.damage, color, t)
+		from = pos
+		local nextTarget, bestDist = nil, t.range or 25
+		for _, enemy in EnemyService.GetInRadius(state.run, pos, t.range or 25) do
+			local dist = (enemy.root.Position - pos).Magnitude
+			if not hit[enemy] and dist <= bestDist then
+				nextTarget, bestDist = enemy, dist
+			end
+		end
+		current = nextTarget
+	end
+end
+
+function Kinds.summon(state, t, color, root)
+	local run = state.run
+	for _ = 1, t.count do
+		local pos = ground(state, root.Position + Vector3.new(math.random(-6, 6), 0, math.random(-6, 6))) + Vector3.new(0, 1.5, 0)
+		local body = Effects.Part(Enum.PartType.Block, Vector3.new(2, 3, 2), CFrame.new(pos), color, 0.25, "summon")
+		Effects.Burst(pos, 4, color, 0.4)
+		local start, lastHit = os.clock(), 0
+		local connection
+		connection = RunService.Heartbeat:Connect(function(dt)
+			local now = os.clock()
+			if now - start > t.duration or not state.active or not root.Parent then
+				connection:Disconnect()
+				if t.explode and state.active then
+					Effects.Burst(pos, t.explodeRadius or 10, color)
+					aoe(state, pos, t.explodeRadius or 10, t.explode, color, t)
+				end
+				body:Destroy()
+				return
+			end
+			local enemy = EnemyService.Nearest(run, pos, 60)
+			local goal = enemy and enemy.root.Position or root.Position
+			local delta = Vector3.new(goal.X - pos.X, 0, goal.Z - pos.Z)
+			local stopAt = enemy and (enemy.radius + 2) or 6
+			if delta.Magnitude > stopAt then
+				pos += delta.Unit * math.min(delta.Magnitude - stopAt, (t.speed or 22) * dt)
+			elseif enemy and now - lastHit > 0.6 then
+				lastHit = now
+				hitEnemy(state, enemy, t.damage, color, t)
+			end
+			body.CFrame = CFrame.lookAt(pos, pos + (delta.Magnitude > 0.1 and delta.Unit or Vector3.new(0, 0, -1)))
+				* CFrame.new(0, math.sin(now * 8) * 0.2, 0)
+		end)
+	end
+end
+
+function Kinds.shield(state, t, color, root)
+	local now = os.clock()
+	if now >= state.shieldUntil then
+		state.shield = 0
+	end
+	state.shield = math.max(state.shield, t.absorb)
+	state.shieldUntil = math.max(state.shieldUntil, now + t.duration)
+	if t.reflect then
+		state.reflect = t.reflect
+		state.reflectUntil = now + t.duration
+	end
+	local bubble = Effects.Part(Enum.PartType.Ball, Vector3.one * 8, root.CFrame, color, 0.8, "shield")
+	Effects.Attach(bubble, root)
+	Debris:AddItem(bubble, t.duration)
+	if t.knockback then
+		Kinds.nova(state, { radius = t.radius or 10, knockback = t.knockback }, color, root, nil)
+	end
+end
+
+function Kinds.heal(state, t, color, root)
+	local now = os.clock()
+	if t.amount then
+		Registry.HealPlayer(state.player, t.amount)
+	end
+	if t.regen then
+		state.regen = t.regen
+		state.regenUntil = now + t.duration
+	end
+	if t.invuln then
+		state.invulnUntil = math.max(state.invulnUntil, now + t.duration)
+		Effects.Glow(root.Parent, color, t.duration)
+	end
+	Effects.Burst(root.Position, 6, color, 0.5)
+end
+
+function Kinds.buff(state, t, color, root)
+	state.buffMult = t.damageMult or 1
+	state.buffUntil = os.clock() + t.duration
+	Effects.Glow(root.Parent, color, t.duration)
+	if t.auraDps then
+		Kinds.zone(state, { dps = t.auraDps, radius = t.radius or 12, duration = t.duration, follow = true }, color, root, nil)
+	end
+end
+
+-- API ---------------------------------------------------------------------------
+
+function PowerService.Cast(state, power, t, root, target)
+	local kind = Kinds[t.kind]
+	if not kind then
+		warn("[PowerService] tipo desconhecido: " .. tostring(t.kind))
+		return false
+	end
+	if t.kind == "chain" and not target then
+		return false
+	end
+	if t.kind == "heal" and not t.invuln and not t.regen then
+		local _, humanoid = Registry.GetRoot(state.player)
+		if humanoid and humanoid.Health >= humanoid.MaxHealth then
+			return false
+		end
+	end
+	local color = power.colors and power.colors[math.random(#power.colors)] or power.color
+	kind(state, t, color, root, target)
+	return true
+end
+
+-- chamado todo frame para cada jogador em run: dispara habilidades prontas
+function PowerService.Tick(state, now)
+	local root = Registry.GetRoot(state.player)
+	if not root then
+		return
+	end
+	local nearest, searched = nil, false
+	for _, owned in state.powers do
+		local power = Powers.ById[owned.id]
+		for tierIndex = 1, math.min(owned.tier, 3) do
+			local key = owned.id .. tierIndex
+			if now >= (state.cooldowns[key] or 0) then
+				if not searched then
+					nearest = EnemyService.Nearest(state.run, root.Position, COMBAT_RANGE)
+					searched = true
+				end
+				if not nearest then
+					return
+				end
+				local t = power.tiers[tierIndex]
+				if PowerService.Cast(state, power, t, root, nearest) then
+					state.cooldowns[key] = now + t.cd * state.stats.cooldownMult
+				end
+			end
+		end
+	end
+end
+
+function PowerService.CastUltimate(state, slot)
+	local owned = state.powers[slot]
+	if not owned or owned.tier < 4 then
+		return false
+	end
+	local key = owned.id .. "ult"
+	local now = os.clock()
+	if now < (state.cooldowns[key] or 0) then
+		return false
+	end
+	local root = Registry.GetRoot(state.player)
+	if not root then
+		return false
+	end
+	local power = Powers.ById[owned.id]
+	local t = power.tiers[4]
+	local target = EnemyService.Nearest(state.run, root.Position, 90)
+	if not PowerService.Cast(state, power, t, root, target) then
+		return false
+	end
+	state.cooldowns[key] = now + t.cd * state.stats.cooldownMult
+	Effects.Glow(root.Parent, power.color, 1.5)
+	Effects.Burst(root.Position, 10, power.color, 0.5)
+	Effects.Shake(root.Position, 0.5, 80)
+	return true, t.name
+end
+
+-- Combo de 3 golpes: corte da direita, corte da esquerda, golpe por cima (mais forte, em área).
+function PowerService.BasicAttack(state, direction)
+	local config = GameConfig.BasicAttack
+	local now = os.clock()
+	if now - state.lastBasic < config.cooldown then
+		return
+	end
+	if now - state.lastBasic > config.comboReset then
+		state.combo = 0
+	end
+	state.lastBasic = now
+	state.combo = (state.combo or 0) % #config.combo + 1
+	local step = config.combo[state.combo]
+
+	local root = Registry.GetRoot(state.player)
+	if not root then
+		return
+	end
+	local dir = flat(direction)
+	local origin = root.Position
+	local range = config.range * step.range
+	Effects.Swing(state.player, state.combo, origin, dir, range, config.color)
+
+	-- o dano entra no meio da animação do golpe
+	task.delay(step.hitDelay, function()
+		if not state.active or not root.Parent then
+			return
+		end
+		local hitAny = false
+		for _, enemy in EnemyService.GetInRadius(state.run, root.Position, range) do
+			local toEnemy = enemy.root.Position - root.Position
+			if flat(toEnemy):Dot(dir) > step.arc or toEnemy.Magnitude < enemy.radius + 3 then
+				hitEnemy(state, enemy, config.damage * step.damage, config.color, {})
+				EnemyService.Push(enemy, root.Position, step.knockback)
+				hitAny = true
+			end
+		end
+		if step.slam then
+			local g = ground(state, root.Position + dir * 5)
+			Effects.Ring(g, range, config.color, 0.35)
+			Effects.Shake(g, 0.35, 30)
+		elseif hitAny then
+			Effects.Shake(root.Position, 0.12, 15)
+		end
+	end)
+end
+
+return PowerService
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="22">
+          <Properties>
+            <string name="Name">Projectiles</string>
+            <string name="Source"><![CDATA[-- Projéteis simulados no servidor (usados por poderes e por inimigos).
+local RunService = game:GetService("RunService")
+
+local Effects = require(script.Parent.Effects)
+
+local Projectiles = {}
+
+--[[
+	options:
+	  origin, direction, speed, range, size, color
+	  visual     como o cliente desenha: "orb" (padrão), "blade", "bullet", "lance", "wind", "fireball", "enemy"
+	  pierce     quantos alvos extras atravessa (0 = some no primeiro)
+	  homing     function(pos) -> Vector3? alvo para curvar
+	  hitTest    function(pos, radius) -> lista de alvos perto
+	  onHit      function(alvo, pos)
+]]
+function Projectiles.Fire(options)
+	local direction = options.direction
+	if direction.Magnitude < 0.01 then
+		direction = Vector3.new(0, 0, -1)
+	end
+	local dir = direction.Unit
+	local pos = options.origin
+	local size = options.size or 1
+	local part = Effects.Part(Enum.PartType.Ball, Vector3.one * size, CFrame.lookAt(pos, pos + dir), options.color, 0, options.visual or "orb")
+	local traveled = 0
+	local pierceLeft = options.pierce or 0
+	local hits = {}
+
+	local connection
+	connection = RunService.Heartbeat:Connect(function(dt)
+		if options.homing then
+			local targetPos = options.homing(pos)
+			if targetPos then
+				local want = Vector3.new(targetPos.X - pos.X, 0, targetPos.Z - pos.Z)
+				if want.Magnitude > 0.5 then
+					local turned = dir:Lerp(want.Unit, math.clamp(dt * 6, 0, 1))
+					if turned.Magnitude > 0.01 then
+						dir = turned.Unit
+					end
+				end
+			end
+		end
+
+		local step = options.speed * dt
+		pos += dir * step
+		traveled += step
+		part.CFrame = CFrame.lookAt(pos, pos + dir) -- orientado: o cliente desenha lâminas/lanças apontando para a frente
+
+		for _, target in options.hitTest(pos, size / 2 + 1.5) do
+			if not hits[target] then
+				hits[target] = true
+				options.onHit(target, pos)
+				pierceLeft -= 1
+				if pierceLeft < 0 then
+					traveled = math.huge
+					break
+				end
+			end
+		end
+
+		if traveled >= options.range or not part.Parent then
+			connection:Disconnect()
+			part:Destroy()
+		end
+	end)
+end
+
+return Projectiles
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="23">
+          <Properties>
+            <string name="Name">Registry</string>
+            <string name="Source"><![CDATA[-- Quem está em qual run, e dano/cura em jogadores (considera escudo e invencibilidade).
+local Registry = {
+	ByPlayer = {}, -- [Player] = estado do jogador na run (criado em DungeonService)
+}
+
+function Registry.GetRoot(player)
+	local character = player.Character
+	if not character then
+		return nil, nil
+	end
+	return character:FindFirstChild("HumanoidRootPart"), character:FindFirstChildOfClass("Humanoid")
+end
+
+function Registry.DamagePlayer(player, amount)
+	local _, humanoid = Registry.GetRoot(player)
+	if not humanoid or humanoid.Health <= 0 then
+		return 0
+	end
+	local state = Registry.ByPlayer[player]
+	if state then
+		local now = os.clock()
+		if now < state.invulnUntil then
+			return 0
+		end
+		if state.shield > 0 and now < state.shieldUntil then
+			local absorbed = math.min(state.shield, amount)
+			state.shield -= absorbed
+			amount -= absorbed
+		end
+	end
+	if amount > 0 then
+		humanoid:TakeDamage(amount)
+	end
+	return amount
+end
+
+function Registry.HealPlayer(player, amount)
+	local _, humanoid = Registry.GetRoot(player)
+	if humanoid and humanoid.Health > 0 then
+		humanoid.Health = math.min(humanoid.MaxHealth, humanoid.Health + amount)
+	end
+end
+
+return Registry
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="24">
+          <Properties>
+            <string name="Name">WeaponService</string>
+            <string name="Source"><![CDATA[-- Coloca a arma na mão direita de todo personagem que nasce.
+-- A arma fica presa por um Motor6D "WeaponGrip" na RightHand: o cliente gira essa junta
+-- durante os golpes (client/Controllers/Animator.luau).
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local GameConfig = require(ReplicatedStorage.Shared.Config.Game)
+
+local WeaponService = {}
+
+local BLADE = Color3.fromRGB(205, 212, 225)
+local GOLD = Color3.fromRGB(230, 180, 70)
+local LEATHER = Color3.fromRGB(70, 40, 30)
+local GLOW = Color3.fromRGB(140, 210, 255)
+
+local function weaponPart(model, name, size, cframe, color, material)
+	local part = Instance.new("Part")
+	part.Name = name
+	part.Size = size
+	part.CFrame = cframe
+	part.Color = color
+	part.Material = material
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.Massless = true
+	part.CastShadow = false
+	part.Parent = model
+	return part
+end
+
+-- Espada feita de Parts. Origem = centro do cabo; a lâmina sobe no eixo +Y.
+local function buildDefaultSword()
+	local model = Instance.new("Model")
+	model.Name = "Weapon"
+	local length = GameConfig.Weapon.Length
+	local origin = CFrame.new()
+
+	local handle = weaponPart(model, "Handle", Vector3.new(0.28, 1.1, 0.28), origin, LEATHER, Enum.Material.Fabric)
+	weaponPart(model, "Pommel", Vector3.new(0.42, 0.42, 0.42), origin * CFrame.new(0, -0.65, 0), GOLD, Enum.Material.Metal).Shape = Enum.PartType.Ball
+	weaponPart(model, "Guard", Vector3.new(1.5, 0.22, 0.32), origin * CFrame.new(0, 0.62, 0), GOLD, Enum.Material.Metal)
+	local bladeLength = length - 1.4
+	local blade = weaponPart(model, "Blade", Vector3.new(0.5, bladeLength, 0.1), origin * CFrame.new(0, 0.73 + bladeLength / 2, 0), BLADE, Enum.Material.Metal)
+	blade.Reflectance = 0.25
+	weaponPart(model, "Fuller", Vector3.new(0.12, bladeLength * 0.85, 0.12), blade.CFrame * CFrame.new(0, -bladeLength * 0.05, 0), GLOW, Enum.Material.Neon)
+	weaponPart(model, "Tip", Vector3.new(0.354, 0.354, 0.1), origin * CFrame.new(0, 0.73 + bladeLength, 0) * CFrame.Angles(0, 0, math.rad(45)), BLADE, Enum.Material.Metal)
+
+	model.PrimaryPart = handle
+	return model
+end
+
+-- Modelo importado: escala para o comprimento configurado; o pivô do modelo vira o ponto da empunhadura.
+local function buildImportedSword(asset)
+	local model = asset:Clone()
+	model.Name = "Weapon"
+	for _, descendant in model:GetDescendants() do
+		if descendant:IsA("BasePart") then
+			descendant.Anchored = false
+			descendant.CanCollide = false
+			descendant.CanQuery = false
+			descendant.CanTouch = false
+			descendant.Massless = true
+		elseif descendant:IsA("BaseScript") then
+			descendant:Destroy()
+		end
+	end
+	local _, size = model:GetBoundingBox()
+	local longest = math.max(size.X, size.Y, size.Z)
+	if longest > 0.01 then
+		model:ScaleTo(model:GetScale() * GameConfig.Weapon.Length / longest)
+	end
+	local handle = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart", true)
+	if not handle then
+		model:Destroy()
+		return nil
+	end
+	-- o "Handle" fica no pivô do modelo para a junta usar esse ponto
+	local pivot = model:GetPivot()
+	local gripPart = weaponPart(model, "Handle", Vector3.new(0.2, 0.2, 0.2), pivot, BLADE, Enum.Material.SmoothPlastic)
+	gripPart.Transparency = 1
+	model.PrimaryPart = gripPart
+	return model
+end
+
+local function weld(a, b)
+	local constraint = Instance.new("WeldConstraint")
+	constraint.Part0 = a
+	constraint.Part1 = b
+	constraint.Parent = a
+end
+
+local function equip(character)
+	local hand = character:WaitForChild("RightHand", 10)
+	if not hand or character:FindFirstChild("Weapon") then
+		return
+	end
+
+	local assets = ReplicatedStorage:FindFirstChild("Assets")
+	local weapons = assets and assets:FindFirstChild("Weapons")
+	local asset = weapons and weapons:FindFirstChild(GameConfig.Weapon.Model)
+	local model = asset and buildImportedSword(asset) or buildDefaultSword()
+	local handle = model.PrimaryPart
+
+	for _, descendant in model:GetDescendants() do
+		if descendant:IsA("BasePart") and descendant ~= handle then
+			weld(handle, descendant)
+		end
+	end
+
+	-- lâmina apontando para a frente com o braço solto
+	local grip = Instance.new("Motor6D")
+	grip.Name = "WeaponGrip"
+	grip.Part0 = hand
+	grip.Part1 = handle
+	grip.C0 = CFrame.new(0, -0.2, 0) * CFrame.Angles(math.rad(-90), 0, 0) * GameConfig.Weapon.GripOffset
+	grip.Parent = hand
+
+	model.Parent = character
+end
+
+function WeaponService.Init()
+	local function onPlayer(player)
+		player.CharacterAdded:Connect(function(character)
+			task.spawn(equip, character)
+		end)
+		if player.Character then
+			task.spawn(equip, player.Character)
+		end
+	end
+	Players.PlayerAdded:Connect(onPlayer)
+	for _, player in Players:GetPlayers() do
+		onPlayer(player)
+	end
+end
+
+return WeaponService
+]]></string>
+          </Properties>
+        </Item>
+        <Item class="ModuleScript" referent="25">
+          <Properties>
+            <string name="Name">WorldBuilder</string>
+            <string name="Source"><![CDATA[-- Gera o lobby e as arenas das masmorras com Parts.
+-- Se você montar o seu próprio lobby no Studio (um Model chamado "Lobby" no Workspace),
+-- o gerado é ignorado: basta marcar as plataformas com a tag "DungeonPad"
+-- e o atributo DungeonIndex (1, 2, 3...) e opcionalmente Radius.
+local Lighting = game:GetService("Lighting")
+local CollectionService = game:GetService("CollectionService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Dungeons = require(ReplicatedStorage.Shared.Config.Dungeons)
+
+local WorldBuilder = {}
+
+local VERTICAL = CFrame.Angles(0, 0, math.rad(90))
+
+local function part(parent, props)
+	local p = Instance.new("Part")
+	p.Anchored = true
+	p.TopSurface = Enum.SurfaceType.Smooth
+	p.BottomSurface = Enum.SurfaceType.Smooth
+	for key, value in props do
+		p[key] = value
+	end
+	p.Parent = parent
+	return p
+end
+
+local function light(parent, color, range, brightness)
+	local pointLight = Instance.new("PointLight")
+	pointLight.Color = color
+	pointLight.Range = range or 16
+	pointLight.Brightness = brightness or 1.5
+	pointLight.Parent = parent
+end
+
+local function billboard(adornee, lines, height)
+	local gui = Instance.new("BillboardGui")
+	gui.Size = UDim2.fromOffset(320, 26 * #lines)
+	gui.StudsOffset = Vector3.new(0, height or 4, 0)
+	gui.MaxDistance = 150
+	gui.Parent = adornee
+	for i, line in lines do
+		local label = Instance.new("TextLabel")
+		label.BackgroundTransparency = 1
+		label.Size = UDim2.new(1, 0, 0, 26)
+		label.Position = UDim2.fromOffset(0, (i - 1) * 26)
+		label.Font = Enum.Font.GothamBlack
+		label.TextSize = line.size or 20
+		label.TextColor3 = line.color or Color3.new(1, 1, 1)
+		label.TextStrokeTransparency = 0.3
+		label.Text = line.text
+		label.Parent = gui
+	end
+	return gui
+end
+
+local function tree(parent, pos, scale, leafColor)
+	part(parent, {
+		Name = "Trunk",
+		Size = Vector3.new(1.6, 8, 1.6) * scale,
+		CFrame = CFrame.new(pos + Vector3.new(0, 4 * scale, 0)),
+		Color = Color3.fromRGB(100, 70, 45),
+		Material = Enum.Material.Wood,
+	})
+	part(parent, {
+		Name = "Leaves",
+		Shape = Enum.PartType.Ball,
+		Size = Vector3.one * 8 * scale,
+		CFrame = CFrame.new(pos + Vector3.new(0, 9.5 * scale, 0)),
+		Color = leafColor,
+		Material = Enum.Material.Grass,
+	})
+end
+
+local function lamp(parent, pos)
+	part(parent, {
+		Name = "LampPost",
+		Size = Vector3.new(0.8, 10, 0.8),
+		CFrame = CFrame.new(pos + Vector3.new(0, 5, 0)),
+		Color = Color3.fromRGB(50, 45, 40),
+		Material = Enum.Material.Metal,
+	})
+	local bulb = part(parent, {
+		Name = "Lamp",
+		Shape = Enum.PartType.Ball,
+		Size = Vector3.one * 1.8,
+		CFrame = CFrame.new(pos + Vector3.new(0, 10.5, 0)),
+		Color = Color3.fromRGB(255, 200, 120),
+		Material = Enum.Material.Neon,
+		CanCollide = false,
+	})
+	light(bulb, Color3.fromRGB(255, 200, 120), 24, 1.5)
+end
+
+local function portal(parent, def, index, cframe)
+	local theme = def.theme
+	local model = Instance.new("Model")
+	model.Name = "Portal_" .. def.id
+	model.Parent = parent
+
+	part(model, { Name = "Base", Size = Vector3.new(20, 1.5, 8), CFrame = cframe * CFrame.new(0, 0.75, 0), Color = theme.wall, Material = theme.wallMaterial })
+	for _, side in { -1, 1 } do
+		part(model, { Name = "Pillar", Size = Vector3.new(2.5, 18, 2.5), CFrame = cframe * CFrame.new(side * 7.5, 10, 0), Color = theme.wall, Material = theme.wallMaterial })
+	end
+	local top = part(model, { Name = "Top", Size = Vector3.new(19, 3, 3), CFrame = cframe * CFrame.new(0, 20, 0), Color = theme.wall, Material = theme.wallMaterial })
+	local surface = part(model, {
+		Name = "PortalSurface",
+		Size = Vector3.new(12.5, 16.5, 0.6),
+		CFrame = cframe * CFrame.new(0, 10, 0),
+		Color = theme.accent,
+		Material = Enum.Material.Neon,
+		Transparency = 0.35,
+		CanCollide = false,
+	})
+	light(surface, theme.accent, 30, 2)
+	local particles = Instance.new("ParticleEmitter")
+	particles.Color = ColorSequence.new(theme.accent)
+	particles.LightEmission = 1
+	particles.Rate = 20
+	particles.Lifetime = NumberRange.new(1, 2)
+	particles.Speed = NumberRange.new(1, 3)
+	particles.Size = NumberSequence.new(0.4, 0)
+	particles.Parent = surface
+
+	billboard(top, {
+		{ text = "W" .. index .. " · " .. def.name, size = 22, color = theme.accent },
+		{ text = "Chefe: " .. def.boss.name, size = 16 },
+	}, 4)
+
+	-- plataforma da fila, na frente do portal
+	local pad = part(model, {
+		Name = "Pad",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(0.6, 16, 16),
+		CFrame = cframe * CFrame.new(0, 0.3, -12) * VERTICAL,
+		Color = theme.accent,
+		Material = Enum.Material.Neon,
+		Transparency = 0.45,
+		CanCollide = false,
+	})
+	pad:SetAttribute("DungeonIndex", index)
+	pad:SetAttribute("Radius", 8)
+	CollectionService:AddTag(pad, "DungeonPad")
+end
+
+function WorldBuilder.SetupLighting()
+	Lighting.ClockTime = 16.8
+	Lighting.Brightness = 2.2
+	Lighting.OutdoorAmbient = Color3.fromRGB(140, 130, 120)
+
+	local atmosphere = Lighting:FindFirstChildOfClass("Atmosphere") or Instance.new("Atmosphere")
+	atmosphere.Density = 0.28
+	atmosphere.Haze = 1
+	atmosphere.Color = Color3.fromRGB(200, 180, 160)
+	atmosphere.Parent = Lighting
+
+	local bloom = Lighting:FindFirstChildOfClass("BloomEffect") or Instance.new("BloomEffect")
+	bloom.Intensity = 0.6
+	bloom.Size = 24
+	bloom.Threshold = 1
+	bloom.Parent = Lighting
+
+	local grading = Lighting:FindFirstChildOfClass("ColorCorrectionEffect") or Instance.new("ColorCorrectionEffect")
+	grading.Saturation = 0.15
+	grading.Contrast = 0.08
+	grading.Parent = Lighting
+end
+
+function WorldBuilder.BuildLobby()
+	if workspace:FindFirstChild("Lobby") then
+		return -- lobby feito à mão no Studio
+	end
+	local lobby = Instance.new("Model")
+	lobby.Name = "Lobby"
+
+	part(lobby, { Name = "Ground", Size = Vector3.new(400, 4, 400), CFrame = CFrame.new(0, -2, 0), Color = Color3.fromRGB(86, 140, 70), Material = Enum.Material.Grass })
+	part(lobby, {
+		Name = "Plaza",
+		Shape = Enum.PartType.Cylinder,
+		Size = Vector3.new(0.4, 100, 100),
+		CFrame = CFrame.new(0, 0.2, 0) * VERTICAL,
+		Color = Color3.fromRGB(150, 145, 135),
+		Material = Enum.Material.Cobblestone,
+	})
+	part(lobby, {
+		Name = "Path",
+		Size = Vector3.new(14, 0.4, 70),
+		CFrame = CFrame.new(0, 0.21, -60),
+		Color = Color3.fromRGB(150, 145, 135),
+		Material = Enum.Material.Cobblestone,
+	})
+
+	if not workspace:FindFirstChildOfClass("SpawnLocation") then
+		local spawn = Instance.new("SpawnLocation")
+		spawn.Name = "LobbySpawn"
+		spawn.Size = Vector3.new(10, 1, 10)
+		spawn.CFrame = CFrame.new(0, 0.5, 20)
+		spawn.Anchored = true
+		spawn.Neutral = true
+		spawn.Duration = 0
+		spawn.Color = Color3.fromRGB(235, 190, 90)
+		spawn.Material = Enum.Material.SmoothPlastic
+		spawn.TopSurface = Enum.SurfaceType.Smooth
+		spawn.Parent = lobby
+	end
+
+	-- cristal central
+	local crystal = part(lobby, {
+		Name = "Crystal",
+		Size = Vector3.new(4, 12, 4),
+		CFrame = CFrame.new(0, 9, -8) * CFrame.Angles(0, math.rad(45), 0),
+		Color = Color3.fromRGB(140, 200, 255),
+		Material = Enum.Material.Neon,
+		Transparency = 0.2,
+		CanCollide = false,
+	})
+	part(lobby, { Name = "CrystalBase", Size = Vector3.new(8, 3, 8), CFrame = CFrame.new(0, 1.5, -8), Color = Color3.fromRGB(90, 85, 80), Material = Enum.Material.Slate })
+	light(crystal, Color3.fromRGB(140, 200, 255), 40, 2)
+	billboard(crystal, {
+		{ text = "PORTAIS DO ABISMO", size = 28, color = Color3.fromRGB(235, 190, 90) },
+		{ text = "Pise na plataforma de um portal para entrar", size = 16 },
+	}, 9)
+
+	-- portais em arco no lado norte
+	local count = #Dungeons
+	for i, def in Dungeons do
+		local angle = count > 1 and math.rad(-60 + (i - 1) * 120 / (count - 1)) or 0
+		local pos = Vector3.new(math.sin(angle) * 75, 0, -math.cos(angle) * 75)
+		portal(lobby, def, i, CFrame.lookAt(pos, Vector3.new(0, 0, 0)))
+	end
+
+	-- decoração
+	local rng = Random.new(42)
+	for _ = 1, 45 do
+		local angle = rng:NextNumber(0, math.pi * 2)
+		local dist = rng:NextNumber(100, 185)
+		local pos = Vector3.new(math.cos(angle) * dist, 0, math.sin(angle) * dist)
+		tree(lobby, pos, rng:NextNumber(0.9, 1.6), Color3.fromRGB(60 + rng:NextInteger(0, 30), 120 + rng:NextInteger(0, 40), 50))
+	end
+	for i = 0, 7 do
+		local angle = i / 8 * math.pi * 2
+		lamp(lobby, Vector3.new(math.cos(angle) * 52, 0, math.sin(angle) * 52))
+	end
+
+	-- paredes invisíveis
+	for _, wall in {
+		{ Vector3.new(400, 60, 2), Vector3.new(0, 30, 200) },
+		{ Vector3.new(400, 60, 2), Vector3.new(0, 30, -200) },
+		{ Vector3.new(2, 60, 400), Vector3.new(200, 30, 0) },
+		{ Vector3.new(2, 60, 400), Vector3.new(-200, 30, 0) },
+	} do
+		part(lobby, { Name = "Boundary", Size = wall[1], CFrame = CFrame.new(wall[2]), Transparency = 1 })
+	end
+
+	lobby.Parent = workspace
+end
+
+-- Arena de uma run. Retorna dados usados pelo DungeonService.
+function WorldBuilder.BuildArena(def, origin)
+	local theme = def.theme
+	local model = Instance.new("Model")
+	model.Name = "Arena_" .. def.id
+
+	local size, height = 220, 24
+	part(model, { Name = "Floor", Size = Vector3.new(size, 4, size), CFrame = CFrame.new(origin - Vector3.new(0, 2, 0)), Color = theme.floor, Material = theme.floorMaterial })
+	for _, wall in {
+		{ Vector3.new(size, height, 4), Vector3.new(0, height / 2, size / 2) },
+		{ Vector3.new(size, height, 4), Vector3.new(0, height / 2, -size / 2) },
+		{ Vector3.new(4, height, size), Vector3.new(size / 2, height / 2, 0) },
+		{ Vector3.new(4, height, size), Vector3.new(-size / 2, height / 2, 0) },
+	} do
+		part(model, { Name = "Wall", Size = wall[1], CFrame = CFrame.new(origin + wall[2]), Color = theme.wall, Material = theme.wallMaterial })
+	end
+	-- teto invisível para ninguém pular para fora
+	part(model, { Name = "Ceiling", Size = Vector3.new(size, 2, size), CFrame = CFrame.new(origin + Vector3.new(0, 60, 0)), Transparency = 1 })
+
+	-- colunas com tochas (deixa o centro livre para o chefe)
+	local rng = Random.new()
+	for _ = 1, 10 do
+		local x, z = rng:NextNumber(-75, 75), rng:NextNumber(-75, 75)
+		if math.abs(x) > 25 or math.abs(z) > 25 then
+			local width, h = rng:NextNumber(4, 8), rng:NextNumber(6, 16)
+			part(model, { Name = "Pillar", Size = Vector3.new(width, h, width), CFrame = CFrame.new(origin + Vector3.new(x, h / 2, z)), Color = theme.wall, Material = theme.wallMaterial })
+			local torch = part(model, {
+				Name = "Torch",
+				Shape = Enum.PartType.Ball,
+				Size = Vector3.one * 1.6,
+				CFrame = CFrame.new(origin + Vector3.new(x, h + 0.8, z)),
+				Color = theme.accent,
+				Material = Enum.Material.Neon,
+				CanCollide = false,
+			})
+			light(torch, theme.accent, 30, 2)
+		end
+	end
+
+	local spawnPoints = {}
+	for i = 1, 16 do
+		local angle = i / 16 * math.pi * 2
+		table.insert(spawnPoints, origin + Vector3.new(math.cos(angle) * 92, 0, math.sin(angle) * 92))
+	end
+
+	model.Parent = workspace
+	return {
+		model = model,
+		floorY = origin.Y,
+		center = origin,
+		playerSpawn = origin + Vector3.new(0, 0, 40),
+		spawnPoints = spawnPoints,
+	}
+end
+
+return WorldBuilder
+]]></string>
+          </Properties>
+        </Item>
+      </Item>
+    </Item>
+  </Item>
+  <Item class="StarterPlayer" referent="26">
+    <Properties>
+      <string name="Name">StarterPlayer</string>
+    </Properties>
+    <Item class="StarterPlayerScripts" referent="27">
+      <Properties>
+        <string name="Name">StarterPlayerScripts</string>
+      </Properties>
+      <Item class="LocalScript" referent="28">
+        <Properties>
+          <string name="Name">Client</string>
+          <string name="Source"><![CDATA[-- Ponto de entrada do cliente
+local Controllers = script:WaitForChild("Controllers")
+
+local VFX = require(Controllers:WaitForChild("VFX"))
+VFX.Init()
+require(Controllers:WaitForChild("Animator")).Init(VFX)
+require(Controllers:WaitForChild("Feedback")).Init(VFX)
+require(Controllers:WaitForChild("UI")).Init()
+require(Controllers:WaitForChild("Input")).Init()
+]]></string>
+        </Properties>
+        <Item class="Folder" referent="29">
+          <Properties>
+            <string name="Name">Controllers</string>
+          </Properties>
+          <Item class="ModuleScript" referent="30">
+            <Properties>
+              <string name="Name">Animator</string>
+              <string name="Source"><![CDATA[--[[
+	Animações feitas por código (não precisam de upload de Animation):
+	- Golpes de espada dos jogadores: gira ombro, tronco e a junta da arma (WeaponGrip) + rastro do corte.
+	- Monstros: balanço ao andar, investida ao atacar, recuo e piscada branca ao levar dano,
+	  surgir do chão e cair ao morrer. Funciona com o boneco de blocos e com modelos importados.
+	Depois dá para trocar por Animations de verdade (Animation Editor / Moon Animator) mantendo isto como reserva.
+]]
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local CollectionService = game:GetService("CollectionService")
+local Debris = game:GetService("Debris")
+
+local Animator = {}
+
+local player = Players.LocalPlayer
+local VFX -- injetado no Init
+
+local WHITE = Color3.new(1, 1, 1)
+
+-- golpes do combo: ombro (yaw = esquerda/direita, pitch = levantar), giro do tronco e
+-- `blade` = quanto a lâmina gira para ficar alinhada com o braço (0 = apontando para a frente)
+local SWINGS = {
+	{ from = { yaw = -80, pitch = 95, waist = -30, blade = 1 }, to = { yaw = 70, pitch = 75, waist = 35, blade = 1 }, time = 0.15, arc = { -85, 85 } },
+	{ from = { yaw = 60, pitch = 80, waist = 30, blade = 1 }, to = { yaw = -85, pitch = 95, waist = -35, blade = 1 }, time = 0.15, arc = { 85, -85 } },
+	{ from = { yaw = -15, pitch = 200, waist = 0, blade = 0.7 }, to = { yaw = -15, pitch = 30, waist = 0, blade = 0.7 }, time = 0.18, arc = { 110, -15 }, vertical = true },
+}
+local REST = { yaw = 0, pitch = 0, waist = 0, blade = 0 }
+
+local bases = setmetatable({}, { __mode = "k" }) -- C0 original de cada junta
+local playing = setmetatable({}, { __mode = "k" }) -- personagem -> token da animação atual
+
+local function base(motor)
+	if not bases[motor] then
+		bases[motor] = motor.C0
+	end
+	return bases[motor]
+end
+
+local function getRig(character)
+	local arm = character:FindFirstChild("RightUpperArm")
+	local torso = character:FindFirstChild("UpperTorso")
+	local hand = character:FindFirstChild("RightHand")
+	local shoulder = arm and arm:FindFirstChild("RightShoulder")
+	if not shoulder then
+		return nil -- só R15
+	end
+	return {
+		shoulder = shoulder,
+		waist = torso and torso:FindFirstChild("Waist"),
+		grip = hand and hand:FindFirstChild("WeaponGrip"),
+	}
+end
+
+local function lerpPose(a, b, t)
+	return {
+		yaw = a.yaw + (b.yaw - a.yaw) * t,
+		pitch = a.pitch + (b.pitch - a.pitch) * t,
+		waist = a.waist + (b.waist - a.waist) * t,
+		blade = a.blade + (b.blade - a.blade) * t,
+	}
+end
+
+local function applyPose(rig, pose)
+	rig.shoulder.C0 = base(rig.shoulder) * CFrame.Angles(0, math.rad(pose.yaw), 0) * CFrame.Angles(math.rad(pose.pitch), 0, 0)
+	if rig.waist then
+		rig.waist.C0 = base(rig.waist) * CFrame.Angles(0, math.rad(pose.waist), 0)
+	end
+	if rig.grip then
+		rig.grip.C0 = base(rig.grip) * CFrame.Angles(math.rad(-90 * pose.blade), 0, 0)
+	end
+end
+
+local function easeOut(t)
+	return 1 - (1 - t) ^ 3
+end
+
+-- rastro brilhante que acompanha o arco do golpe
+local function slashTrail(root, swing, dir, range, color)
+	local tracer = Instance.new("Part")
+	tracer.Anchored = true
+	tracer.CanCollide = false
+	tracer.CanQuery = false
+	tracer.CanTouch = false
+	tracer.Transparency = 1
+	tracer.Size = Vector3.one * 0.2
+	tracer.Parent = workspace
+
+	local width = 1.3
+	local side = dir:Cross(Vector3.yAxis)
+	local a0 = Instance.new("Attachment")
+	local a1 = Instance.new("Attachment")
+	a0.Parent = tracer
+	a1.Parent = tracer
+	local trail = Instance.new("Trail")
+	trail.Attachment0 = a0
+	trail.Attachment1 = a1
+	trail.Color = ColorSequence.new(WHITE, color)
+	trail.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(0.5, 0.4),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	trail.WidthScale = NumberSequence.new(1, 0.3)
+	trail.Lifetime = 0.16
+	trail.LightEmission = 1
+	trail.LightInfluence = 0
+	trail.MinLength = 0
+	trail.Parent = tracer
+
+	local radius = range * 0.7
+	local fromAngle, toAngle = math.rad(swing.arc[1]), math.rad(swing.arc[2])
+	local function place(alpha)
+		local angle = fromAngle + (toAngle - fromAngle) * easeOut(alpha)
+		local center = root.Position + Vector3.new(0, 0.6, 0)
+		local point
+		if swing.vertical then
+			point = center + (dir * math.cos(angle) + Vector3.yAxis * math.sin(angle)) * radius
+			a0.Position = side * width
+			a1.Position = -side * width
+		else
+			point = center + (CFrame.fromAxisAngle(Vector3.yAxis, angle) * dir) * radius
+			a0.Position = Vector3.new(0, width, 0)
+			a1.Position = Vector3.new(0, -width, 0)
+		end
+		tracer.CFrame = CFrame.new(point)
+	end
+
+	place(0)
+	trail:Clear()
+	local start = os.clock()
+	local connection
+	connection = RunService.RenderStepped:Connect(function()
+		local alpha = math.min(1, (os.clock() - start) / swing.time)
+		place(alpha)
+		if alpha >= 1 then
+			connection:Disconnect()
+			Debris:AddItem(tracer, trail.Lifetime + 0.05)
+		end
+	end)
+end
+
+function Animator.Swing(data)
+	local swinger = data.player
+	local character = swinger and swinger.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	local swing = SWINGS[data.combo]
+	if not root or not swing then
+		return
+	end
+	local dir = Vector3.new(data.dir.X, 0, data.dir.Z)
+	if dir.Magnitude < 0.01 then
+		return
+	end
+	dir = dir.Unit
+
+	if swinger == player then
+		root.CFrame = CFrame.lookAt(root.Position, root.Position + dir)
+	end
+	slashTrail(root, swing, dir, data.range, data.color)
+	VFX.PlaySound(data.combo == 3 and VFX.Sounds.lunge or VFX.Sounds.slash, root.Position, 0.45, data.combo == 3 and 0.85 or 1)
+
+	local rig = getRig(character)
+	if not rig then
+		return
+	end
+	local token = {}
+	playing[character] = token
+	local windup, hold, recover = 0.05, 0.05, 0.14
+	local total = windup + swing.time + hold + recover
+	local start = os.clock()
+	local connection
+	connection = RunService.RenderStepped:Connect(function()
+		if playing[character] ~= token or not character.Parent then
+			connection:Disconnect()
+			return
+		end
+		local t = os.clock() - start
+		local pose
+		if t < windup then
+			pose = lerpPose(REST, swing.from, t / windup)
+		elseif t < windup + swing.time then
+			pose = lerpPose(swing.from, swing.to, easeOut((t - windup) / swing.time))
+		elseif t < windup + swing.time + hold then
+			pose = swing.to
+		else
+			pose = lerpPose(swing.to, REST, math.min(1, (t - windup - swing.time - hold) / recover))
+		end
+		applyPose(rig, pose)
+		if t >= total then
+			applyPose(rig, REST)
+			playing[character] = nil
+			connection:Disconnect()
+		end
+	end)
+end
+
+-- monstros ----------------------------------------------------------------------------------
+
+local tracked = {}
+
+local function track(model)
+	if tracked[model] then
+		return
+	end
+	local root = model:WaitForChild("HumanoidRootPart", 5)
+	local joint = root and root:WaitForChild("Visual", 5)
+	if not joint then
+		return
+	end
+	local highlight = Instance.new("Highlight")
+	highlight.FillColor = WHITE
+	highlight.OutlineTransparency = 1
+	highlight.FillTransparency = 0.2
+	highlight.DepthMode = Enum.HighlightDepthMode.Occluded
+	highlight.Enabled = false
+	highlight.Parent = model
+	tracked[model] = {
+		root = root,
+		joint = joint,
+		base = joint.C0,
+		height = root.Size.Y,
+		scale = math.clamp(root.Size.Y / 3.5, 0.6, 3),
+		walk = math.random() * 10,
+		spawnT = os.clock(),
+		hit = model:GetAttribute("Hit") or 0,
+		hitT = 0,
+		attack = model:GetAttribute("Attack") or 0,
+		attackT = 0,
+		deadT = nil,
+		highlight = highlight,
+	}
+end
+
+local function stepEnemies(dt)
+	local now = os.clock()
+	for model, d in tracked do
+		if not model.Parent or not d.joint.Parent then
+			tracked[model] = nil
+			continue
+		end
+
+		local hit = model:GetAttribute("Hit") or 0
+		if hit ~= d.hit then
+			d.hit = hit
+			d.hitT = now
+		end
+		local attack = model:GetAttribute("Attack") or 0
+		if attack ~= d.attack then
+			d.attack = attack
+			d.attackT = now
+		end
+		if model:GetAttribute("Dead") and not d.deadT then
+			d.deadT = now
+		end
+
+		-- piscada branca rápida ao levar dano
+		d.highlight.Enabled = now - d.hitT < 0.07 and not d.deadT
+
+		local cf
+		if d.deadT then
+			local t = math.min(1, (now - d.deadT) / 0.45)
+			cf = CFrame.new(0, -t * d.height * 0.4, 0) * CFrame.Angles(math.rad(85) * easeOut(t), 0, 0)
+		else
+			local velocity = d.root.AssemblyLinearVelocity
+			local speed = Vector3.new(velocity.X, 0, velocity.Z).Magnitude
+			local moving = math.min(speed / 8, 1)
+			d.walk += dt * (6 + speed * 0.4) / d.scale
+			local bob = math.abs(math.sin(d.walk)) * 0.35 * d.scale * moving
+			local sway = math.sin(d.walk) * math.rad(9) * moving
+			local breathe = math.sin(now * 2 + d.walk) * 0.05 * d.scale
+
+			local lunge, tilt = 0, 0
+			local attackT = (now - d.attackT) / 0.35
+			if attackT < 1 then
+				local curve = math.sin(attackT * math.pi)
+				lunge = curve * 1.4 * d.scale
+				tilt = curve * math.rad(18)
+			end
+			local recoil = math.max(0, 1 - (now - d.hitT) / 0.15)
+			local rise = easeOut(math.min(1, (now - d.spawnT) / 0.45))
+
+			cf = CFrame.new(0, bob + breathe - (1 - rise) * d.height, -lunge + recoil * 0.4 * d.scale)
+				* CFrame.Angles(-tilt + recoil * math.rad(12), 0, sway)
+		end
+		d.joint.C0 = d.base * cf
+	end
+end
+
+function Animator.Init(vfx)
+	VFX = vfx
+	VFX.On("swing", Animator.Swing)
+	CollectionService:GetInstanceAddedSignal("Enemy"):Connect(function(model)
+		task.spawn(track, model)
+	end)
+	for _, model in CollectionService:GetTagged("Enemy") do
+		task.spawn(track, model)
+	end
+	RunService.RenderStepped:Connect(stepEnemies)
+end
+
+return Animator
+]]></string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="31">
+            <Properties>
+              <string name="Name">Feedback</string>
+              <string name="Source"><![CDATA[-- Números de dano flutuantes + faísca no ponto do acerto.
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+
+local Net = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Net"))
+
+local Feedback = {}
+
+local LIFETIME = 0.75
+local VFX -- injetado no Init
+
+local function showNumber(position, amount, color)
+	VFX.HitSpark(position, color or Color3.new(1, 1, 1))
+
+	-- Attachment no Terrain = ponto fixo no mundo para prender o BillboardGui
+	local anchor = Instance.new("Attachment")
+	anchor.Position = position
+	anchor.Parent = workspace.Terrain
+
+	-- golpes fortes aparecem maiores
+	local big = amount >= 100
+	local size = big and 110 or (amount >= 40 and 80 or 60)
+	local gui = Instance.new("BillboardGui")
+	gui.Size = UDim2.fromOffset(size, size * 0.4)
+	gui.AlwaysOnTop = true
+	gui.MaxDistance = 120
+	gui.StudsOffsetWorldSpace = Vector3.new((math.random() - 0.5) * 2.5, 1, (math.random() - 0.5) * 2.5)
+	gui.Adornee = anchor
+	gui.Parent = anchor
+
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.Size = UDim2.fromScale(1, 1)
+	label.Font = Enum.Font.GothamBlack
+	label.TextScaled = true
+	label.Text = big and (tostring(amount) .. "!") or tostring(amount)
+	label.TextColor3 = big and Color3.fromRGB(255, 220, 90) or (color or Color3.new(1, 1, 1))
+	label.TextStrokeTransparency = 0
+	label.Parent = gui
+
+	-- "pula" e depois sobe sumindo
+	local scale = Instance.new("UIScale")
+	scale.Scale = 1.6
+	scale.Parent = label
+	TweenService:Create(scale, TweenInfo.new(0.12, Enum.EasingStyle.Back), { Scale = 1 }):Play()
+	local info = TweenInfo.new(LIFETIME, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	TweenService:Create(gui, TweenInfo.new(LIFETIME), { StudsOffsetWorldSpace = gui.StudsOffsetWorldSpace + Vector3.new(0, 3.5, 0) }):Play()
+	TweenService:Create(label, info, { TextTransparency = 1, TextStrokeTransparency = 1 }):Play()
+	Debris:AddItem(anchor, LIFETIME + 0.1)
+end
+
+function Feedback.Init(vfx)
+	VFX = vfx
+	Net.DamageNumber.OnClientEvent:Connect(showNumber)
+end
+
+return Feedback
+]]></string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="32">
+            <Properties>
+              <string name="Name">Input</string>
+              <string name="Source"><![CDATA[-- Controles: clique = ataque básico (segurar repete), Q = esquiva, 1-4 = ultimates.
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local Net = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Net"))
+
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+
+local Input = {}
+
+local DASH_COOLDOWN = 2.5
+local DASH_SPEED = 85
+local DASH_TIME = 0.18
+local ATTACK_INTERVAL = 0.32 -- precisa ser >= BasicAttack.cooldown (Config/Game.luau)
+
+local ULTIMATE_KEYS = {
+	[Enum.KeyCode.One] = 1,
+	[Enum.KeyCode.Two] = 2,
+	[Enum.KeyCode.Three] = 3,
+	[Enum.KeyCode.Four] = 4,
+}
+
+local lastDash = 0
+local attacking = false
+
+local function getCharacter()
+	local character = player.Character
+	if not character then
+		return nil, nil
+	end
+	return character:FindFirstChild("HumanoidRootPart"), character:FindFirstChildOfClass("Humanoid")
+end
+
+local function attack()
+	local root, humanoid = getCharacter()
+	if not root or not humanoid or humanoid.Health <= 0 then
+		return
+	end
+	local direction = mouse.Hit.Position - root.Position
+	if Vector3.new(direction.X, 0, direction.Z).Magnitude < 0.5 then
+		direction = root.CFrame.LookVector
+	end
+	Net.BasicAttack:FireServer(direction)
+end
+
+local function dash()
+	local root, humanoid = getCharacter()
+	if not root or not humanoid or humanoid.Health <= 0 then
+		return
+	end
+	local now = os.clock()
+	if now - lastDash < DASH_COOLDOWN then
+		return
+	end
+	lastDash = now
+
+	local direction = humanoid.MoveDirection
+	if direction.Magnitude < 0.1 then
+		direction = root.CFrame.LookVector
+	end
+	direction = Vector3.new(direction.X, 0, direction.Z).Unit
+
+	local attachment = root:FindFirstChild("RootAttachment")
+	if not attachment then
+		attachment = Instance.new("Attachment")
+		attachment.Name = "RootAttachment"
+		attachment.Parent = root
+	end
+	local velocity = Instance.new("LinearVelocity")
+	velocity.Attachment0 = attachment
+	velocity.MaxForce = math.huge
+	velocity.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+	velocity.RelativeTo = Enum.ActuatorRelativeTo.World
+	velocity.VectorVelocity = direction * DASH_SPEED
+	velocity.Parent = root
+	task.delay(DASH_TIME, function()
+		velocity:Destroy()
+	end)
+end
+
+function Input.GetDashCooldown()
+	return math.max(0, DASH_COOLDOWN - (os.clock() - lastDash)), DASH_COOLDOWN
+end
+
+function Input.Init()
+	UserInputService.InputBegan:Connect(function(input, processed)
+		if processed then
+			return
+		end
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			if attacking then
+				return
+			end
+			attacking = true
+			task.spawn(function()
+				while attacking do
+					attack()
+					task.wait(ATTACK_INTERVAL)
+				end
+			end)
+		elseif input.KeyCode == Enum.KeyCode.Q then
+			dash()
+		elseif ULTIMATE_KEYS[input.KeyCode] then
+			Net.CastUltimate:FireServer(ULTIMATE_KEYS[input.KeyCode])
+		end
+	end)
+
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then
+			attacking = false
+		end
+	end)
+end
+
+return Input
+]]></string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="33">
+            <Properties>
+              <string name="Name">UI</string>
+              <string name="Source"><![CDATA[-- HUD: perfil da conta, estado da run, slots de poder, barras de vida/XP,
+-- painel de level up com 3 cartas e avisos na tela.
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
+local Net = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Net"))
+
+local player = Players.LocalPlayer
+
+local UI = {}
+
+local C = {
+	panel = Color3.fromRGB(28, 22, 18),
+	panelLight = Color3.fromRGB(58, 46, 36),
+	gold = Color3.fromRGB(235, 190, 90),
+	text = Color3.fromRGB(245, 235, 215),
+	muted = Color3.fromRGB(170, 155, 135),
+	hp = Color3.fromRGB(220, 60, 60),
+	xp = Color3.fromRGB(90, 200, 255),
+	shield = Color3.fromRGB(140, 220, 255),
+	dark = Color3.fromRGB(16, 12, 10),
+}
+local FONT_TITLE = Enum.Font.GothamBlack
+local FONT_BODY = Enum.Font.GothamBold
+
+local KIND_BADGE = {
+	new = "NOVO PODER",
+	upgrade = "EVOLUÇÃO",
+	ultimate = "ULTIMATE",
+	stat = "ATRIBUTO",
+}
+
+-- helpers ----------------------------------------------------------------------
+
+local function new(className, props, children)
+	local instance = Instance.new(className)
+	local parent = props.Parent
+	props.Parent = nil
+	for key, value in props do
+		instance[key] = value
+	end
+	if children then
+		for _, child in children do
+			child.Parent = instance
+		end
+	end
+	instance.Parent = parent
+	return instance
+end
+
+local function corner(radius)
+	return new("UICorner", { CornerRadius = UDim.new(0, radius or 6) })
+end
+
+local function stroke(color, thickness)
+	return new("UIStroke", { Color = color, Thickness = thickness or 1.5, ApplyStrokeMode = Enum.ApplyStrokeMode.Border })
+end
+
+local function text(props)
+	props.BackgroundTransparency = 1
+	props.TextColor3 = props.TextColor3 or C.text
+	props.Font = props.Font or FONT_BODY
+	props.TextSize = props.TextSize or 14
+	return new("TextLabel", props)
+end
+
+local function makeBar(parent, size, position, color)
+	local back = new("Frame", {
+		Parent = parent,
+		Size = size,
+		Position = position,
+		BackgroundColor3 = C.dark,
+		BorderSizePixel = 0,
+	}, { corner(4), stroke(C.gold, 1) })
+	local fill = new("Frame", { Parent = back, Size = UDim2.fromScale(1, 1), BackgroundColor3 = color, BorderSizePixel = 0 }, { corner(4) })
+	local label = text({ Parent = back, Size = UDim2.fromScale(1, 1), TextSize = 12, Text = "", ZIndex = 3 })
+	return { back = back, fill = fill, label = label }
+end
+
+local function setBar(bar, ratio)
+	bar.fill.Size = UDim2.fromScale(math.clamp(ratio, 0, 1), 1)
+end
+
+local function formatTime(seconds)
+	return string.format("%02d:%02d", math.floor(seconds / 60), math.floor(seconds % 60))
+end
+
+-- slot de poder ----------------------------------------------------------------
+
+local function makeSlot(parent, index)
+	local frame = new("Frame", {
+		Parent = parent,
+		Size = UDim2.fromOffset(120, 84),
+		BackgroundColor3 = C.panel,
+		BackgroundTransparency = 0.1,
+		LayoutOrder = index,
+		ClipsDescendants = true,
+	}, { corner(8) })
+	local border = stroke(C.panelLight, 2)
+	border.Parent = frame
+	local strip = new("Frame", { Parent = frame, Size = UDim2.new(1, 0, 0, 5), BackgroundColor3 = C.panelLight, BorderSizePixel = 0 })
+	local name = text({
+		Parent = frame,
+		Position = UDim2.fromOffset(8, 10),
+		Size = UDim2.new(1, -30, 0, 18),
+		TextSize = 13,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextTruncate = Enum.TextTruncate.AtEnd,
+		Text = "Vazio",
+		TextColor3 = C.muted,
+	})
+	text({
+		Parent = frame,
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -6, 0, 9),
+		Size = UDim2.fromOffset(18, 18),
+		Font = FONT_TITLE,
+		TextSize = 15,
+		Text = tostring(index),
+		TextColor3 = C.muted,
+	})
+	local pips = {}
+	for i = 1, 4 do
+		pips[i] = new("Frame", {
+			Parent = frame,
+			Position = UDim2.fromOffset(8 + (i - 1) * 26, 32),
+			Size = UDim2.fromOffset(22, 6),
+			BackgroundColor3 = C.dark,
+			BorderSizePixel = 0,
+		}, { corner(2) })
+	end
+	local ult = text({
+		Parent = frame,
+		Position = UDim2.fromOffset(8, 44),
+		Size = UDim2.new(1, -16, 0, 34),
+		TextSize = 11,
+		TextWrapped = true,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextYAlignment = Enum.TextYAlignment.Top,
+		Text = "",
+		TextColor3 = C.muted,
+	})
+	local cooldown = new("Frame", {
+		Parent = frame,
+		AnchorPoint = Vector2.new(0, 1),
+		Position = UDim2.fromScale(0, 1),
+		Size = UDim2.fromScale(1, 0),
+		BackgroundColor3 = Color3.new(0, 0, 0),
+		BackgroundTransparency = 0.5,
+		BorderSizePixel = 0,
+	})
+	return { frame = frame, border = border, strip = strip, name = name, pips = pips, ult = ult, cooldown = cooldown }
+end
+
+local function updateSlot(slot, data)
+	if not data then
+		slot.name.Text = "Vazio"
+		slot.name.TextColor3 = C.muted
+		slot.strip.BackgroundColor3 = C.panelLight
+		slot.border.Color = C.panelLight
+		slot.ult.Text = ""
+		slot.cooldown.Size = UDim2.fromScale(1, 0)
+		for _, pip in slot.pips do
+			pip.BackgroundColor3 = C.dark
+		end
+		return
+	end
+	slot.name.Text = data.name
+	slot.name.TextColor3 = C.text
+	slot.strip.BackgroundColor3 = data.color
+	for i, pip in slot.pips do
+		if i <= data.tier then
+			pip.BackgroundColor3 = i == 4 and C.gold or data.color
+		else
+			pip.BackgroundColor3 = C.dark
+		end
+	end
+	if data.ult then
+		if data.ultCd > 0 then
+			slot.ult.Text = string.format("ULT em %ds", math.ceil(data.ultCd))
+			slot.ult.TextColor3 = C.muted
+			slot.border.Color = data.color
+			slot.cooldown.Size = UDim2.fromScale(1, data.ultCd / data.ultMax)
+		else
+			slot.ult.Text = "ULT PRONTA!\n" .. data.ult
+			slot.ult.TextColor3 = C.gold
+			slot.border.Color = C.gold
+			slot.cooldown.Size = UDim2.fromScale(1, 0)
+		end
+	else
+		slot.ult.Text = "Nv " .. data.tier .. "/4"
+		slot.ult.TextColor3 = C.muted
+		slot.border.Color = data.color
+		slot.cooldown.Size = UDim2.fromScale(1, 0)
+	end
+end
+
+-- construção da interface ----------------------------------------------------------
+
+function UI.Init()
+	local gui = new("ScreenGui", {
+		Name = "HUD",
+		ResetOnSpawn = false,
+		IgnoreGuiInset = true,
+		ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+		Parent = player:WaitForChild("PlayerGui"),
+	})
+
+	-- perfil (canto superior direito) ----------------------------------------------
+	local profile = new("Frame", {
+		Parent = gui,
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -16, 0, 16),
+		Size = UDim2.fromOffset(240, 74),
+		BackgroundColor3 = C.panel,
+		BackgroundTransparency = 0.15,
+	}, { corner(8), stroke(C.gold, 1.5) })
+	local profileLevel = text({
+		Parent = profile,
+		Position = UDim2.fromOffset(12, 8),
+		Size = UDim2.new(0.5, -12, 0, 20),
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Font = FONT_TITLE,
+		TextSize = 16,
+		TextColor3 = C.gold,
+		Text = "NV 1",
+	})
+	local profileGold = text({
+		Parent = profile,
+		AnchorPoint = Vector2.new(1, 0),
+		Position = UDim2.new(1, -12, 0, 8),
+		Size = UDim2.new(0.5, -12, 0, 20),
+		TextXAlignment = Enum.TextXAlignment.Right,
+		TextSize = 15,
+		Text = "0 ouro",
+	})
+	local accountBar = makeBar(profile, UDim2.new(1, -24, 0, 10), UDim2.fromOffset(12, 34), C.xp)
+	local profileProgress = text({
+		Parent = profile,
+		Position = UDim2.fromOffset(12, 50),
+		Size = UDim2.new(1, -24, 0, 16),
+		TextXAlignment = Enum.TextXAlignment.Left,
+		TextSize = 12,
+		TextColor3 = C.muted,
+		Text = "Masmorras: 0",
+	})
+
+	-- dica do lobby ---------------------------------------------------------------
+	local lobbyHint = text({
+		Parent = gui,
+		AnchorPoint = Vector2.new(0.5, 1),
+		Position = UDim2.new(0.5, 0, 1, -24),
+		Size = UDim2.fromOffset(700, 24),
+		TextSize = 15,
+		TextStrokeTransparency = 0.4,
+		Text = "Entre em um portal com seus amigos  ·  [Clique] atacar  ·  [Q] esquivar  ·  [1-4] ultimates",
+	})
+
+	-- HUD da run ------------------------------------------------------------------------
+	local runFrame = new("Frame", { Parent = gui, Size = UDim2.fromScale(1, 1), BackgroundTransparency = 1, Visible = false })
+
+	local top = new("Frame", {
+		Parent = runFrame,
+		AnchorPoint = Vector2.new(0.5, 0),
+		Position = UDim2.new(0.5, 0, 0, 14),
+		Size = UDim2.fromOffset(520, 90),
+		BackgroundTransparency = 1,
+	})
+	local dungeonLabel = text({
+		Parent = top,
+		Size = UDim2.new(1, 0, 0, 28),
+		Font = FONT_TITLE,
+		TextSize = 24,
+		TextColor3 = C.gold,
+		TextStrokeTransparency = 0.5,
+	})
+	local waveLabel = text({
+		Parent = top,
+		Position = UDim2.fromOffset(0, 30),
+		Size = UDim2.new(1, 0, 0, 20),
+		TextSize = 16,
+		TextStrokeTransparency = 0.5,
+	})
+	local bossBar = makeBar(top, UDim2.new(1, 0, 0, 22), UDim2.fromOffset(0, 56), C.hp)
+	bossBar.back.Visible = false
+
+	local statsPanel = new("Frame", {
+		Parent = runFrame,
+		Position = UDim2.fromOffset(16, 70),
+		Size = UDim2.fromOffset(170, 88),
+		BackgroundColor3 = C.panel,
+		BackgroundTransparency = 0.25,
+	}, {
+		corner(8),
+		stroke(C.panelLight, 1.5),
+		new("UIPadding", { PaddingLeft = UDim.new(0, 10), PaddingTop = UDim.new(0, 8) }),
+		new("UIListLayout", { Padding = UDim.new(0, 2) }),
+	})
+	local function statLine(order)
+		return text({
+			Parent = statsPanel,
+			LayoutOrder = order,
+			Size = UDim2.new(1, -10, 0, 18),
+			TextXAlignment = Enum.TextXAlignment.Left,
+			TextSize = 14,
+		})
+	end
+	local timeLabel = statLine(1)
+	local killsLabel = statLine(2)
+	local goldLabel = statLine(3)
+	local enemiesLabel = statLine(4)
+
+	local bottom = new("Frame", {
+		Parent = runFrame,
+		AnchorPoint = Vector2.new(0.5, 1),
+		Position = UDim2.new(0.5, 0, 1, -14),
+		Size = UDim2.fromOffset(560, 146),
+		BackgroundTransparency = 1,
+	})
+	local slotsRow = new("Frame", { Parent = bottom, Size = UDim2.new(1, 0, 0, 84), BackgroundTransparency = 1 }, {
+		new("UIListLayout", {
+			FillDirection = Enum.FillDirection.Horizontal,
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Padding = UDim.new(0, 10),
+		}),
+	})
+	local slots = {}
+	for i = 1, 4 do
+		slots[i] = makeSlot(slotsRow, i)
+	end
+	local hpBar = makeBar(bottom, UDim2.new(1, 0, 0, 20), UDim2.fromOffset(0, 94), C.hp)
+	local shieldFill = new("Frame", {
+		Parent = hpBar.back,
+		Size = UDim2.fromScale(0, 1),
+		BackgroundColor3 = C.shield,
+		BackgroundTransparency = 0.3,
+		BorderSizePixel = 0,
+		ZIndex = 2,
+	}, { corner(4) })
+	local levelLabel = text({
+		Parent = bottom,
+		Position = UDim2.fromOffset(0, 120),
+		Size = UDim2.fromOffset(64, 22),
+		Font = FONT_TITLE,
+		TextSize = 18,
+		TextColor3 = C.gold,
+		TextXAlignment = Enum.TextXAlignment.Left,
+		Text = "NV 1",
+	})
+	local xpBar = makeBar(bottom, UDim2.new(1, -70, 0, 14), UDim2.fromOffset(70, 124), C.xp)
+
+	-- flash de dano -----------------------------------------------------------------
+	local hurtFlash = new("Frame", {
+		Parent = gui,
+		Size = UDim2.fromScale(1, 1),
+		BackgroundColor3 = C.hp,
+		BackgroundTransparency = 1,
+		ZIndex = 5,
+	})
+
+	-- painel de level up ----------------------------------------------------------------
+	local levelPanel = new("Frame", {
+		Parent = gui,
+		Size = UDim2.fromScale(1, 1),
+		BackgroundColor3 = Color3.new(0, 0, 0),
+		BackgroundTransparency = 0.55,
+		Visible = false,
+		ZIndex = 10,
+	})
+	local levelTitle = text({
+		Parent = levelPanel,
+		AnchorPoint = Vector2.new(0.5, 0),
+		Position = UDim2.new(0.5, 0, 0.14, 0),
+		Size = UDim2.fromOffset(700, 40),
+		Font = FONT_TITLE,
+		TextSize = 34,
+		TextColor3 = C.gold,
+		TextStrokeTransparency = 0.4,
+		Text = "SUBIU DE NÍVEL!",
+	})
+	text({
+		Parent = levelPanel,
+		AnchorPoint = Vector2.new(0.5, 0),
+		Position = UDim2.new(0.5, 0, 0.14, 44),
+		Size = UDim2.fromOffset(700, 22),
+		TextSize = 16,
+		TextColor3 = C.muted,
+		Text = "Escolha uma carta — o jogo continua rolando!",
+	})
+	local cardsRow = new("Frame", {
+		Parent = levelPanel,
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		Position = UDim2.fromScale(0.5, 0.55),
+		Size = UDim2.fromOffset(760, 330),
+		BackgroundTransparency = 1,
+	}, {
+		new("UIListLayout", {
+			FillDirection = Enum.FillDirection.Horizontal,
+			HorizontalAlignment = Enum.HorizontalAlignment.Center,
+			VerticalAlignment = Enum.VerticalAlignment.Center,
+			SortOrder = Enum.SortOrder.LayoutOrder,
+			Padding = UDim.new(0, 20),
+		}),
+	})
+
+	local function makeCard(index, card)
+		local button = new("TextButton", {
+			Parent = cardsRow,
+			LayoutOrder = index,
+			Size = UDim2.fromOffset(230, 320),
+			BackgroundColor3 = C.panel,
+			AutoButtonColor = true,
+			Text = "",
+		}, { corner(10), stroke(card.color, 2.5) })
+		new("Frame", { Parent = button, Size = UDim2.new(1, 0, 0, 10), BackgroundColor3 = card.color, BorderSizePixel = 0 }, { corner(10) })
+		text({
+			Parent = button,
+			Position = UDim2.fromOffset(0, 22),
+			Size = UDim2.new(1, 0, 0, 18),
+			TextSize = 13,
+			TextColor3 = card.kind == "ultimate" and C.gold or card.color,
+			Text = KIND_BADGE[card.kind] or "",
+		})
+		text({
+			Parent = button,
+			Position = UDim2.fromOffset(12, 48),
+			Size = UDim2.new(1, -24, 0, 56),
+			Font = FONT_TITLE,
+			TextSize = 22,
+			TextWrapped = true,
+			Text = card.title,
+		})
+		text({
+			Parent = button,
+			Position = UDim2.fromOffset(12, 110),
+			Size = UDim2.new(1, -24, 0, 22),
+			TextSize = 16,
+			TextColor3 = card.color,
+			TextWrapped = true,
+			Text = card.ability,
+		})
+		text({
+			Parent = button,
+			Position = UDim2.fromOffset(16, 142),
+			Size = UDim2.new(1, -32, 0, 100),
+			TextSize = 14,
+			TextWrapped = true,
+			TextYAlignment = Enum.TextYAlignment.Top,
+			TextColor3 = C.muted,
+			Text = card.desc,
+		})
+		local footer = ""
+		if card.kind == "ultimate" then
+			footer = string.format("Manual · recarga %ds", card.cd)
+		elseif card.cd then
+			footer = string.format("Automática · recarga %ds", card.cd)
+		end
+		text({
+			Parent = button,
+			AnchorPoint = Vector2.new(0, 1),
+			Position = UDim2.new(0, 12, 1, -40),
+			Size = UDim2.new(1, -24, 0, 18),
+			TextSize = 12,
+			TextColor3 = C.muted,
+			Text = footer,
+		})
+		if card.tier > 0 then
+			for i = 1, 4 do
+				new("Frame", {
+					Parent = button,
+					AnchorPoint = Vector2.new(0.5, 1),
+					Position = UDim2.new(0.5, (i - 2.5) * 34, 1, -16),
+					Size = UDim2.fromOffset(28, 8),
+					BackgroundColor3 = i <= card.tier and (i == 4 and C.gold or card.color) or C.dark,
+					BorderSizePixel = 0,
+				}, { corner(2) })
+			end
+		end
+		return button
+	end
+
+	local function showOffer(cards, level)
+		for _, child in cardsRow:GetChildren() do
+			if child:IsA("GuiObject") then
+				child:Destroy()
+			end
+		end
+		if not cards then
+			levelPanel.Visible = false
+			return
+		end
+		levelTitle.Text = level == 1 and "ESCOLHA SEU PRIMEIRO PODER" or ("NÍVEL " .. tostring(level) .. "!")
+		local chosen = false
+		for i, card in cards do
+			local button = makeCard(i, card)
+			button.MouseButton1Click:Connect(function()
+				if chosen then
+					return
+				end
+				chosen = true
+				levelPanel.Visible = false
+				Net.ChooseCard:FireServer(i)
+			end)
+		end
+		levelPanel.Visible = true
+		cardsRow.Position = UDim2.fromScale(0.5, 0.62)
+		TweenService:Create(cardsRow, TweenInfo.new(0.25, Enum.EasingStyle.Back), { Position = UDim2.fromScale(0.5, 0.55) }):Play()
+	end
+
+	-- avisos --------------------------------------------------------------------------
+	local toastTitle = text({
+		Parent = gui,
+		AnchorPoint = Vector2.new(0.5, 0),
+		Position = UDim2.new(0.5, 0, 0.2, 0),
+		Size = UDim2.fromOffset(800, 40),
+		Font = FONT_TITLE,
+		TextSize = 32,
+		TextColor3 = C.gold,
+		TextStrokeTransparency = 0.3,
+		TextTransparency = 1,
+		ZIndex = 20,
+	})
+	local toastSub = text({
+		Parent = gui,
+		AnchorPoint = Vector2.new(0.5, 0),
+		Position = UDim2.new(0.5, 0, 0.2, 42),
+		Size = UDim2.fromOffset(800, 24),
+		TextSize = 17,
+		TextStrokeTransparency = 0.4,
+		TextTransparency = 1,
+		ZIndex = 20,
+	})
+	local toastToken = 0
+	local function notify(title, subtitle)
+		toastToken += 1
+		local token = toastToken
+		toastTitle.Text = title or ""
+		toastSub.Text = subtitle or ""
+		toastTitle.TextTransparency = 0
+		toastSub.TextTransparency = 0
+		task.delay(2.8, function()
+			if toastToken == token then
+				local info = TweenInfo.new(0.6)
+				TweenService:Create(toastTitle, info, { TextTransparency = 1 }):Play()
+				TweenService:Create(toastSub, info, { TextTransparency = 1 }):Play()
+			end
+		end)
+	end
+
+	-- eventos do servidor -------------------------------------------------------------
+	local runState = { inRun = false }
+
+	Net.RunState.OnClientEvent:Connect(function(state)
+		runState = state
+		runFrame.Visible = state.inRun
+		lobbyHint.Visible = not state.inRun
+		if not state.inRun then
+			levelPanel.Visible = false
+			return
+		end
+		dungeonLabel.Text = string.upper(state.dungeon)
+		if state.wave > state.waves then
+			waveLabel.Text = "CHEFE"
+		elseif state.wave == 0 then
+			waveLabel.Text = "Preparando..."
+		else
+			waveLabel.Text = string.format("Onda %d/%d", state.wave, state.waves)
+		end
+		if state.boss then
+			bossBar.back.Visible = true
+			setBar(bossBar, state.boss.hp / state.boss.max)
+			bossBar.label.Text = string.format("%s  ·  %d/%d", state.boss.name, math.ceil(state.boss.hp), math.floor(state.boss.max))
+		else
+			bossBar.back.Visible = false
+		end
+		timeLabel.Text = "Tempo  " .. formatTime(state.time)
+		killsLabel.Text = "Abates  " .. state.kills
+		goldLabel.Text = "Ouro  " .. state.gold
+		enemiesLabel.Text = "Inimigos  " .. state.enemies
+		levelLabel.Text = "NV " .. state.level
+		setBar(xpBar, state.xp / state.xpNeed)
+		xpBar.label.Text = string.format("%d / %d XP", state.xp, state.xpNeed)
+		for i = 1, 4 do
+			updateSlot(slots[i], state.slots[i])
+		end
+	end)
+
+	Net.LevelUpOffer.OnClientEvent:Connect(showOffer)
+	Net.Notify.OnClientEvent:Connect(notify)
+
+	Net.Profile.OnClientEvent:Connect(function(data)
+		profileLevel.Text = "CONTA NV " .. data.level
+		profileGold.Text = data.gold .. " ouro"
+		setBar(accountBar, data.xp / data.xpNeed)
+		profileProgress.Text = string.format("Masmorras concluídas: %d/%d", data.cleared, data.totalDungeons)
+	end)
+	Net.Profile:FireServer() -- pede o perfil agora que o HUD está pronto
+
+	-- vida e escudo (lidos direto do personagem) --------------------------------------
+	local lastHealth = nil
+	RunService.RenderStepped:Connect(function()
+		local character = player.Character
+		local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+		if not humanoid then
+			lastHealth = nil
+			return
+		end
+		local maxHealth = math.max(1, humanoid.MaxHealth)
+		setBar(hpBar, humanoid.Health / maxHealth)
+		local shield = math.floor(runState.inRun and runState.shield or 0)
+		shieldFill.Size = UDim2.fromScale(math.clamp(shield / maxHealth, 0, 1), 1)
+		hpBar.label.Text = string.format("%d / %d%s", math.ceil(humanoid.Health), math.floor(maxHealth), shield > 0 and string.format("  (+%d escudo)", shield) or "")
+
+		if lastHealth and humanoid.Health < lastHealth - 0.5 then
+			hurtFlash.BackgroundTransparency = 0.75
+			TweenService:Create(hurtFlash, TweenInfo.new(0.3), { BackgroundTransparency = 1 }):Play()
+		end
+		lastHealth = humanoid.Health
+	end)
+end
+
+return UI
+]]></string>
+            </Properties>
+          </Item>
+          <Item class="ModuleScript" referent="34">
+            <Properties>
+              <string name="Name">VFX</string>
+              <string name="Source"><![CDATA[--[[
+	Desenha todos os efeitos visuais no cliente.
+
+	- Efeitos instantâneos chegam pelo remote "Fx" (explosão, golpe do céu, raio, morte...).
+	- Objetos que duram (projéteis, lâminas, zonas, orbes) são Parts do servidor em workspace.FX
+	  com o atributo "Fx"; aqui eles ganham rastro, brilho, partículas e forma (espada, lança...).
+
+	Quer trocar um efeito por um pack baixado (Toolbox/Creator Store)?
+	Coloque o modelo em ReplicatedStorage.Assets.VFX com um destes nomes:
+	  Explosion, Hit, Death, Spawn, LevelUp, Strike_sword, Strike_meteor, Strike_lightning,
+	  Strike_orbital, Strike_void, Strike_pillar
+	Todo ParticleEmitter dentro dele é disparado (atributo EmitCount = quantidade, padrão 25),
+	escalado pelo raio do efeito. Os efeitos padrão abaixo continuam sendo usados se não houver modelo.
+]]
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+local Debris = game:GetService("Debris")
+
+local Net = require(ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Net"))
+
+local player = Players.LocalPlayer
+
+local VFX = {}
+
+-- texturas que já vêm com o Roblox (não precisam de upload)
+local TEX = {
+	spark = "rbxasset://textures/particles/sparkles_main.dds",
+	fire = "rbxasset://textures/particles/fire_main.dds",
+	fireSpark = "rbxasset://textures/particles/fire_sparks_main.dds",
+	smoke = "rbxasset://textures/particles/smoke_main.dds",
+	core = "rbxasset://textures/particles/explosion01_core_main.dds",
+	shock = "rbxasset://textures/particles/explosion01_shockwave_main.dds",
+	implode = "rbxasset://textures/particles/explosion01_implosion_main.dds",
+	glow = "rbxasset://textures/particles/forcefield_glow_main.dds",
+	vortex = "rbxasset://textures/particles/forcefield_vortex_main.dds",
+}
+local SOUND = {
+	slash = "rbxasset://sounds/swordslash.wav",
+	lunge = "rbxasset://sounds/swordlunge.wav",
+	ping = "rbxasset://sounds/electronicpingshort.wav",
+}
+local WHITE = Color3.new(1, 1, 1)
+local GOLD = Color3.fromRGB(255, 210, 90)
+
+local fxFolder = Instance.new("Folder")
+fxFolder.Name = "ClientFX"
+fxFolder.Parent = workspace
+
+-- utilidades ----------------------------------------------------------------------
+
+local function tween(instance, time, props, style, direction)
+	local t = TweenService:Create(instance, TweenInfo.new(time, style or Enum.EasingStyle.Quad, direction or Enum.EasingDirection.Out), props)
+	t:Play()
+	return t
+end
+
+local function neon(shape, size, cframe, color, transparency)
+	local part = Instance.new("Part")
+	part.Shape = shape
+	part.Size = size
+	part.CFrame = cframe
+	part.Color = color
+	part.Material = Enum.Material.Neon
+	part.Transparency = transparency or 0
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = false
+	part.Parent = fxFolder
+	return part
+end
+
+local function holder(cframe, size)
+	local part = neon(Enum.PartType.Block, size or Vector3.one, cframe, WHITE, 1)
+	return part
+end
+
+local function particles(parent, props)
+	local emitter = Instance.new("ParticleEmitter")
+	emitter.Enabled = false
+	emitter.LightEmission = 1
+	emitter.LightInfluence = 0
+	emitter.Texture = TEX.spark
+	for key, value in props do
+		emitter[key] = value
+	end
+	emitter.Parent = parent
+	return emitter
+end
+
+local function pointLight(parent, color, range, brightness, time)
+	local light = Instance.new("PointLight")
+	light.Color = color
+	light.Range = math.min(range, 60)
+	light.Brightness = brightness
+	light.Shadows = false
+	light.Parent = parent
+	if time then
+		tween(light, time, { Brightness = 0 })
+	end
+	return light
+end
+
+local function trail(part, offsetA, offsetB, color, lifetime)
+	local a0 = Instance.new("Attachment")
+	a0.Position = offsetA
+	a0.Parent = part
+	local a1 = Instance.new("Attachment")
+	a1.Position = offsetB
+	a1.Parent = part
+	local t = Instance.new("Trail")
+	t.Attachment0 = a0
+	t.Attachment1 = a1
+	t.Color = ColorSequence.new(WHITE, color)
+	t.Transparency = NumberSequence.new(0.1, 1)
+	t.WidthScale = NumberSequence.new(1, 0.2)
+	t.Lifetime = lifetime or 0.25
+	t.LightEmission = 1
+	t.LightInfluence = 0
+	t.Parent = part
+	return t
+end
+
+local function playSound(id, position, volume, speed)
+	local h = holder(CFrame.new(position))
+	local sound = Instance.new("Sound")
+	sound.SoundId = id
+	sound.Volume = volume or 0.5
+	sound.PlaybackSpeed = (speed or 1) * (0.9 + math.random() * 0.2)
+	sound.RollOffMaxDistance = 120
+	sound.Parent = h
+	sound:Play()
+	Debris:AddItem(h, 2)
+end
+VFX.PlaySound = playSound
+VFX.Sounds = SOUND
+
+-- modelo de efeito baixado (ReplicatedStorage.Assets.VFX)
+local function playTemplate(name, position, radius)
+	local assets = ReplicatedStorage:FindFirstChild("Assets")
+	local folder = assets and assets:FindFirstChild("VFX")
+	local template = folder and folder:FindFirstChild(name)
+	if not template then
+		return false
+	end
+	local clone = template:Clone()
+	if clone:IsA("Model") then
+		clone:PivotTo(CFrame.new(position))
+	elseif clone:IsA("BasePart") then
+		clone.CFrame = CFrame.new(position)
+	end
+	for _, descendant in clone:GetDescendants() do
+		if descendant:IsA("BasePart") then
+			descendant.Anchored = true
+			descendant.CanCollide = false
+			descendant.CanQuery = false
+		end
+	end
+	clone.Parent = fxFolder
+	local scale = math.max(0.3, (radius or 5) / 5)
+	for _, descendant in clone:GetDescendants() do
+		if descendant:IsA("ParticleEmitter") then
+			if scale ~= 1 then
+				local points = {}
+				for _, point in descendant.Size.Keypoints do
+					table.insert(points, NumberSequenceKeypoint.new(point.Time, point.Value * scale, point.Envelope * scale))
+				end
+				descendant.Size = NumberSequence.new(points)
+			end
+			descendant:Emit(descendant:GetAttribute("EmitCount") or 25)
+		end
+	end
+	Debris:AddItem(clone, 4)
+	return true
+end
+
+-- tremor de câmera -------------------------------------------------------------------
+
+local trauma = 0
+
+function VFX.Shake(intensity)
+	trauma = math.min(1, trauma + intensity)
+end
+
+local function shakeNear(pos, intensity, radius)
+	local character = player.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if not root then
+		return
+	end
+	local dist = (root.Position - pos).Magnitude
+	if dist < radius then
+		VFX.Shake(intensity * (1 - dist / radius))
+	end
+end
+
+RunService.RenderStepped:Connect(function(dt)
+	local character = player.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then
+		return
+	end
+	if trauma > 0 then
+		local power = trauma * trauma * 1.4
+		humanoid.CameraOffset = Vector3.new((math.random() - 0.5) * power, (math.random() - 0.5) * power, (math.random() - 0.5) * power)
+		trauma = math.max(0, trauma - dt * 2.2)
+	elseif humanoid.CameraOffset ~= Vector3.zero then
+		humanoid.CameraOffset = Vector3.zero
+	end
+end)
+
+-- peças básicas de efeito -------------------------------------------------------------
+
+local function groundRing(pos, radius, color, time, texture)
+	local h = holder(CFrame.new(pos + Vector3.new(0, 0.15, 0)), Vector3.new(radius * 0.3, 0.05, radius * 0.3))
+	local decal = Instance.new("Decal")
+	decal.Face = Enum.NormalId.Top
+	decal.Texture = texture or TEX.shock
+	decal.Color3 = color
+	decal.Parent = h
+	tween(h, time, { Size = Vector3.new(radius * 2.6, 0.05, radius * 2.6) })
+	tween(decal, time, { Transparency = 1 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	Debris:AddItem(h, time + 0.05)
+end
+
+function VFX.Burst(pos, radius, color, time)
+	time = time or 0.35
+	if playTemplate("Explosion", pos, radius) then
+		return
+	end
+	local shell = neon(Enum.PartType.Ball, Vector3.one * radius * 0.4, CFrame.new(pos), color, 0.15)
+	tween(shell, time, { Size = Vector3.one * radius * 2.2, Transparency = 1 })
+	Debris:AddItem(shell, time + 0.05)
+	local core = neon(Enum.PartType.Ball, Vector3.one * radius * 0.5, CFrame.new(pos), WHITE, 0)
+	tween(core, time * 0.5, { Size = Vector3.one * radius * 1.1, Transparency = 1 })
+	Debris:AddItem(core, time)
+
+	local h = holder(CFrame.new(pos), Vector3.one * math.max(1, radius * 0.4))
+	particles(h, {
+		Texture = TEX.fireSpark,
+		Color = ColorSequence.new(WHITE, color),
+		Size = NumberSequence.new(math.min(3, radius * 0.12 + 0.4), 0),
+		Lifetime = NumberRange.new(0.3, 0.7),
+		Speed = NumberRange.new(radius * 2, radius * 5),
+		SpreadAngle = Vector2.new(180, 180),
+		Drag = 4,
+		Acceleration = Vector3.new(0, -25, 0),
+	}):Emit(math.clamp(math.floor(radius * 3), 8, 40))
+	particles(h, {
+		Texture = TEX.smoke,
+		LightEmission = 0.15,
+		Color = ColorSequence.new(color:Lerp(Color3.new(0, 0, 0), 0.5)),
+		Size = NumberSequence.new(radius * 0.5, radius * 1.1),
+		Transparency = NumberSequence.new(0.45, 1),
+		Lifetime = NumberRange.new(0.6, 1),
+		Speed = NumberRange.new(radius * 0.8, radius * 1.6),
+		SpreadAngle = Vector2.new(180, 180),
+		Drag = 3,
+		Rotation = NumberRange.new(0, 360),
+		RotSpeed = NumberRange.new(-60, 60),
+	}):Emit(math.clamp(math.floor(radius / 2), 3, 10))
+	particles(h, {
+		Texture = TEX.core,
+		Color = ColorSequence.new(color),
+		Size = NumberSequence.new(radius * 1.4, radius * 2.2),
+		Transparency = NumberSequence.new(0, 1),
+		Lifetime = NumberRange.new(0.25),
+		Speed = NumberRange.new(0),
+	}):Emit(1)
+	pointLight(h, color, radius * 3, 5, 0.45)
+	Debris:AddItem(h, 1.2)
+end
+
+function VFX.Ring(pos, radius, color, time)
+	groundRing(pos, radius, color, time or 0.45)
+end
+
+function VFX.Telegraph(pos, radius, delay, color)
+	local cf = CFrame.new(pos + Vector3.new(0, 0.12, 0)) * CFrame.Angles(0, 0, math.rad(90))
+	local outer = neon(Enum.PartType.Cylinder, Vector3.new(0.12, radius * 2, radius * 2), cf, color, 0.8)
+	local inner = neon(Enum.PartType.Cylinder, Vector3.new(0.16, 0.4, 0.4), cf, color, 0.4)
+	tween(inner, delay, { Size = Vector3.new(0.16, radius * 2, radius * 2) }, Enum.EasingStyle.Linear)
+	local h = holder(CFrame.new(pos + Vector3.new(0, 0.2, 0)), Vector3.new(radius * 2, 0.05, radius * 2))
+	local decal = Instance.new("Decal")
+	decal.Face = Enum.NormalId.Top
+	decal.Texture = TEX.shock
+	decal.Color3 = color
+	decal.Transparency = 0.3
+	decal.Parent = h
+	Debris:AddItem(outer, delay)
+	Debris:AddItem(inner, delay)
+	Debris:AddItem(h, delay)
+end
+
+-- espada fantasma: ponta na origem, lâmina subindo no +Y do `cframe`
+local function buildGhostSword(cframe, length, width, color, transparency, anchored)
+	local parts = {}
+	local function add(size, offset, partColor, shape)
+		local part = neon(shape or Enum.PartType.Block, size, cframe * offset, partColor, transparency)
+		part.Anchored = anchored
+		table.insert(parts, part)
+		return part
+	end
+	local blade = length * 0.72
+	add(Vector3.new(width, blade, width * 0.2), CFrame.new(0, width * 0.35 + blade / 2, 0), color)
+	add(Vector3.new(width * 0.25, blade * 0.92, width * 0.26), CFrame.new(0, width * 0.35 + blade / 2, 0), WHITE)
+	add(Vector3.new(width * 0.71, width * 0.71, width * 0.2), CFrame.new(0, width * 0.35, 0) * CFrame.Angles(0, 0, math.rad(45)), color)
+	add(Vector3.new(width * 3.2, width * 0.45, width * 0.5), CFrame.new(0, width * 0.35 + blade, 0), color:Lerp(WHITE, 0.4))
+	add(Vector3.new(width * 0.45, length * 0.2, width * 0.45), CFrame.new(0, width * 0.35 + blade + length * 0.1 + width * 0.2, 0), color:Lerp(Color3.new(0, 0, 0), 0.3))
+	add(Vector3.one * width * 0.8, CFrame.new(0, width * 0.35 + blade + length * 0.22, 0), color:Lerp(WHITE, 0.4), Enum.PartType.Ball)
+	return parts
+end
+
+local function moveParts(parts, from, to)
+	local offset = to * from:Inverse()
+	for _, part in parts do
+		part.CFrame = offset * part.CFrame
+	end
+end
+
+local function fadeParts(parts, time)
+	for _, part in parts do
+		tween(part, time, { Transparency = 1 })
+		Debris:AddItem(part, time + 0.05)
+	end
+end
+
+-- animação por frame com alpha 0..1
+local function animate(duration, step, done)
+	local start = os.clock()
+	local connection
+	connection = RunService.RenderStepped:Connect(function()
+		local alpha = math.min(1, (os.clock() - start) / duration)
+		step(alpha)
+		if alpha >= 1 then
+			connection:Disconnect()
+			if done then
+				done()
+			end
+		end
+	end)
+end
+
+-- golpes que caem do céu -------------------------------------------------------------
+
+local StrikeVisuals = {}
+
+function StrikeVisuals.sword(pos, radius, delay, color)
+	local length = math.clamp(radius * 1.8, 6, 40)
+	local width = length * 0.12
+	local high = CFrame.new(pos + Vector3.new(0, 70, 0))
+	local parts = buildGhostSword(high, length, width, color, 0.15, true)
+	local current = high
+	animate(delay, function(alpha)
+		local y = 70 * (1 - alpha * alpha) - length * 0.2 * alpha
+		local target = CFrame.new(pos + Vector3.new(0, y, 0)) * CFrame.Angles(0, alpha * math.pi * 0.5, 0)
+		moveParts(parts, current, target)
+		current = target
+	end, function()
+		task.delay(0.35, function()
+			fadeParts(parts, 0.3)
+		end)
+	end)
+end
+
+function StrikeVisuals.meteor(pos, radius, delay, color)
+	local start = pos + Vector3.new(-30, 80, 25)
+	local size = math.clamp(radius * 0.55, 1.5, 18)
+	local ball = neon(Enum.PartType.Ball, Vector3.one * size, CFrame.new(start), color, 0)
+	local fire = particles(ball, {
+		Texture = TEX.fire,
+		Enabled = true,
+		Rate = 70,
+		Color = ColorSequence.new(WHITE, color),
+		Size = NumberSequence.new(size * 0.9, 0),
+		Lifetime = NumberRange.new(0.25, 0.5),
+		Speed = NumberRange.new(2, 5),
+		SpreadAngle = Vector2.new(25, 25),
+		EmissionDirection = Enum.NormalId.Top,
+	})
+	trail(ball, Vector3.new(size * 0.4, 0, 0), Vector3.new(-size * 0.4, 0, 0), color, 0.35)
+	pointLight(ball, color, size * 4, 3)
+	animate(delay, function(alpha)
+		ball.CFrame = CFrame.new(start:Lerp(pos, alpha * alpha))
+	end, function()
+		fire.Enabled = false
+		ball.Transparency = 1
+		Debris:AddItem(ball, 0.6)
+	end)
+end
+
+local function lightning(from, to, color, thickness)
+	local segments = 8
+	local last = from
+	local parts = {}
+	for i = 1, segments do
+		local point = from:Lerp(to, i / segments)
+		if i < segments then
+			point += Vector3.new(math.random() - 0.5, 0, math.random() - 0.5) * (from - to).Magnitude * 0.08
+		end
+		local dist = (point - last).Magnitude
+		if dist > 0.05 then
+			local cf = CFrame.lookAt((last + point) / 2, point)
+			table.insert(parts, neon(Enum.PartType.Block, Vector3.new(thickness, thickness, dist), cf, color, 0))
+			table.insert(parts, neon(Enum.PartType.Block, Vector3.new(thickness * 0.4, thickness * 0.4, dist), cf, WHITE, 0))
+		end
+		last = point
+	end
+	local h = holder(CFrame.new(to))
+	pointLight(h, color, 50, 8, 0.3)
+	Debris:AddItem(h, 0.4)
+	-- piscada
+	task.delay(0.06, function()
+		for _, part in parts do
+			part.Transparency = 0.7
+		end
+		task.wait(0.04)
+		for _, part in parts do
+			part.Transparency = 0
+		end
+		fadeParts(parts, 0.2)
+	end)
+end
+VFX.Lightning = lightning
+
+function StrikeVisuals.lightning(pos, radius, delay, color)
+	task.delay(math.max(0, delay - 0.05), function()
+		lightning(pos + Vector3.new(0, 80, 0), pos, color, math.clamp(radius * 0.08, 0.3, 1.5))
+	end)
+end
+
+local function pillar(pos, radius, color, width)
+	local column = neon(Enum.PartType.Cylinder, Vector3.new(80, width, width), CFrame.new(pos + Vector3.new(0, 40, 0)) * CFrame.Angles(0, 0, math.rad(90)), color, 0.1)
+	tween(column, 0.35, { Size = Vector3.new(80, 0.1, 0.1), Transparency = 1 })
+	Debris:AddItem(column, 0.4)
+	local inner = neon(Enum.PartType.Cylinder, Vector3.new(80, width * 0.4, width * 0.4), column.CFrame, WHITE, 0)
+	tween(inner, 0.25, { Size = Vector3.new(80, 0.1, 0.1), Transparency = 1 })
+	Debris:AddItem(inner, 0.3)
+end
+
+function StrikeVisuals.pillar(pos, radius, delay, color)
+	task.delay(math.max(0, delay - 0.08), function()
+		pillar(pos, radius, color, math.max(1.5, radius * 0.4))
+	end)
+end
+
+function StrikeVisuals.orbital(pos, radius, delay, color)
+	local guide = neon(Enum.PartType.Cylinder, Vector3.new(80, 0.4, 0.4), CFrame.new(pos + Vector3.new(0, 40, 0)) * CFrame.Angles(0, 0, math.rad(90)), color, 0.4)
+	Debris:AddItem(guide, delay)
+	task.delay(math.max(0, delay - 0.05), function()
+		pillar(pos, radius, color, radius * 1.4)
+	end)
+end
+
+function StrikeVisuals.void(pos, radius, delay, color)
+	local h = holder(CFrame.new(pos + Vector3.new(0, 2, 0)), Vector3.one * radius)
+	local implode = particles(h, {
+		Texture = TEX.implode,
+		Enabled = true,
+		Rate = 20,
+		Color = ColorSequence.new(color),
+		Size = NumberSequence.new(radius * 1.5, 0),
+		Transparency = NumberSequence.new(0.3, 1),
+		Lifetime = NumberRange.new(0.4),
+		Speed = NumberRange.new(0),
+		Rotation = NumberRange.new(0, 360),
+		RotSpeed = NumberRange.new(-180, 180),
+	})
+	local orb = neon(Enum.PartType.Ball, Vector3.one * radius * 0.2, CFrame.new(pos + Vector3.new(0, 2, 0)), Color3.new(0.05, 0, 0.1), 0)
+	tween(orb, delay, { Size = Vector3.one * radius * 0.9 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+	Debris:AddItem(orb, delay)
+	task.delay(delay, function()
+		implode.Enabled = false
+		Debris:AddItem(h, 0.5)
+	end)
+end
+
+function VFX.Strike(data)
+	local pos, radius, delay, color, visual = data.pos, data.radius, data.delay, data.color, data.visual
+	VFX.Telegraph(pos, radius, delay, color)
+	if not playTemplate("Strike_" .. visual, pos, radius) then
+		local draw = StrikeVisuals[visual] or StrikeVisuals.pillar
+		draw(pos, radius, delay, color)
+	end
+	task.delay(delay, function()
+		VFX.Burst(pos + Vector3.new(0, radius * 0.25, 0), radius, color)
+		groundRing(pos, radius, color, 0.5)
+	end)
+end
+
+-- impactos, morte, nascimento ---------------------------------------------------------
+
+function VFX.HitSpark(pos, color)
+	if playTemplate("Hit", pos, 2) then
+		return
+	end
+	local h = holder(CFrame.new(pos))
+	particles(h, {
+		Color = ColorSequence.new(WHITE, color),
+		Size = NumberSequence.new(0.6, 0),
+		Lifetime = NumberRange.new(0.15, 0.3),
+		Speed = NumberRange.new(15, 30),
+		SpreadAngle = Vector2.new(180, 180),
+		Drag = 6,
+	}):Emit(6)
+	Debris:AddItem(h, 0.5)
+end
+
+-- contador de combo (abates seguidos do jogador local)
+local comboLabel
+local comboCount, comboToken = 0, 0
+local function bumpCombo()
+	if not comboLabel then
+		local gui = Instance.new("ScreenGui")
+		gui.Name = "Combo"
+		gui.ResetOnSpawn = false
+		gui.Parent = player:WaitForChild("PlayerGui")
+		comboLabel = Instance.new("TextLabel")
+		comboLabel.AnchorPoint = Vector2.new(1, 0.5)
+		comboLabel.Position = UDim2.new(1, -30, 0.45, 0)
+		comboLabel.Size = UDim2.fromOffset(260, 60)
+		comboLabel.BackgroundTransparency = 1
+		comboLabel.Font = Enum.Font.GothamBlack
+		comboLabel.TextSize = 44
+		comboLabel.TextXAlignment = Enum.TextXAlignment.Right
+		comboLabel.TextColor3 = GOLD
+		comboLabel.TextStrokeTransparency = 0.2
+		comboLabel.TextTransparency = 1
+		comboLabel.TextStrokeTransparency = 1
+		comboLabel.Parent = gui
+	end
+	comboCount += 1
+	comboToken += 1
+	local token = comboToken
+	comboLabel.Text = comboCount .. "x ABATES"
+	comboLabel.TextTransparency = 0
+	comboLabel.TextStrokeTransparency = 0.2
+	comboLabel.TextSize = 54
+	comboLabel.TextColor3 = comboCount >= 50 and Color3.fromRGB(255, 80, 80) or (comboCount >= 20 and Color3.fromRGB(255, 150, 60) or GOLD)
+	tween(comboLabel, 0.15, { TextSize = 44 })
+	task.delay(2.5, function()
+		if token == comboToken then
+			comboCount = 0
+			tween(comboLabel, 0.4, { TextTransparency = 1, TextStrokeTransparency = 1 })
+		end
+	end)
+end
+
+function VFX.Kill(data)
+	local pos, size, color = data.pos, data.size, data.color
+	if data.killer == player then
+		bumpCombo()
+	end
+	if data.boss then
+		VFX.Burst(pos, 30, color, 0.8)
+		groundRing(pos - Vector3.new(0, 4, 0), 40, GOLD, 1)
+		VFX.Shake(1)
+		return
+	end
+	if playTemplate("Death", pos, size) then
+		return
+	end
+	-- pedaços voando
+	for _ = 1, 6 do
+		local chunk = neon(Enum.PartType.Block, Vector3.one * (size * 0.3 + math.random() * 0.4), CFrame.new(pos) * CFrame.Angles(math.random() * 6, math.random() * 6, 0), color, 0)
+		chunk.Material = Enum.Material.SmoothPlastic
+		chunk.Anchored = false
+		chunk.AssemblyLinearVelocity = Vector3.new(math.random(-20, 20), math.random(15, 30), math.random(-20, 20))
+		chunk.AssemblyAngularVelocity = Vector3.new(math.random(-10, 10), math.random(-10, 10), math.random(-10, 10))
+		tween(chunk, 0.9, { Size = Vector3.one * 0.05 }, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+		Debris:AddItem(chunk, 0.9)
+	end
+	local h = holder(CFrame.new(pos))
+	particles(h, {
+		Texture = TEX.smoke,
+		LightEmission = 0.2,
+		Color = ColorSequence.new(color:Lerp(WHITE, 0.3)),
+		Size = NumberSequence.new(size * 1.2, size * 2.2),
+		Transparency = NumberSequence.new(0.3, 1),
+		Lifetime = NumberRange.new(0.4, 0.7),
+		Speed = NumberRange.new(3, 8),
+		SpreadAngle = Vector2.new(180, 180),
+		Rotation = NumberRange.new(0, 360),
+	}):Emit(5)
+	particles(h, {
+		Color = ColorSequence.new(WHITE, color),
+		Size = NumberSequence.new(0.8, 0),
+		Lifetime = NumberRange.new(0.3, 0.5),
+		Speed = NumberRange.new(10, 25),
+		SpreadAngle = Vector2.new(180, 180),
+		Drag = 5,
+	}):Emit(12)
+	Debris:AddItem(h, 1)
+end
+
+function VFX.Spawn(data)
+	local pos, size, color = data.pos, data.size, data.color
+	if playTemplate("Spawn", pos, size) then
+		return
+	end
+	groundRing(pos, size * (data.boss and 4 or 1.6), color, data.boss and 1.2 or 0.6, TEX.vortex)
+	local h = holder(CFrame.new(pos + Vector3.new(0, 1, 0)), Vector3.new(size, 0.2, size))
+	particles(h, {
+		Texture = TEX.spark,
+		Color = ColorSequence.new(color),
+		Size = NumberSequence.new(0.8, 0),
+		Lifetime = NumberRange.new(0.4, 0.8),
+		Speed = NumberRange.new(6, 14),
+		SpreadAngle = Vector2.new(15, 15),
+		EmissionDirection = Enum.NormalId.Top,
+	}):Emit(data.boss and 60 or 12)
+	Debris:AddItem(h, 1)
+	if data.boss then
+		VFX.Shake(0.8)
+	end
+end
+
+function VFX.LevelUp(data)
+	local character = data.player and data.player.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if not root then
+		return
+	end
+	if playTemplate("LevelUp", root.Position, 6) then
+		return
+	end
+	local ground = root.Position - Vector3.new(0, 2.9, 0)
+	pillar(ground, 6, GOLD, 5)
+	groundRing(ground, 8, GOLD, 0.6)
+	local h = holder(CFrame.new(ground), Vector3.new(4, 0.2, 4))
+	particles(h, {
+		Color = ColorSequence.new(WHITE, GOLD),
+		Size = NumberSequence.new(0.7, 0),
+		Lifetime = NumberRange.new(0.6, 1.1),
+		Speed = NumberRange.new(8, 16),
+		SpreadAngle = Vector2.new(10, 10),
+		EmissionDirection = Enum.NormalId.Top,
+	}):Emit(40)
+	Debris:AddItem(h, 1.5)
+	if data.player == player then
+		playSound(SOUND.ping, root.Position, 0.6, 1.2)
+	end
+end
+
+function VFX.Beam(data)
+	local from, to, width, color, time = data.from, data.to, data.width, data.color, data.time
+	local dist = (to - from).Magnitude
+	local cf = CFrame.lookAt((from + to) / 2, to)
+	local outer = neon(Enum.PartType.Block, Vector3.new(width, width, dist), cf, color, 0.15)
+	local inner = neon(Enum.PartType.Block, Vector3.new(width * 0.35, width * 0.35, dist), cf, WHITE, 0)
+	tween(outer, time, { Size = Vector3.new(width * 0.1, width * 0.1, dist), Transparency = 1 })
+	tween(inner, time, { Size = Vector3.new(0.05, 0.05, dist), Transparency = 1 })
+	Debris:AddItem(outer, time + 0.05)
+	Debris:AddItem(inner, time + 0.05)
+	local h = holder(CFrame.new(to))
+	pointLight(h, color, width * 6, 3, time)
+	Debris:AddItem(h, time + 0.05)
+end
+
+-- decoração dos objetos do servidor (workspace.FX) ----------------------------------------
+
+local function hide(part)
+	part.LocalTransparencyModifier = 1
+end
+
+local function attachTo(base, part)
+	part.Anchored = false
+	part.Massless = true
+	part.Parent = base
+	local weld = Instance.new("WeldConstraint")
+	weld.Part0 = base
+	weld.Part1 = part
+	weld.Parent = part
+end
+
+local Decorators = {}
+
+function Decorators.orb(part)
+	local size = part.Size.X
+	trail(part, Vector3.new(size * 0.4, 0, 0), Vector3.new(-size * 0.4, 0, 0), part.Color, 0.2)
+	pointLight(part, part.Color, size * 6, 2)
+	particles(part, {
+		Enabled = true,
+		Rate = 25,
+		Color = ColorSequence.new(WHITE, part.Color),
+		Size = NumberSequence.new(size * 0.4, 0),
+		Lifetime = NumberRange.new(0.2, 0.35),
+		Speed = NumberRange.new(1, 3),
+		SpreadAngle = Vector2.new(180, 180),
+	})
+end
+
+function Decorators.blade(part)
+	hide(part)
+	local length = math.max(part.Size.Z, part.Size.X * 2.5)
+	-- ponta para a frente (-Z), lâmina para trás
+	local origin = part.CFrame * CFrame.new(0, 0, -length / 2) * CFrame.Angles(math.rad(90), 0, 0)
+	for _, piece in buildGhostSword(origin, length, length * 0.13, part.Color, 0.1, false) do
+		attachTo(part, piece)
+	end
+	trail(part, Vector3.new(0, 0, -length / 2), Vector3.new(0, 0, length * 0.2), part.Color, 0.18)
+	pointLight(part, part.Color, 10, 1.5)
+end
+
+function Decorators.bullet(part)
+	hide(part)
+	local cf = part.CFrame
+	local tracer = neon(Enum.PartType.Block, Vector3.new(0.25, 0.25, 2.4), cf, part.Color, 0)
+	attachTo(part, tracer)
+	local core = neon(Enum.PartType.Block, Vector3.new(0.1, 0.1, 2.6), cf, WHITE, 0)
+	attachTo(part, core)
+	trail(part, Vector3.new(0.12, 0, 0), Vector3.new(-0.12, 0, 0), part.Color, 0.1)
+	pointLight(part, part.Color, 6, 1.5)
+end
+
+function Decorators.lance(part)
+	hide(part)
+	local cf = part.CFrame
+	attachTo(part, neon(Enum.PartType.Block, Vector3.new(0.35, 0.35, 5.5), cf * CFrame.new(0, 0, 1), part.Color, 0.05))
+	attachTo(part, neon(Enum.PartType.Block, Vector3.new(0.6, 0.6, 1.2), cf * CFrame.new(0, 0, -2) * CFrame.Angles(0, 0, math.rad(45)), WHITE, 0))
+	trail(part, Vector3.new(0.3, 0, 0), Vector3.new(-0.3, 0, 0), part.Color, 0.25)
+	pointLight(part, part.Color, 12, 2)
+end
+
+function Decorators.wind(part)
+	hide(part)
+	local size = math.max(part.Size.X, 2) * 2.5
+	local crescent = neon(Enum.PartType.Block, Vector3.new(size, 0.3, size * 0.35), part.CFrame, part.Color, 0.35)
+	local mesh = Instance.new("SpecialMesh")
+	mesh.MeshType = Enum.MeshType.Sphere
+	mesh.Parent = crescent
+	attachTo(part, crescent)
+	trail(part, Vector3.new(size / 2, 0, 0), Vector3.new(-size / 2, 0, 0), part.Color, 0.2)
+end
+
+function Decorators.fireball(part)
+	local size = part.Size.X
+	particles(part, {
+		Texture = TEX.fire,
+		Enabled = true,
+		Rate = 60,
+		Color = ColorSequence.new(WHITE, part.Color),
+		Size = NumberSequence.new(size * 1.2, 0),
+		Lifetime = NumberRange.new(0.25, 0.45),
+		Speed = NumberRange.new(1, 3),
+		SpreadAngle = Vector2.new(20, 20),
+		EmissionDirection = Enum.NormalId.Back,
+	})
+	trail(part, Vector3.new(size * 0.4, 0, 0), Vector3.new(-size * 0.4, 0, 0), part.Color, 0.3)
+	pointLight(part, part.Color, size * 6, 3)
+end
+
+function Decorators.enemy(part)
+	part.Color = Color3.fromRGB(255, 70, 50)
+	local size = part.Size.X
+	trail(part, Vector3.new(size * 0.4, 0, 0), Vector3.new(-size * 0.4, 0, 0), part.Color, 0.2)
+	pointLight(part, part.Color, 10, 2)
+end
+
+function Decorators.xp(part)
+	pointLight(part, part.Color, 6, 1)
+	particles(part, {
+		Enabled = true,
+		Rate = 6,
+		Color = ColorSequence.new(part.Color),
+		Size = NumberSequence.new(0.4, 0),
+		Lifetime = NumberRange.new(0.4, 0.6),
+		Speed = NumberRange.new(0.5, 1.5),
+		SpreadAngle = Vector2.new(180, 180),
+	})
+	trail(part, Vector3.new(0.3, 0, 0), Vector3.new(-0.3, 0, 0), part.Color, 0.15)
+end
+
+function Decorators.summon(part)
+	hide(part)
+	local cf = part.CFrame
+	local color = part.Color
+	attachTo(part, neon(Enum.PartType.Block, Vector3.new(1.6, 1.8, 0.9), cf, color, 0.3))
+	attachTo(part, neon(Enum.PartType.Ball, Vector3.one * 1.2, cf * CFrame.new(0, 1.5, 0), color, 0.3))
+	for _, side in { -1, 1 } do
+		attachTo(part, neon(Enum.PartType.Block, Vector3.new(0.45, 1.6, 0.45), cf * CFrame.new(side * 1.1, -0.1, 0), color, 0.4))
+		attachTo(part, neon(Enum.PartType.Block, Vector3.new(0.18, 0.18, 0.05), cf * CFrame.new(side * 0.25, 1.6, -0.6), WHITE, 0))
+	end
+	particles(part, {
+		Texture = TEX.smoke,
+		Enabled = true,
+		Rate = 12,
+		LightEmission = 0.4,
+		Color = ColorSequence.new(color),
+		Size = NumberSequence.new(1.5, 2.5),
+		Transparency = NumberSequence.new(0.6, 1),
+		Lifetime = NumberRange.new(0.5, 0.8),
+		Speed = NumberRange.new(0.5, 1.5),
+	})
+	pointLight(part, color, 12, 1.5)
+end
+
+local function zoneParticles(part, vortex)
+	-- o disco é um cilindro deitado: o raio está em Size.Y/Z
+	local radius = part.Size.Y / 2
+	part.Transparency = 0.82
+	local area = Instance.new("Part")
+	area.Size = Vector3.new(radius * 1.6, 0.2, radius * 1.6)
+	area.CFrame = CFrame.new(part.Position)
+	area.Transparency = 1
+	area.CanCollide = false
+	area.CanQuery = false
+	area.CanTouch = false
+	attachTo(part, area)
+	particles(area, {
+		Texture = vortex and TEX.glow or TEX.spark,
+		Enabled = true,
+		Rate = math.clamp(radius * 4, 10, 80),
+		Shape = Enum.ParticleEmitterShape.Box,
+		ShapeStyle = Enum.ParticleEmitterShapeStyle.Volume,
+		EmissionDirection = Enum.NormalId.Top,
+		Color = ColorSequence.new(WHITE, part.Color),
+		Size = NumberSequence.new(vortex and 1.2 or 0.7, 0),
+		Lifetime = NumberRange.new(0.5, 1),
+		Speed = NumberRange.new(3, 8),
+		RotSpeed = NumberRange.new(-200, 200),
+		Acceleration = vortex and Vector3.new(0, 10, 0) or Vector3.new(0, 4, 0),
+	})
+	local decalHolder = Instance.new("Part")
+	decalHolder.Size = Vector3.new(radius * 2, 0.05, radius * 2)
+	decalHolder.CFrame = CFrame.new(part.Position + Vector3.new(0, 0.1, 0))
+	decalHolder.Transparency = 1
+	decalHolder.CanCollide = false
+	decalHolder.CanQuery = false
+	decalHolder.CanTouch = false
+	attachTo(part, decalHolder)
+	local decal = Instance.new("Decal")
+	decal.Face = Enum.NormalId.Top
+	decal.Texture = vortex and TEX.vortex or TEX.shock
+	decal.Color3 = part.Color
+	decal.Transparency = 0.25
+	decal.Parent = decalHolder
+	pointLight(part, part.Color, radius * 2, 1.5)
+end
+
+function Decorators.zone(part)
+	zoneParticles(part, false)
+end
+
+function Decorators.vortex(part)
+	zoneParticles(part, true)
+end
+
+function Decorators.shield(part)
+	part.Material = Enum.Material.ForceField
+	part.Transparency = 0
+	pointLight(part, part.Color, 14, 1)
+end
+
+function Decorators.ice(part)
+	part.Material = Enum.Material.Glass
+	part.Transparency = 0.35
+	part.Reflectance = 0.3
+	local h = holder(part.CFrame, part.Size)
+	particles(h, {
+		Color = ColorSequence.new(WHITE),
+		Size = NumberSequence.new(0.5, 0),
+		Lifetime = NumberRange.new(0.3, 0.6),
+		Speed = NumberRange.new(5, 12),
+		SpreadAngle = Vector2.new(180, 180),
+	}):Emit(15)
+	Debris:AddItem(h, 1)
+end
+
+local function decorate(part)
+	if not part:IsA("BasePart") then
+		return
+	end
+	local kind = part:GetAttribute("Fx")
+	local decorator = kind and Decorators[kind]
+	if decorator then
+		local ok, err = pcall(decorator, part)
+		if not ok then
+			warn("[VFX] " .. tostring(err))
+		end
+	end
+end
+
+-- entrada --------------------------------------------------------------------------------
+
+local Handlers = {
+	burst = function(d)
+		VFX.Burst(d.pos, d.radius, d.color, d.time)
+	end,
+	ring = function(d)
+		VFX.Ring(d.pos, d.radius, d.color, d.time)
+	end,
+	telegraph = function(d)
+		VFX.Telegraph(d.pos, d.radius, d.delay, d.color)
+	end,
+	strike = VFX.Strike,
+	beam = VFX.Beam,
+	bolt = function(d)
+		lightning(d.from, d.to, d.color, 0.35)
+	end,
+	kill = VFX.Kill,
+	spawn = VFX.Spawn,
+	levelup = VFX.LevelUp,
+	shake = function(d)
+		shakeNear(d.pos, d.intensity, d.radius)
+	end,
+}
+
+function VFX.On(kind, handler)
+	Handlers[kind] = handler
+end
+
+function VFX.Init()
+	Net.Fx.OnClientEvent:Connect(function(kind, data)
+		local handler = Handlers[kind]
+		if handler then
+			local ok, err = pcall(handler, data)
+			if not ok then
+				warn("[VFX] " .. kind .. ": " .. tostring(err))
+			end
+		end
+	end)
+
+	local serverFx = workspace:WaitForChild("FX")
+	serverFx.ChildAdded:Connect(decorate)
+	for _, child in serverFx:GetChildren() do
+		decorate(child)
+	end
+end
+
+return VFX
+]]></string>
+            </Properties>
+          </Item>
+        </Item>
+      </Item>
+    </Item>
+  </Item>
+  <Item class="Workspace" referent="35">
+    <Properties>
+      <string name="Name">Workspace</string>
+      <bool name="NeedsPivotMigration">false</bool>
+      <bool name="StreamingEnabled">false</bool>
+    </Properties>
+  </Item>
+</roblox>
